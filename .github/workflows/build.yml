@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Init tools
+        uses: ./.github/actions/init-tools
+
+      - name: Build package
+        run: uv build
