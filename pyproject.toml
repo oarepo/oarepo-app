@@ -8,7 +8,7 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
-    "oarepo==14.0.0",
+    "oarepo[s3]==14.0.0",
     "json5",
     "marshmallow-i18n-messages",
     "ccmm-invenio==1.1.0a1",
