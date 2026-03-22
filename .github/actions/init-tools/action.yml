@@ -34,8 +34,13 @@ runs:
     - name: Link the tools to a path
       shell: bash
       run: |
+        # we do not want to expose the full venv path to the user
+        # instead, we create a .bin directory and add it to PATH
+        # and only add the tool itself to that directory
+        # this way, the user can use `oarepo-app-build` and still
+        # have separated python virtual environments if needed
         mkdir .bin
-        ln -s .venv-tools/bin/oarepo-app-build .bin/oarepo-app-build
+        ln -s $(pwd)/.venv-tools/bin/oarepo-app-build $(pwd)/.bin/oarepo-app-build
         echo "PATH=$(pwd)/.bin:$PATH" >> "$GITHUB_ENV"
 
     - name: Set up cesnet pypi registry for UV
