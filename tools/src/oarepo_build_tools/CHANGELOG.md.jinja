@@ -1,0 +1,55 @@
+# OAREPO-APP Changelog
+
+## Contents
+
+{% for entry in changelog[:5] %}
+- [{{ entry.version }}](#{{ entry.version | github_anchor }})
+{% endfor %}
+{% for entry in changelog %}
+
+---
+
+## {{ entry.version }}
+
+Released: **{{ entry.created | format_datetime }}**
+{% if entry.breaking %}
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+{% endif %}
+{% set ns = namespace(any_changed=false) %}
+{% for name, pkg in entry.packages.items() %}
+{% set version_changed = pkg.get('previous_version') and pkg.get('previous_version') != pkg.version %}
+{% if pkg.get('changes') or version_changed %}
+{% set ns.any_changed = true %}
+{% endif %}
+{% endfor %}
+{% if ns.any_changed %}
+
+### Updated packages
+{% for name, pkg in entry.packages.items() %}
+{% set version_changed = pkg.get('previous_version') and pkg.get('previous_version') != pkg.version %}
+{% set has_commits = pkg.get('changes') %}
+{% if version_changed or has_commits %}
+
+#### `{{ name }}` {{ pkg.version }}{% if pkg.get('breaking') %} 💥{% endif %}
+
+{% if pkg.get('github_url') %}
+[{{ pkg.get('previous_version') }} → {{ pkg.version }}]({{ pkg.github_url }})
+
+{% elif version_changed %}
+{{ pkg.get('previous_version') }} → {{ pkg.version }}
+
+{% endif %}
+{% if has_commits %}
+{% set repo_base = pkg.github_url.rsplit('/compare/', 1)[0] if pkg.get('github_url') else '' %}
+{% for change in pkg.changes %}
+- {% if repo_base %}[`{{ change.commit[:8] }}`]({{ repo_base }}/commit/{{ change.commit }}){% else %}`{{ change.commit[:8] }}`{% endif %} {{ change.message }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% else %}
+
+*No package changes recorded for this release.*
+{% endif %}
+{% endfor %}

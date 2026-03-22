@@ -1,0 +1,46 @@
+name: Init Tools
+description: >
+  Installs uv, Python 3.14, creates a dedicated tools virtualenv
+  and installs the ./tools package into it.
+
+outputs:
+  venv-python:
+    description: Path to the Python executable inside the tools venv
+    value: ${{ steps.venv.outputs.python }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: false
+
+    - name: Install Python 3.14
+      shell: bash
+      run: uv python install 3.14
+
+    - name: Create tools venv
+      id: venv
+      shell: bash
+      run: |
+        uv venv --python 3.14 .venv-tools
+        echo "python=${{ github.workspace }}/.venv-tools/bin/python" >> "$GITHUB_OUTPUT"
+
+    - name: Install tools package
+      shell: bash
+      run: uv pip install --python .venv-tools/bin/python ./tools
+
+    - name: Link the tools to a path
+      shell: bash
+      run: |
+        mkdir .bin
+        ln -s .venv-tools/bin/oarepo-app-build .bin/oarepo-app-build
+        echo "PATH=$(pwd)/.bin:$PATH" >> "$GITHUB_ENV"
+
+    - name: Set up cesnet pypi registry for UV
+      shell: bash
+      run: |
+        echo "UV_EXTRA_INDEX_URL=https://gitlab.cesnet.cz/api/v4/projects/1408/packages/pypi/simple" >> "$GITHUB_ENV"
+        echo "UV_PRERELEASE=allow" >> "$GITHUB_ENV"
+        echo "PIP_EXTRA_INDEX_URL=https://gitlab.cesnet.cz/api/v4/projects/1408/packages/pypi/simple" >> "$GITHUB_ENV"
