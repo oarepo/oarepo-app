@@ -66,13 +66,15 @@ jobs:
         run: |
           BRANCH="${{ steps.push.outputs.branch }}"
           BASE="${{ github.event.repository.default_branch }}"
-          # Reuse an existing PR for this branch if one was already opened.
-          PR_URL=$(gh pr view "$BRANCH" --json url --jq .url 2>/dev/null) || \
-          PR_URL=$(gh pr create \
-            --title "Update to InvenioRDM ${{ steps.version.outputs.value }}" \
-            --body "$(printf 'Automated dependency update triggered by workflow dispatch.\n\n**InvenioRDM version:** `${{ steps.version.outputs.value }}`\n**Branch:** `%s`' "$BRANCH")" \
-            --base "$BASE" \
-            --head "$BRANCH")
+          # Reuse an existing open PR for this branch; ignore closed/merged ones.
+          PR_URL=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url' 2>/dev/null)
+          if [ -z "$PR_URL" ] || [ "$PR_URL" = "null" ]; then
+            PR_URL=$(gh pr create \
+              --title "Update to InvenioRDM ${{ steps.version.outputs.value }}" \
+              --body "$(printf 'Automated dependency update triggered by workflow dispatch.\n\n**InvenioRDM version:** `${{ steps.version.outputs.value }}`\n**Branch:** `%s`' "$BRANCH")" \
+              --base "$BASE" \
+              --head "$BRANCH")
+          fi
           echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: Write job summary
