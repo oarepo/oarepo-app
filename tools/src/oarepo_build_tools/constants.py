@@ -3,7 +3,10 @@ from packaging.version import InvalidVersion, Version
 CESNET_PYPI_URL = "https://gitlab.cesnet.cz/api/v4/projects/1408/packages/pypi/simple"
 CESNET_PYPI_UPLOAD_URL = "https://gitlab.cesnet.cz/api/v4/projects/1408/packages/pypi"
 
-OAREPO_INCLUDED_PACKAGES = ["oarepo-.*"]
+OAREPO_INCLUDED_PACKAGES = [
+    "oarepo-.*",
+    "ccmm-invenio",
+]
 OAREPO_EXCLUDED_PACKAGES = []
 
 
@@ -47,6 +50,13 @@ LOG_PACKAGES = [
         "exclude": [],
         "version_tag": normalize_package_version,
         "github_organization": "oarepo",
+        "github_repo": lambda name: name,
+    },
+    {
+        "include": ["ccmm-invenio"],
+        "exclude": [],
+        "version_tag": normalize_package_version,
+        "github_organization": "nrp-cz",
         "github_repo": lambda name: name,
     },
 ]
