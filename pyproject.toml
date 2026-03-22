@@ -1,34 +1,36 @@
 [project]
 name = "oarepo-app"
-version = "0.1.0"
+version = "14.1.1.1"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Miroslav Simek", email = "3385642+mesemus@users.noreply.github.com" }
+    { name = "Miroslav Simek", email = "3385642+mesemus@users.noreply.github.com" },
 ]
 requires-python = ">=3.14"
 dependencies = [
-    "oarepo[s3]==14.0.0",
+    "oarepo[s3]==14.1.1",
     "json5",
     "marshmallow-i18n-messages",
-    "ccmm-invenio==1.1.0a1",
-    "oarepo-communities==6.0.0.dev0",
-    "oarepo-dashboard==2.0.0.dev0",
+    "ccmm-invenio==1.1.0a13",
+    "oarepo-communities==6.0.0.dev9",
+    "oarepo-dashboard==2.0.0.dev4",
     "oarepo-glitchtip==1.1.1",
     "oarepo-invenio-typing-stubs==0.1.29",
-    "oarepo-model==0.1.0.dev0",
-    "oarepo-oidc-einfra==2.0.0.dev0",
-    "oarepo-rdm==1.0.0.dev0",
-    "oarepo-requests==3.0.0.dev0",
-    "oarepo-runtime==2.0.0.dev0",
-    "oarepo-theme==1.0.0.dev0",
-    "oarepo-ui==7.0.0.dev0",
-    "oarepo-vocabularies==3.0.0.dev0",
-    "oarepo-workflows==2.0.0.dev0",
+    "oarepo-model==0.1.0.dev51",
+    "oarepo-oidc-einfra==2.0.0.dev4",
+    "oarepo-rdm==1.0.0.dev44",
+    "oarepo-requests==3.0.0.dev5",
+    "oarepo-runtime==2.0.0.dev59",
+    "oarepo-theme==1.0.0.dev7",
+    "oarepo-ui==7.0.0.dev9",
+    "oarepo-vocabularies==3.0.0.dev9",
+    "oarepo-workflows==2.0.0.dev10",
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+]
 build-backend = "hatchling.build"
 
 [tool.uv.workspace]
