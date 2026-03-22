@@ -49,9 +49,14 @@ jobs:
           fi
           oarepo-app-build setup "${ARGS[@]}"
 
+      - name: Build package
+        run: uv build
+
       - name: Commit and push branch
         id: push
         run: |
+          # remove the dist directory left by uv build
+          rm -rf dist
           BRANCH=$(git rev-parse --abbrev-ref HEAD)
           git add -A
           git diff --staged --quiet || \
