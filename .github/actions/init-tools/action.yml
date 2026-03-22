@@ -25,6 +25,7 @@ runs:
       shell: bash
       run: |
         uv venv --python 3.14 .venv-tools
+        uv pip install --python .venv-tools/bin/python twine
         echo "python=${{ github.workspace }}/.venv-tools/bin/python" >> "$GITHUB_OUTPUT"
 
     - name: Install tools package
@@ -41,6 +42,7 @@ runs:
         # have separated python virtual environments if needed
         mkdir .bin
         ln -s $(pwd)/.venv-tools/bin/oarepo-app-build $(pwd)/.bin/oarepo-app-build
+        ln -s $(pwd)/.venv-tools/bin/twine $(pwd)/.bin/twine
         echo "PATH=$(pwd)/.bin:$PATH" >> "$GITHUB_ENV"
 
     - name: Set up cesnet pypi registry for UV

@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    env:
+      CESNET_PYPI_UPLOAD_URL: https://gitlab.cesnet.cz/api/v4/projects/1408/packages/pypi
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Init tools
+        uses: ./.github/actions/init-tools
+
+      - name: Build package
+        run: uv build
+
+      - name: Upload to CESNET PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: |
+          twine upload \
+            --repository-url "$CESNET_PYPI_UPLOAD_URL" \
+            --non-interactive \
+            dist/*
