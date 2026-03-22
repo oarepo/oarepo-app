@@ -2,6 +2,11 @@ name: Start
 
 on:
   workflow_dispatch:
+    inputs:
+      oarepo-version:
+        description: "Exact oarepo version to use (optional; defaults to the latest for the branch's major version)"
+        required: false
+        type: string
 
 jobs:
   start:
@@ -35,8 +40,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run oarepo-app-build setup
+        env:
+          OAREPO_VERSION: ${{ inputs.oarepo-version }}
         run: |
-          oarepo-app-build setup "${{ steps.version.outputs.value }}"
+          ARGS=("${{ steps.version.outputs.value }}")
+          if [ -n "$OAREPO_VERSION" ]; then
+            ARGS+=(--oarepo-version "$OAREPO_VERSION")
+          fi
+          oarepo-app-build setup "${ARGS[@]}"
 
       - name: Commit and push branch
         id: push
