@@ -46,17 +46,28 @@ def setup(
         default=14,
         help="Major version of oarepo (corresponds to the InvenioRDM major version).",
     ),
+    oarepo_version: str | None = typer.Option(
+        None,
+        "--oarepo-version",
+        help="Use this exact oarepo version instead of looking up the latest.",
+    ),
     directory: str = typer.Option(
         ".",
         help="Repository directory to operate in.",
     ),
 ) -> None:
     """Set up the repository for the given oarepo major version."""
-    print(
-        f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …"
-    )
-    latest_oarepo_version = get_latest_oarepo_version(major_version)
-    print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
+    if oarepo_version:
+        latest_oarepo_version = oarepo_version
+        print(
+            f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]"
+        )
+    else:
+        print(
+            f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …"
+        )
+        latest_oarepo_version = get_latest_oarepo_version(major_version)
+        print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
 
     root = Path(directory).resolve()
     print(f"🌿 Switching to branch [cyan]temporary-{latest_oarepo_version}[/cyan] …")
