@@ -1,0 +1,75 @@
+name: Start
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Init tools
+        uses: ./.github/actions/init-tools
+
+      - name: Detect InvenioRDM version from branch
+        id: version
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          VERSION="${BRANCH#rdm-}"
+          if [ "$VERSION" = "$BRANCH" ]; then
+            echo "::error::Branch '$BRANCH' does not match the expected 'rdm-N' pattern."
+            exit 1
+          fi
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run oarepo-app-build setup
+        run: |
+          oarepo-app-build setup "${{ steps.version.outputs.value }}"
+
+      - name: Commit and push branch
+        id: push
+        run: |
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          git add -A
+          git diff --staged --quiet || \
+            git commit -m "chore: update to InvenioRDM ${{ steps.version.outputs.value }}"
+          git push --set-upstream origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Create or retrieve pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ steps.push.outputs.branch }}"
+          BASE="${{ github.event.repository.default_branch }}"
+          # Reuse an existing PR for this branch if one was already opened.
+          PR_URL=$(gh pr view "$BRANCH" --json url --jq .url 2>/dev/null) || \
+          PR_URL=$(gh pr create \
+            --title "Update to InvenioRDM ${{ steps.version.outputs.value }}" \
+            --body "$(printf 'Automated dependency update triggered by workflow dispatch.\n\n**InvenioRDM version:** `${{ steps.version.outputs.value }}`\n**Branch:** `%s`' "$BRANCH")" \
+            --base "$BASE" \
+            --head "$BRANCH")
+          echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Write job summary
+        run: |
+          echo "## ✅ Setup complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| | |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **InvenioRDM version** | \`${{ steps.version.outputs.value }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Branch** | \`${{ steps.push.outputs.branch }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| **Pull request** | ${{ steps.pr.outputs.url }} |" >> "$GITHUB_STEP_SUMMARY"

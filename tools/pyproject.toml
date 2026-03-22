@@ -1,0 +1,16 @@
+[project]
+name = "oarepo-build-tools"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "typer>=0.24.1",
+    "packaging>=24.0",
+    "tomli",
+    "tomli-w",
+    "jinja2"
+]
+
+[project.scripts]
+"oarepo-app-build" = "oarepo_build_tools.main:main"
