@@ -48,14 +48,14 @@ LOG_PACKAGES = [
     {
         "include": ["oarepo-.*"],
         "exclude": [],
-        "version_tag": normalize_package_version,
+        "version_tag": lambda version: f"v{normalize_package_version(version)}",
         "github_organization": "oarepo",
         "github_repo": lambda name: name,
     },
     {
         "include": ["ccmm-invenio"],
         "exclude": [],
-        "version_tag": normalize_package_version,
+        "version_tag": lambda version: f"v{normalize_package_version(version)}",
         "github_organization": "nrp-cz",
         "github_repo": lambda name: name,
     },

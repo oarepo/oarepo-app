@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import typer
@@ -9,7 +10,7 @@ from oarepo_build_tools.constants import (
     OAREPO_INCLUDED_PACKAGES,
 )
 from oarepo_build_tools.git import switch_branch
-from oarepo_build_tools.logs import create_log_entry
+from oarepo_build_tools.logs import create_log_entry, render_changelog_md
 from oarepo_build_tools.python import (
     get_available_versions,
     get_oarepo_app_version,
@@ -73,16 +74,26 @@ def setup(
     print(f"🌿 Switching to branch [cyan]temporary-{latest_oarepo_version}[/cyan] …")
     switch_branch(root, f"temporary-{latest_oarepo_version}")
     print("🔄 Updating dependency versions …")
-    update_versions(
-        root, OAREPO_INCLUDED_PACKAGES, OAREPO_EXCLUDED_PACKAGES, latest_oarepo_version
-    )
+    update_versions(root)
     create_log_entry(root)
 
     print("🏷️  Computing [bold]oarepo-app[/bold] version …")
-    oarepo_app_version = get_oarepo_app_version(latest_oarepo_version)
+    oarepo_app_version = get_oarepo_app_version(
+        root / "CHANGELOG.json", root / "pyproject.toml"
+    )
     print(f"  [dim]↳[/dim] version: [bold green]{oarepo_app_version}[/bold green]")
     set_pyproject_version(root / "pyproject.toml", oarepo_app_version)
     print("  [dim]↳[/dim] ✅ updated [cyan]pyproject.toml[/cyan]")
+
+    changelog = json.loads((root / "CHANGELOG.json").read_text(encoding="utf-8"))
+    changelog[0]["version"] = oarepo_app_version
+    (root / "CHANGELOG.json").write_text(
+        json.dumps(changelog, indent=2), encoding="utf-8"
+    )
+
+    print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
+    render_changelog_md(changelog, root)
+    print("  [dim]↳[/dim] ✅ written to [cyan]CHANGELOG.md[/cyan]")
 
 
 app.command()(upload_old_packages)
