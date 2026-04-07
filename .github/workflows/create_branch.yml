@@ -77,14 +77,19 @@ jobs:
           # Reuse an existing open PR for this branch; ignore closed/merged ones.
           PR_URL=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url' 2>/dev/null)
           if [ -z "$PR_URL" ] || [ "$PR_URL" = "null" ]; then
-            # Build PR body: header + latest entry from CHANGELOG.md
+            # Build PR body: header + compact package diff from CHANGELOG.json
             printf 'Automated dependency update triggered by workflow dispatch.\n\n' > pr_body.md
             printf '**InvenioRDM version:** `%s`\n' "${{ steps.version.outputs.value }}" >> pr_body.md
-            printf '**Branch:** `%s`\n\n---\n\n' "$BRANCH" >> pr_body.md
-            awk '
-              /^---$/ { count++; if (count == 2) exit; if (count == 1) { found = 1; next } }
-              found    { print }
-            ' CHANGELOG.md >> pr_body.md
+            printf '**Branch:** `%s`\n\n' "$BRANCH" >> pr_body.md
+            jq -r '
+              .[0] |
+              (if .breaking then "**Breaking changes:** ⚠️ yes" else "**Breaking changes:** no" end),
+              "",
+              "### Package updates",
+              "",
+              (.packages | to_entries[] | select(.value.github_url) |
+                "- " + .value.github_url + (if .value.breaking then " ⚠️" else "" end))
+            ' CHANGELOG.json >> pr_body.md
             PR_URL=$(gh pr create \
               --title "Update to InvenioRDM ${{ steps.version.outputs.value }}" \
               --body-file pr_body.md \
