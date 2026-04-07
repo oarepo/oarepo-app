@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "0.0.1"
+version = "1.0.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -32,7 +32,6 @@ development = [
 ]
 production = [
     "oarepo[s3]==14.2.1b9.dev0+6.rdm.14.0.0b9.dev0",
-    "json5==0.14.0",
     "marshmallow-i18n-messages==0.1.1",
     "ccmm-invenio==1.1.0",
     "oarepo-communities==7.0.1",
