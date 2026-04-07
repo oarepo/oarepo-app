@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -91,6 +92,163 @@ def _detect_breaking_changes(entry: dict, previous_entry: dict | None) -> None:
             entry["breaking"] = True
 
 
+# ─── subprocess retrying ──────────────────────────────────────────────────────
+
+_RETRY_DELAYS: tuple[int, ...] = (5, 30, 60)
+
+
+def call_with_retries(
+    cmd: list[str],
+    *,
+    retry_delays: tuple[int, ...] = _RETRY_DELAYS,
+    **kwargs,
+) -> subprocess.CompletedProcess:
+    """Run *cmd* via :func:`subprocess.run`, retrying on timeout or non-zero exit.
+
+    Waits *retry_delays* seconds between successive attempts.  On each failed
+    attempt a warning is printed.  Only after the final attempt is an error
+    surfaced:
+
+    * :class:`subprocess.TimeoutExpired` – re-raised after the last timed-out attempt.
+    * A :class:`subprocess.CompletedProcess` with a non-zero ``returncode`` –
+      returned to the caller so it can raise or handle as appropriate.
+
+    :exc:`FileNotFoundError` (binary not found) is **not** retried and
+    propagates immediately.
+    """
+    last_result: subprocess.CompletedProcess | None = None
+    last_timeout: subprocess.TimeoutExpired | None = None
+
+    for attempt, pre_delay in enumerate([0, *retry_delays]):
+        if pre_delay:
+            print(f"  [dim]↳[/dim] ⏳ retrying in [yellow]{pre_delay}s[/yellow] …")
+            time.sleep(pre_delay)
+
+        try:
+            result = subprocess.run(cmd, **kwargs)
+        except subprocess.TimeoutExpired as exc:
+            last_timeout = exc
+            last_result = None
+            print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} timed out")
+            continue
+
+        last_timeout = None
+        last_result = result
+
+        if result.returncode == 0:
+            return result
+
+        print(
+            f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} failed (exit {result.returncode})"
+        )
+
+    if last_timeout is not None:
+        raise last_timeout
+    assert last_result is not None
+    return last_result
+
+
+# ─── tag reading ─────────────────────────────────────────────────────────────
+
+# In-process cache so repeated calls for the same repo cost only one round-trip.
+_tag_cache: dict[tuple[str, str], dict[Version, str]] = {}
+
+
+def _normalise_tag(tag: str) -> Version | None:
+    """Convert a raw git tag string to a :class:`Version`, or ``None`` if unparseable.
+
+    Normalisation steps applied before parsing:
+
+    1. Strip a leading ``v`` or ``V``.
+    2. Lowercase the remainder.
+    """
+    normalised = tag.lower().lstrip("v")
+    try:
+        return Version(normalised)
+    except InvalidVersion:
+        return None
+
+
+def read_tags(github_organization: str, github_repo: str) -> dict[Version, str]:
+    """Return a mapping of normalised version → original tag name for *github_organization*/*github_repo*.
+
+    Uses ``gh api --paginate`` so the full tag list is returned regardless of
+    how many pages the repository has.  Results are cached in-process so that
+    multiple packages from the same organisation share a single API call.
+
+    When multiple raw tags normalise to the same :class:`Version` the longest
+    original tag string wins (e.g. ``v1.2.3`` is preferred over ``1.2.3``).
+    Tags that cannot be parsed as a PEP 440 version are silently ignored.
+    """
+    cache_key = (github_organization, github_repo)
+    if cache_key in _tag_cache:
+        return _tag_cache[cache_key]
+
+    try:
+        result = subprocess.run(
+            [
+                "gh",
+                "api",
+                "--paginate",
+                f"repos/{github_organization}/{github_repo}/tags",
+                "--jq",
+                ".[].name",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except FileNotFoundError:
+        print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — "
+            f"cannot read tags for [cyan]{github_repo}[/cyan]"
+        )
+        _tag_cache[cache_key] = {}
+        return {}
+    except subprocess.TimeoutExpired:
+        print(
+            f"  [dim]↳[/dim] ⚠️  gh CLI timed out reading tags for [cyan]{github_repo}[/cyan]"
+        )
+        _tag_cache[cache_key] = {}
+        return {}
+
+    if result.returncode != 0:
+        print(
+            f"  [dim]↳[/dim] ⚠️  failed to read tags for [cyan]{github_repo}[/cyan]: "
+            f"{result.stderr.strip()}"
+        )
+        _tag_cache[cache_key] = {}
+        return {}
+
+    mapping: dict[Version, str] = {}
+    for raw_tag in result.stdout.splitlines():
+        raw_tag = raw_tag.strip()
+        if not raw_tag:
+            continue
+        version = _normalise_tag(raw_tag)
+        if version is None:
+            continue
+        # Keep the longest original tag string when two tags share a Version.
+        if version not in mapping or len(raw_tag) > len(mapping[version]):
+            mapping[version] = raw_tag
+
+    _tag_cache[cache_key] = mapping
+    return mapping
+
+
+def find_tag(desired_tag: str, all_tags: dict[Version, str]) -> str | None:
+    """Return the actual repository tag that matches *desired_tag*.
+
+    *desired_tag* is normalised with :func:`_normalise_tag` and looked up in
+    *all_tags*.  Returns *desired_tag* unchanged when no match is found, which
+    lets the caller's API call fail gracefully.
+    """
+    version = _normalise_tag(desired_tag)
+    if version is None:
+        return None
+    return all_tags.get(version, desired_tag)
+
+
 # ─── commit fetching ──────────────────────────────────────────────────────────
 
 
@@ -114,11 +272,28 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
     previous_tag = version_tag(previous_version)
     current_tag = version_tag(current_version)
 
+    all_tags = read_tags(github_organization, github_repo)
+
+    previous_tag = find_tag(previous_tag, all_tags)
+    current_tag = find_tag(current_tag, all_tags)
+
     if previous_tag == current_tag:
         return []
 
+    if previous_tag is None:
+        print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {previous_tag} not found in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
+        )
+        return []
+
+    if current_tag is None:
+        print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {current_tag} not found in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
+        )
+        return []
+
     try:
-        result = subprocess.run(
+        result = call_with_retries(
             [
                 "gh",
                 "api",
@@ -140,9 +315,12 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
     if result.returncode != 0:
         print(
             f"  [dim]↳[/dim] ⚠️  compare failed for [cyan]{name}[/cyan] "
-            f"([dim]{previous_tag}…{current_tag}[/dim]): {result.stderr.strip()}"
+            f"([dim]{previous_tag}…{current_tag}[/dim]): {result.stderr.strip()}\n"
+            f"gh api repos/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}",
         )
-        return []
+        raise subprocess.CalledProcessError(
+            result.returncode, result.args, result.stdout, result.stderr
+        )
 
     try:
         data = json.loads(result.stdout)
@@ -185,6 +363,10 @@ def _populate_all_changes(entry: dict) -> None:
         if group is None:
             continue
 
+        # do not log changes for oarepo-app neither for oarepo-invenio-typing-stubs
+        if name in ("oarepo-app", "oarepo-invenio-typing-stubs"):
+            continue
+
         previous_version: str | None = pkg.get("previous_version")
         if previous_version is not None:
             version_tag = group["version_tag"]
@@ -209,7 +391,7 @@ def _populate_all_changes(entry: dict) -> None:
 def _build_entry(oarepo_version: str, packages: dict[str, dict]) -> dict:
     """Assemble a single CHANGELOG entry dict."""
     return {
-        "version": oarepo_version,
+        "version": "unknown",
         "breaking": False,
         "packages": packages,
     }
@@ -236,7 +418,7 @@ def _write_changelog(path: Path, changelog: list) -> None:
 # ─── markdown rendering ───────────────────────────────────────────────────────
 
 
-def _render_changelog_md(changelog: list, directory: Path) -> None:
+def render_changelog_md(changelog: list, directory: Path) -> None:
     """Render *changelog* to CHANGELOG.md using the bundled Jinja2 template."""
     from jinja2 import Environment, FileSystemLoader
 
@@ -246,7 +428,7 @@ def _render_changelog_md(changelog: list, directory: Path) -> None:
         try:
             dt = datetime.fromisoformat(iso_str)
             return dt.strftime(f"%B {dt.day}, %Y at %H:%M UTC")
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return iso_str
 
     env = Environment(
@@ -270,6 +452,17 @@ def _render_changelog_md(changelog: list, directory: Path) -> None:
 
 
 # ─── public API ───────────────────────────────────────────────────────────────
+
+
+def get_two_latest_log_entries(changelog_path: Path) -> tuple[dict, dict | None]:
+    """
+    Returns the latest and the second latest entries from the changelog.
+    The first entry is the latest, the second is the second latest.
+    """
+    changelog = _read_changelog(changelog_path)
+    if len(changelog) >= 2:
+        return tuple(changelog[:2])
+    return changelog[0], None
 
 
 def create_log_entry(directory: Path) -> None:
@@ -311,7 +504,3 @@ def create_log_entry(directory: Path) -> None:
     print(
         f"  [dim]↳[/dim] ✅ written to [cyan]{changelog_path.relative_to(directory)}[/cyan]"
     )
-
-    print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
-    _render_changelog_md(changelog, directory)
-    print("  [dim]↳[/dim] ✅ written to [cyan]CHANGELOG.md[/cyan]")
