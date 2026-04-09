@@ -14,7 +14,7 @@ dependencies = [
 [project.optional-dependencies]
 development = [
     "oarepo[s3]>=14.0.0b1,<15.0.0",
-    "marshmallow-i18n-messages",
+    "marshmallow-i18n-messages>=0.1.0,<1.0.0",
     "ccmm-invenio>=1.1.0,<1.2.0",
     "oarepo-communities>=7.0.0,<8.0.0",
     "oarepo-dashboard>=3.0.0,<4.0.0",

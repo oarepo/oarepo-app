@@ -147,6 +147,45 @@ def pin_pyproject_deps(
     return original_data != new_data
 
 
+def unpin_development_major_versions(pyproject_path: Path) -> None:
+    """Unpin major versions of oarepo dependencies in *pyproject_path*."""
+    with pyproject_path.open("rb") as fh:
+        data = tomllib.load(fh)
+        project = data.get("project", {})
+    development_deps = project.get("optional-dependencies", {}).get("development", [])
+    for idx, dep in enumerate(development_deps):
+        if dep.startswith("oarepo-"):
+            # always suppose that the first specifier is the >= specifier
+            req = Requirement(dep)
+            first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
+            development_deps[idx] = _rebuild_requirement(
+                req, f">={first_specifier.version}"
+            )
+
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
+def pin_development_major_versions(
+    pyproject_path: Path, resolved: dict[str, str]
+) -> None:
+    """Pin major versions of oarepo dependencies in *pyproject_path*."""
+    with pyproject_path.open("rb") as fh:
+        data = tomllib.load(fh)
+        project = data.get("project", {})
+    development_deps = project.get("optional-dependencies", {}).get("development", [])
+    for idx, dep in enumerate(development_deps):
+        if dep.startswith("oarepo-"):
+            req = Requirement(dep)
+            if req.name not in resolved:
+                raise ValueError(f"Dependency {dep} not found in resolved dependencies")
+            next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
+            development_deps[idx] = _rebuild_requirement(
+                req, f">={resolved[req.name]},<{next_major_version}.0.0"
+            )
+
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
 # ─── uv lock helpers ─────────────────────────────────────────────────────────
 
 
@@ -334,9 +373,7 @@ def set_pyproject_version(pyproject_path: Path, version: str) -> None:
 # ─── update_versions ─────────────────────────────────────────────────────────
 
 
-def update_versions(
-    directory: Path,
-) -> None:
+def update_versions(directory: Path, upgrade_major_versions: bool) -> None:
     """Update pinned dependency versions in *directory*/pyproject.toml.
 
     Steps:
@@ -357,14 +394,31 @@ def update_versions(
     )
     remove_production_section(pyproject_path)
 
+    if upgrade_major_versions:
+        unpin_development_major_versions(pyproject_path)
+
     # ── Step 2: uv lock ──────────────────────────────────────────────────────
     print("[bold blue]Step 2/3[/bold blue] 🔒 Running [cyan]uv lock[/cyan] …")
     run_uv_lock(root)
 
     # ── Step 3: pin to resolved versions ────────────────────────────────────
     print("[bold blue]Step 3/3[/bold blue] 📌 Pinning to resolved versions …")
+
     resolved = parse_uv_lock(lock_path)
     if pin_pyproject_deps(pyproject_path, resolved):
         print("  [dim]↳[/dim] 📌 [green]pinned[/green] pyproject.toml")
 
+    pin_development_major_versions(pyproject_path, resolved)
+
     print("🎉 [bold green]Done.[/bold green]")
+
+
+def get_latest_oarepo_version(major_version: int) -> str:
+    versions: list[Version] = get_available_versions("oarepo")
+
+    candidates = [v for v in versions if v.major == major_version]
+
+    if not candidates:
+        raise ValueError(f"No oarepo releases found for major version {major_version}.")
+
+    return str(max(candidates))
