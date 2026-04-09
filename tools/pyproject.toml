@@ -10,7 +10,6 @@ dependencies = [
     "tomli",
     "tomli-w",
     "jinja2",
-    "networkx>=3.6.1",
 ]
 
 [project.scripts]

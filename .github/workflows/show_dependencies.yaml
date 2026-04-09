@@ -32,9 +32,6 @@ jobs:
       - name: Init tools
         uses: ./.github/actions/init-tools
 
-      - name: Install graphviz
-        run: sudo apt-get update && sudo apt-get install -y graphviz
-
       - name: Detect InvenioRDM version from branch
         id: version
         run: |
@@ -65,12 +62,7 @@ jobs:
         if: always()
         with:
           name: dependency-graphs
-          path: |
-            dependencies.dot
-            dependencies.svg
-            dependencies_adjusted.dot
-            dependencies_adjusted.svg
-            dependency_report.md
+          path: output/index.html
           if-no-files-found: warn
 
       - name: Prepare GitHub Pages content
@@ -79,176 +71,14 @@ jobs:
           mkdir -p pages
           touch pages/.nojekyll
 
-          # Copy SVG files
-          if [ -f "dependencies.svg" ]; then
-            cp dependencies.svg pages/
+          # Copy the generated interactive HTML report
+          if [ -f "output/index.html" ]; then
+            cp output/index.html pages/
+            echo "✅ Copied interactive HTML report"
+          else
+            echo "⚠️ No interactive HTML report found, creating basic page"
+            echo "<html><body><h1>No report generated</h1></body></html>" > pages/index.html
           fi
-          if [ -f "dependencies_adjusted.svg" ]; then
-            cp dependencies_adjusted.svg pages/
-          fi
-
-          # Generate HTML index
-          cat > pages/index.html << 'HTMLEOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>OARepo Dependency Report</title>
-            <style>
-              body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                line-height: 1.6;
-                max-width: 1400px;
-                margin: 0 auto;
-                padding: 20px;
-                color: #333;
-                background: #f5f5f5;
-              }
-              h1, h2 {
-                color: #2c3e50;
-                border-bottom: 2px solid #3498db;
-                padding-bottom: 10px;
-              }
-              .graph-container {
-                background: white;
-                padding: 20px;
-                margin: 20px 0;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                overflow-x: auto;
-              }
-              .graph-container img {
-                max-width: 100%;
-                height: auto;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-                background: white;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-              }
-              th, td {
-                padding: 12px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-              }
-              th {
-                background-color: #3498db;
-                color: white;
-                font-weight: bold;
-              }
-              tr:hover {
-                background-color: #f5f5f5;
-              }
-              .content {
-                background: white;
-                padding: 20px;
-                margin: 20px 0;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-              }
-            </style>
-          </head>
-          <body>
-            <h1>🔗 OARepo Dependency Report</h1>
-          HTMLEOF
-
-          # Add adjusted packages graph if it exists
-          if [ -f "dependencies_adjusted.svg" ]; then
-            cat >> pages/index.html << 'HTMLEOF'
-            <div class="content">
-              <h2>Adjusted Packages Dependency Graph</h2>
-              <div class="graph-container">
-                <img src="dependencies_adjusted.svg" alt="Adjusted Packages Dependency Graph">
-              </div>
-            </div>
-          HTMLEOF
-          fi
-
-          # Add full dependency graph
-          if [ -f "dependencies.svg" ]; then
-            cat >> pages/index.html << 'HTMLEOF'
-            <div class="content">
-              <h2>All Packages Dependency Graph</h2>
-              <div class="graph-container">
-                <img src="dependencies.svg" alt="All Packages Dependency Graph">
-              </div>
-            </div>
-          HTMLEOF
-          fi
-
-          # Add tables from markdown report
-          if [ -f "dependency_report.md" ]; then
-            echo '<div class="content">' >> pages/index.html
-
-            # Convert markdown tables to HTML
-            python3 << 'PYEOF' >> pages/index.html
-          import re
-
-          with open('dependency_report.md', 'r') as f:
-              content = f.read()
-
-          # Process each section
-          lines = content.split('\n')
-          in_table = False
-
-          for line in lines:
-              if line.startswith('# '):
-                  # Skip main title
-                  continue
-              elif line.startswith('## '):
-                  if in_table:
-                      print('</table>')
-                      in_table = False
-                  title = line.replace('## ', '')
-                  print(f'<h2>{title}</h2>')
-              elif line.startswith('!['):
-                  # Skip image references
-                  continue
-              elif line.startswith('|') and '---' in line:
-                  # Table separator
-                  continue
-              elif line.startswith('|'):
-                  # Table row
-                  if not in_table:
-                      print('<table>')
-                      in_table = True
-                  cells = [cell.strip() for cell in line.split('|')[1:-1]]
-
-                  # Check if this is a header row (detect by context)
-                  if cells[0] in ['Package', '']:
-                      print('<thead><tr>')
-                      for cell in cells:
-                          print(f'<th>{cell}</th>')
-                      print('</tr></thead><tbody>')
-                  else:
-                      print('<tr>')
-                      for cell in cells:
-                          # Convert <br> to actual line breaks
-                          cell_html = cell.replace('<br>', '<br/>')
-                          print(f'<td>{cell_html}</td>')
-                      print('</tr>')
-              elif line.strip() and not line.startswith('Total'):
-                  if in_table:
-                      print('</tbody></table>')
-                      in_table = False
-                  if line.strip():
-                      print(f'<p>{line}</p>')
-
-          if in_table:
-              print('</tbody></table>')
-          PYEOF
-
-            echo '</div>' >> pages/index.html
-          fi
-
-          # Close HTML
-          cat >> pages/index.html << 'HTMLEOF'
-          </body>
-          </html>
-          HTMLEOF
 
       - name: Upload GitHub Pages artifact
         if: always()
@@ -277,11 +107,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "### Generated files" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- \`dependencies.svg\` - Full dependency graph" >> "$GITHUB_STEP_SUMMARY"
-          if [ -f "dependencies_adjusted.svg" ]; then
-            echo "- \`dependencies_adjusted.svg\` - Adjusted packages graph" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          echo "- \`dependency_report.md\` - Detailed report" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`output/index.html\` - Interactive HTML report" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "📥 Download the artifacts from the workflow run to view the graphs." >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"

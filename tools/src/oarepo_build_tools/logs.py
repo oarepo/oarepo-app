@@ -422,7 +422,7 @@ def render_changelog_md(changelog: list, directory: Path) -> None:
     """Render *changelog* to CHANGELOG.md using the bundled Jinja2 template."""
     from jinja2 import Environment, FileSystemLoader
 
-    template_dir = Path(__file__).parent
+    template_dir = Path(__file__).parent / "templates"
 
     def _format_datetime(iso_str: str) -> str:
         try:

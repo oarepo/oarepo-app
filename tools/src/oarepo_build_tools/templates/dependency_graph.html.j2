@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OARepo Dependency Report</title>
+    <link rel="stylesheet" href="dist/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 OARepo Dependency Report</h1>
+
+        <div class="summary">
+            <div class="summary-card">
+                <h3>Total Packages</h3>
+                <div class="value">{{ nodes_all|length }}</div>
+            </div>
+            <div class="summary-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h3>Bumped Packages</h3>
+                <div class="value">{{ bumped_packages|length }}</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Dependency Graph</h2>
+            <div class="controls">
+                <label>
+                    <input type="radio" name="graph-view" value="all">
+                    Show All Packages
+                </label>
+                <label>
+                    <input type="radio" name="graph-view" value="bumped" checked>
+                    Show Bumped Packages Only
+                </label>
+                <span style="margin: 0 8px; color: #bbb;">|</span>
+                <label>
+                    <input type="radio" name="graph-direction" value="TB">
+                    Top → Bottom
+                </label>
+                <label>
+                    <input type="radio" name="graph-direction" value="LR" checked>
+                    Left → Right
+                </label>
+            </div>
+            <div id="graph-container">
+                <svg id="graph-svg"></svg>
+                <span class="zoom-hint">Scroll to zoom · Drag to pan · Double-click to reset</span>
+            </div>
+        </div>
+
+        {% if bumped_packages %}
+        <div class="section">
+            <h2>📦 Bumped Packages</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Package</th>
+                        <th>Original Version</th>
+                        <th>Bumped Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pkg in bumped_packages %}
+                    <tr>
+                        <td><strong>{{ pkg.name }}</strong></td>
+                        <td>{{ pkg.version }}</td>
+                        <td><span class="badge badge-bumped">{{ pkg.bumped }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <h2>🔗 Package Dependencies</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source Package</th>
+                        <th>Depends On</th>
+                        <th>Version Spec</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dep in dependencies %}
+                    <tr>
+                        <td><strong>{{ dep.source }}</strong></td>
+                        <td>{{ dep.target }}</td>
+                        <td><code>{{ dep.spec }}</code></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="dist/bundle.js"></script>
+    <script>
+        // Initialize graph data from template
+        const graphData = {
+            nodesAll: {{ nodes_all|tojson }},
+            edgesAll: {{ edges_all|tojson }},
+            nodesBumped: {{ nodes_bumped|tojson }},
+            edgesBumped: {{ edges_bumped|tojson }}
+        };
+    </script>
+    <script>
+        // Initialize the graph with data
+        initGraphData(
+            graphData.nodesAll,
+            graphData.edgesAll,
+            graphData.nodesBumped,
+            graphData.edgesBumped
+        );
+    </script>
+</body>
+</html>

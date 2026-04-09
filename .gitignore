@@ -210,3 +210,6 @@ __marimo__/
 .python-version
 uv.lock
 .bin
+
+output/
+pnpm-lock.yaml

@@ -1,25 +1,34 @@
 """Build dependency tree of packages.
 
 Note: this command modifies the local repository!
+
+Prerequisites for HTML report generation:
+    The interactive HTML report automatically builds JavaScript libraries (d3, d3-dag)
+    during execution. Requires:
+        - Node.js >= 18.0.0
+        - pnpm >= 8.0.0
+
+    If pnpm is not installed, run:
+        npm install -g pnpm
 """
 
 import hashlib
 import json
 import re
+import shutil
 import subprocess
 from graphlib import TopologicalSorter
 from pathlib import Path
 
 import typer
+from jinja2 import Environment, FileSystemLoader
+from oarepo_build_tools.python import (
+    get_latest_oarepo_version,
+)
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 from rich import print
-
-from oarepo_build_tools.git import switch_branch
-from oarepo_build_tools.python import (
-    get_latest_oarepo_version,
-)
 
 # Constants for dependency graph generation
 DEPGRAPH_INITIAL_NODES_REGEXP = r"^oarepo-.*"
@@ -211,181 +220,6 @@ def get_all_package_dependencies(
         return {}
 
 
-def build_dot_dependency_graph(
-    packages: dict[str, dict],
-    initial_nodes_pattern: str = DEPGRAPH_INITIAL_NODES_REGEXP,
-    exclude_nodes_pattern: str = DEPGRAPH_EXCLUDE_NODES_REGEXP,
-    filter_patterns: list[tuple[str, str]] = DEPGRAPH_FILTER_REGEXP,
-    style_patterns: dict[str, str] = DEPGRAPH_STYLE,
-    explicit_initial_nodes: set[str] | None = None,
-) -> str:
-    """Build a DOT format dependency digraph.
-
-    Args:
-        packages: Dict mapping package names to their dependencies structure
-        initial_nodes_pattern: Regex pattern for initial nodes to include (e.g., "^oarepo")
-        exclude_nodes_pattern: Regex pattern for nodes to exclude completely (e.g., "^oarepo-invenio-typing-stubs")
-        filter_patterns: List of tuples (package_pattern, dependency_pattern) to filter edges.
-                        An edge is included if package matches first pattern and dependency matches second.
-        style_patterns: Dict mapping regex patterns to DOT style attributes for nodes
-        explicit_initial_nodes: If provided, use these specific nodes as starting points instead of pattern matching
-
-    Returns:
-        DOT format string representing the dependency graph
-    """
-    initial_pattern = re.compile(initial_nodes_pattern, re.IGNORECASE)
-    exclude_pattern = re.compile(exclude_nodes_pattern, re.IGNORECASE)
-    # Compile filter patterns as list of tuples
-    compiled_filters = [
-        (re.compile(pkg_pattern, re.IGNORECASE), re.compile(dep_pattern, re.IGNORECASE))
-        for pkg_pattern, dep_pattern in filter_patterns
-    ]
-    # Compile style patterns
-    compiled_styles = [
-        (re.compile(pattern, re.IGNORECASE), style)
-        for pattern, style in style_patterns.items()
-    ]
-
-    # Find all initial nodes (e.g., oarepo-* packages), excluding nodes that match exclude pattern
-    if explicit_initial_nodes is not None:
-        # Use explicitly provided initial nodes
-        initial_nodes = explicit_initial_nodes & set(
-            packages.keys()
-        )  # Only include nodes that exist in packages
-    else:
-        # Use pattern matching to find initial nodes
-        initial_nodes = set()
-        for pkg_name in packages:
-            if initial_pattern.match(pkg_name) and not exclude_pattern.match(pkg_name):
-                initial_nodes.add(pkg_name)
-
-    # Collect all nodes and edges
-    nodes_to_process = set(initial_nodes)
-    processed_nodes = set()
-    all_nodes = set(initial_nodes)
-    edges = set()  # Use set to avoid duplicates
-
-    # BFS to find all dependencies
-    while nodes_to_process:
-        current_node = nodes_to_process.pop()
-        if current_node in processed_nodes:
-            continue
-
-        processed_nodes.add(current_node)
-
-        # Get dependencies of current node
-        if current_node in packages:
-            dependencies = packages[current_node].get("dependencies", [])
-            for dep_str in dependencies:
-                # Parse dependency string to get package name (without version specs)
-                # Format is "package>=1.0,<2.0" or just "package"
-                try:
-                    req = Requirement(dep_str)
-                    dep_name = req.name.lower()
-                except Exception:
-                    continue
-
-                # Skip excluded nodes
-                if exclude_pattern.match(dep_name):
-                    continue
-
-                # Apply filter: check if any tuple matches (package_pattern, dependency_pattern)
-                should_include = False
-                for pkg_pattern, dep_pattern in compiled_filters:
-                    if pkg_pattern.match(current_node) and dep_pattern.match(dep_name):
-                        should_include = True
-                        break
-
-                if should_include:
-                    # Only include dependency if it exists in packages dict
-                    if dep_name in packages:
-                        all_nodes.add(dep_name)
-                        edges.add(
-                            (current_node, dep_name)
-                        )  # Add to set instead of list
-
-                        # Add to process queue if not yet processed
-                        if dep_name not in processed_nodes:
-                            nodes_to_process.add(dep_name)
-
-    # Detect cycles
-    nodes_in_cycles, cycles = find_cycles(all_nodes, list(edges))
-
-    if cycles:
-        print(f"⚠️  Found {len(cycles)} cycle(s) in dependency graph:")
-        for i, cycle in enumerate(cycles[:5], 1):  # Show first 5 cycles
-            cycle_str = " → ".join(cycle) + f" → {cycle[0]}"
-            print(f"   Cycle {i} (length {len(cycle)}): {cycle_str}")
-        if len(cycles) > 5:
-            print(f"   ... and {len(cycles) - 5} more cycles")
-
-    # Generate DOT format
-    dot_lines = ["digraph dependencies {"]
-    dot_lines.append("  rankdir=TB;")
-    dot_lines.append("  node [shape=box];")
-    dot_lines.append("  ranksep=1.0;")  # Add spacing between ranks
-    dot_lines.append("")
-
-    # Store node colors for edge coloring
-    node_colors = {}
-
-    # Add nodes with labels and styles
-    for node in sorted(all_nodes):
-        # Escape special characters in node names
-        safe_node = node.replace("-", "_").replace(".", "_")
-
-        # Get perturbed color for this node
-        node_color = get_node_color(node, compiled_styles)
-        node_colors[node] = node_color
-
-        # Check if this package has been version-adjusted
-        is_adjusted = node in packages and "adjusted" in packages[node]
-
-        # Create node label with version info if adjusted
-        node_label = node
-        if is_adjusted:
-            original_version = packages[node]["version"]
-            adjusted_version = packages[node]["adjusted"]
-            node_label = f"{node}\\n{original_version} → {adjusted_version}"
-
-        # Mark nodes in cycles with a warning icon and red color
-        # (this takes precedence over adjustment for background color)
-        if node in nodes_in_cycles:
-            if is_adjusted:
-                # Show both cycle warning and version adjustment
-                original_version = packages[node]["version"]
-                adjusted_version = packages[node]["adjusted"]
-                node_label = f"{node}\\n{original_version} → {adjusted_version}\\n⚠️ dep"
-            else:
-                node_label = f"{node}\\n⚠️ dep"
-            node_style = ', fillcolor="#FF6B6B", style=filled'
-        else:
-            node_style = f', fillcolor="{node_color}", style=filled'
-
-        # Add orange, thicker border for adjusted packages
-        if is_adjusted:
-            node_style += ', color="#FF8C00", penwidth=3.0'
-
-        dot_lines.append(f'  {safe_node} [label="{node_label}"{node_style}];')
-
-    dot_lines.append("")
-
-    # Add edges with colors based on dependency (target) node
-    # constraint=true ensures edges always flow downward in the hierarchy
-    for src, dst in sorted(edges):
-        safe_src = src.replace("-", "_").replace(".", "_")
-        safe_dst = dst.replace("-", "_").replace(".", "_")
-        # Color arrow based on dependency (dst) node color
-        edge_color = node_colors.get(dst, "#000000")  # default to black
-        dot_lines.append(
-            f'  {safe_src} -> {safe_dst} [color="{edge_color}", dir=both, arrowtail=dot, constraint=true];'
-        )
-
-    dot_lines.append("}")
-
-    return "\n".join(dot_lines)
-
-
 def parse_version(version_str: str) -> tuple[int, int, int]:
     """Parse a version string into major, minor, patch components.
 
@@ -474,17 +308,15 @@ def apply_version_adjustments(
         upgraded_packages: Set of package names to upgrade
 
     Returns:
-        Updated packages dict with "adjusted" field where applicable
+        Updated packages dict with "bumped" field where applicable
     """
     # First pass: adjust all upgraded packages
     for pkg_name in upgraded_packages:
         if pkg_name in packages:
             original_version = packages[pkg_name]["version"]
-            adjusted_version = bump_major_version(original_version)
-            packages[pkg_name]["adjusted"] = adjusted_version
-            print(
-                f"  ⬆️  {pkg_name}: {original_version} -> {adjusted_version} (upgraded)"
-            )
+            bumped_version = bump_major_version(original_version)
+            packages[pkg_name]["bumped"] = bumped_version
+            print(f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (upgraded)")
 
     # Iteratively adjust packages whose dependencies don't match
     changed = True
@@ -495,8 +327,8 @@ def apply_version_adjustments(
         print(f"\n🔄 Adjustment iteration {iteration}...")
 
         for pkg_name, pkg_info in packages.items():
-            # Skip if already adjusted
-            if "adjusted" in pkg_info:
+            # Skip if already bumped
+            if "bumped" in pkg_info:
                 continue
 
             # Check each dependency
@@ -511,10 +343,10 @@ def apply_version_adjustments(
                 except Exception:
                     continue
 
-                # Only check dependencies on packages that were adjusted
-                if dep_name in packages and "adjusted" in packages[dep_name]:
-                    # The dependency was adjusted, check if new version satisfies spec
-                    dep_version = packages[dep_name]["adjusted"]
+                # Only check dependencies on packages that were bumped
+                if dep_name in packages and "bumped" in packages[dep_name]:
+                    # The dependency was bumped, check if new version satisfies spec
+                    dep_version = packages[dep_name]["bumped"]
 
                     # Check if dependency version satisfies the spec
                     if version_spec and not version_satisfies_spec(
@@ -528,148 +360,316 @@ def apply_version_adjustments(
 
             if needs_adjustment:
                 original_version = pkg_info["version"]
-                adjusted_version = bump_major_version(original_version)
-                packages[pkg_name]["adjusted"] = adjusted_version
+                bumped_version = bump_major_version(original_version)
+                packages[pkg_name]["bumped"] = bumped_version
                 print(
-                    f"  ⬆️  {pkg_name}: {original_version} -> {adjusted_version} (dependency conflict)"
+                    f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (dependency conflict)"
                 )
                 changed = True
 
     return packages
 
 
-def generate_svg_from_dot(dot_content: str, output_path: Path) -> bool:
-    """Generate SVG from DOT content.
+def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> None:
+    """Generate an interactive HTML report with dependency graph visualization.
+
+    Creates a self-contained HTML file (index.html) with an interactive dependency
+    graph using D3.js and a custom layered layout algorithm. The report includes:
+
+    1. Interactive dependency graph with toggle between all/bumped packages
+       - Uses d3-dag Sugiyama layout algorithm
+       - Color-coded nodes (red=bumped, blue=normal)
+       - Hover tooltips with package details
+       - Automatic layer-based positioning
+
+    2. Summary cards showing total and bumped package counts
+
+    3. Table of bumped packages (if any) with original and bumped versions
+
+    4. Complete dependency table showing all package relationships
+
+    The build process:
+    1. Copies html template directory to output directory
+    2. Generates index.html with data in output directory
+    3. Runs build.sh to bundle JavaScript libraries
+    4. Cleans up build artifacts (package.json, build scripts, node_modules)
 
     Args:
-        dot_content: DOT format graph string
-        output_path: Path where SVG should be saved
+        output_directory: Directory where output should be created.
+                         Will be created if it doesn't exist.
+        packages: Dict mapping package names to their info with structure:
+                 {
+                     "package-name": {
+                         "version": "1.2.3",
+                         "dependencies": ["dep>=1.0.0"],
+                         "bumped": "2.0.0"  # optional
+                     }
+                 }
 
-    Returns:
-        True if successful, False otherwise
+    Raises:
+        subprocess.CalledProcessError: If build.sh fails to execute
+        FileNotFoundError: If html template directory doesn't exist
+
+    Example:
+        >>> packages = {
+        ...     "oarepo-model": {
+        ...         "version": "1.5.0",
+        ...         "dependencies": ["oarepo-runtime>=1.0.0"],
+        ...         "bumped": "2.0.0"
+        ...     }
+        ... }
+        >>> render_graph("output", packages)
+        ✅ Interactive HTML report saved to: output/index.html
     """
-    # Write DOT content to temporary file
-    dot_path = output_path.with_suffix(".dot")
-    dot_path.write_text(dot_content)
+    output_dir = Path(output_directory)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Apply same filtering logic as DOT graph
+    initial_pattern = re.compile(DEPGRAPH_INITIAL_NODES_REGEXP, re.IGNORECASE)
+    exclude_pattern = re.compile(DEPGRAPH_EXCLUDE_NODES_REGEXP, re.IGNORECASE)
+    compiled_filters = [
+        (re.compile(pkg_pattern, re.IGNORECASE), re.compile(dep_pattern, re.IGNORECASE))
+        for pkg_pattern, dep_pattern in DEPGRAPH_FILTER_REGEXP
+    ]
+    compiled_styles = [
+        (re.compile(pattern, re.IGNORECASE), style)
+        for pattern, style in DEPGRAPH_STYLE.items()
+    ]
+
+    # Find initial nodes (oarepo-* packages), excluding specified patterns
+    initial_nodes = set()
+    for pkg_name in packages:
+        if initial_pattern.match(pkg_name) and not exclude_pattern.match(pkg_name):
+            initial_nodes.add(pkg_name)
+
+    # BFS to find all dependencies (same logic as DOT graph)
+    nodes_to_process = set(initial_nodes)
+    processed_nodes = set()
+    all_nodes = set(initial_nodes)
+    edges = set()
+
+    while nodes_to_process:
+        current_node = nodes_to_process.pop()
+        if current_node in processed_nodes:
+            continue
+
+        processed_nodes.add(current_node)
+
+        if current_node in packages:
+            dependencies = packages[current_node].get("dependencies", [])
+            for dep_str in dependencies:
+                try:
+                    req = Requirement(dep_str)
+                    dep_name = req.name.lower()
+                except Exception:
+                    continue
+
+                if exclude_pattern.match(dep_name):
+                    continue
+
+                # Apply filter patterns
+                should_include = False
+                for pkg_pattern, dep_pattern in compiled_filters:
+                    if pkg_pattern.match(current_node) and dep_pattern.match(dep_name):
+                        should_include = True
+                        break
+
+                if should_include and dep_name in packages:
+                    all_nodes.add(dep_name)
+                    edges.add((current_node, dep_name))
+                    if dep_name not in processed_nodes:
+                        nodes_to_process.add(dep_name)
+
+    # Detect cycles
+    nodes_in_cycles, cycles = find_cycles(all_nodes, list(edges))
+
+    # Prepare data for bumped packages table
+    bumped_packages = [
+        {
+            "name": pkg_name,
+            "version": pkg_info.get("version", "N/A"),
+            "bumped": pkg_info.get("bumped", "N/A"),
+        }
+        for pkg_name, pkg_info in sorted(packages.items())
+        if "bumped" in pkg_info and pkg_name in all_nodes
+    ]
+
+    # Prepare dependency data for table
+    all_dependencies = []
+    for src, dst in sorted(edges):
+        version_spec = "-"
+        if src in packages:
+            for dep_str in packages[src].get("dependencies", []):
+                try:
+                    req = Requirement(dep_str)
+                    if req.name.lower() == dst:
+                        version_spec = str(req.specifier) if req.specifier else "-"
+                        break
+                except Exception:
+                    pass
+        all_dependencies.append(
+            {
+                "source": src,
+                "target": dst,
+                "spec": version_spec,
+            }
+        )
+
+    # Prepare node data with colors and styling
+    nodes_data = []
+    for pkg_name in sorted(all_nodes):
+        pkg_info = packages.get(pkg_name, {})
+        is_bumped = "bumped" in pkg_info
+        in_cycle = pkg_name in nodes_in_cycles
+
+        # Get perturbed color
+        node_color = get_node_color(pkg_name, compiled_styles)
+
+        # Build label
+        label = pkg_name
+        if is_bumped:
+            original_version = pkg_info.get("version", "N/A")
+            bumped_version = pkg_info.get("bumped", "N/A")
+            label = f"{pkg_name}\n{original_version} → {bumped_version}"
+        if in_cycle:
+            label += "\n⚠️ dep"
+
+        nodes_data.append(
+            {
+                "id": pkg_name,
+                "label": label,
+                "version": pkg_info.get("version", "N/A"),
+                "bumped": pkg_info.get("bumped", ""),
+                "is_bumped": is_bumped,
+                "in_cycle": in_cycle,
+                "color": node_color,
+                "border_color": "#FF8C00" if is_bumped else "#333",
+                "border_width": 3 if is_bumped else 1.5,
+            }
+        )
+
+    # Prepare edge data with colors based on target node
+    node_colors = {node["id"]: node["color"] for node in nodes_data}
+    edges_data = []
+    for src, dst in edges:
+        edges_data.append(
+            {
+                "source": src,
+                "target": dst,
+                "color": node_colors.get(dst, "#999"),
+            }
+        )
+
+    # Prepare bumped-only filtered data
+    bumped_node_ids = set(n["id"] for n in nodes_data if n["is_bumped"])
+    nodes_data_bumped = [n for n in nodes_data if n["is_bumped"]]
+    edges_data_bumped = [
+        e
+        for e in edges_data
+        if e["source"] in bumped_node_ids and e["target"] in bumped_node_ids
+    ]
+
+    # Step 1: Copy html template directory to output directory
+    template_html_dir = Path(__file__).parent / "templates" / "html"
+
+    if not template_html_dir.exists():
+        raise FileNotFoundError(
+            f"HTML template directory not found: {template_html_dir}"
+        )
+
+    print("📁 Copying HTML template to output directory...")
+
+    # Copy all files from html directory to output directory
+    for item in template_html_dir.iterdir():
+        if item.name.startswith("."):
+            continue  # Skip hidden files like .gitignore
+
+        dest_path = output_dir / item.name
+
+        if item.is_file():
+            shutil.copy2(item, dest_path)
+        elif item.is_dir() and item.name != "node_modules" and item.name != "dist":
+            # Don't copy node_modules or dist if they exist
+            shutil.copytree(item, dest_path, dirs_exist_ok=True)
+
+    print("   ✓ HTML template copied")
+
+    # Step 2: Generate index.html in output directory
+    print("📝 Generating index.html...")
+
+    template_dir = Path(__file__).parent / "templates"
+    env = Environment(loader=FileSystemLoader(template_dir))
+    template = env.get_template("dependency_graph.html.j2")
+    html_content = template.render(
+        nodes_all=nodes_data,
+        edges_all=edges_data,
+        nodes_bumped=nodes_data_bumped,
+        edges_bumped=edges_data_bumped,
+        bumped_packages=bumped_packages,
+        dependencies=all_dependencies,
+    )
+
+    index_path = output_dir / "index.html"
+    index_path.write_text(html_content)
+    print("   ✓ index.html created")
+
+    # Step 3: Run build.sh in output directory to bundle JavaScript
+    build_script = output_dir / "build.sh"
+
+    if not build_script.exists():
+        print(f"⚠️  Warning: build.sh not found at {build_script}")
+        print("   Skipping JavaScript build")
+        return
+
+    print("🔨 Building JavaScript libraries...")
 
     try:
-        subprocess.run(
-            ["dot", "-Tsvg", str(dot_path), "-o", str(output_path)],
+        result = subprocess.run(
+            ["bash", "build.sh"],
+            cwd=output_dir,
             check=True,
             capture_output=True,
+            text=True,
         )
-        print(f"✅ SVG graph saved to: {output_path}")
-        return True
-    except FileNotFoundError:
-        print("⚠️  'dot' command not found. Install graphviz to generate SVG output.")
-        return False
+        if result.stdout:
+            # Print build output with indentation
+            for line in result.stdout.strip().split("\n"):
+                if line.strip():
+                    print(f"   {line}")
     except subprocess.CalledProcessError as e:
-        print(f"⚠️  Failed to generate SVG: {e.stderr.decode()}")
-        return False
+        print("❌ Build failed!")
+        if e.stdout:
+            print(f"   STDOUT: {e.stdout}")
+        if e.stderr:
+            print(f"   STDERR: {e.stderr}")
+        raise
 
+    # Step 4: Clean up build artifacts
+    print("🧹 Cleaning up build artifacts...")
 
-def filter_adjusted_packages(packages: dict[str, dict]) -> dict[str, dict]:
-    """Filter packages to only those with adjusted versions.
+    artifacts_to_remove = [
+        "package.json",
+        "build.js",
+        "build.sh",
+        "node_modules",
+        "pnpm-lock.yaml",
+        ".pnpm-store",
+        "styles.css",  # Original, now in dist/
+        "graph.js",  # Original, now in dist/
+    ]
 
-    Args:
-        packages: Dict mapping package names to their info
+    for artifact in artifacts_to_remove:
+        artifact_path = output_dir / artifact
+        if artifact_path.exists():
+            if artifact_path.is_file():
+                artifact_path.unlink()
+            elif artifact_path.is_dir():
+                shutil.rmtree(artifact_path)
 
-    Returns:
-        Filtered dict containing only adjusted packages
-    """
-    return {
-        pkg_name: pkg_info
-        for pkg_name, pkg_info in packages.items()
-        if "adjusted" in pkg_info
-    }
-
-
-def generate_dependency_table(packages: dict[str, dict]) -> str:
-    """Generate a markdown table of package dependencies.
-
-    Args:
-        packages: Dict mapping package names to their info
-
-    Returns:
-        Markdown table as a string
-    """
-    lines = ["| Package | Version | Adjusted Version | Dependencies |"]
-    lines.append("|---------|---------|------------------|--------------|")
-
-    for pkg_name in sorted(packages.keys()):
-        pkg_info = packages[pkg_name]
-        version = pkg_info.get("version", "N/A")
-        adjusted = pkg_info.get("adjusted", "-")
-        dependencies = pkg_info.get("dependencies", [])
-
-        # Format dependencies list
-        if dependencies:
-            deps_str = "<br>".join(dependencies)
-        else:
-            deps_str = "-"
-
-        lines.append(f"| {pkg_name} | {version} | {adjusted} | {deps_str} |")
-
-    return "\n".join(lines)
-
-
-def generate_markdown_report(
-    report_path: Path,
-    svg_adjusted_path: Path | None,
-    svg_all_path: Path,
-    packages: dict[str, dict],
-) -> None:
-    """Generate a markdown report with dependency graphs and tables.
-
-    Args:
-        report_path: Path where the markdown report should be saved
-        svg_adjusted_path: Path to the adjusted packages SVG (or None if not generated)
-        svg_all_path: Path to the all packages SVG
-        packages: Dict mapping package names to their info
-    """
-    lines = ["# Dependency Report", ""]
-
-    # Add SVG images
-    if svg_adjusted_path and svg_adjusted_path.exists():
-        lines.append("## Adjusted Packages Dependency Graph")
-        lines.append("")
-        lines.append(f"![Adjusted Packages]({svg_adjusted_path.name})")
-        lines.append("")
-
-    lines.append("## All Packages Dependency Graph")
-    lines.append("")
-    lines.append(f"![All Packages]({svg_all_path.name})")
-    lines.append("")
-
-    # Add dependency table
-    lines.append("## Dependency Table")
-    lines.append("")
-    lines.append(generate_dependency_table(packages))
-    lines.append("")
-
-    # Add adjusted packages section if any
-    adjusted_packages = {
-        pkg_name: pkg_info
-        for pkg_name, pkg_info in packages.items()
-        if "adjusted" in pkg_info
-    }
-
-    if adjusted_packages:
-        lines.append("## Adjusted Packages Summary")
-        lines.append("")
-        lines.append(f"Total adjusted packages: {len(adjusted_packages)}")
-        lines.append("")
-        lines.append("| Package | Original Version | Adjusted Version |")
-        lines.append("|---------|------------------|------------------|")
-        for pkg_name in sorted(adjusted_packages.keys()):
-            pkg_info = adjusted_packages[pkg_name]
-            version = pkg_info.get("version", "N/A")
-            adjusted = pkg_info.get("adjusted", "N/A")
-            lines.append(f"| {pkg_name} | {version} | {adjusted} |")
-        lines.append("")
-
-    report_path.write_text("\n".join(lines))
-    print(f"✅ Markdown report saved to: {report_path}")
+    print("   ✓ Build artifacts removed")
+    print("\n✅ Interactive HTML report completed!")
+    print(f"   Location: {index_path}")
+    print(f"   Assets: {output_dir / 'dist'}")
 
 
 def build_dependency_tree(
@@ -698,9 +698,6 @@ def build_dependency_tree(
     ),
 ) -> None:
     """Set up the repository for the given oarepo major version."""
-    dot_output = Path("dependencies.dot")
-    report_file = Path("dependency_report.md")
-
     if oarepo_version:
         latest_oarepo_version = oarepo_version
         print(
@@ -765,30 +762,7 @@ def build_dependency_tree(
         print("\n📋 Final package information:")
         print(json.dumps(packages, indent=2))
 
-    # Generate SVG for adjusted packages only (if any exist)
-    svg_adjusted_path = None
-    adjusted_packages_dict = filter_adjusted_packages(packages)
-    if adjusted_packages_dict:
-        print("\n🎨 Building DOT dependency graph for adjusted packages...")
-        # Use filtered dict containing only adjusted packages
-        dot_graph_adjusted = build_dot_dependency_graph(
-            adjusted_packages_dict,
-            explicit_initial_nodes=set(adjusted_packages_dict.keys()),
-        )
-        svg_adjusted_path = Path("dependencies_adjusted.svg")
-        generate_svg_from_dot(dot_graph_adjusted, svg_adjusted_path)
-
-    # Generate SVG for all packages
-    print("\n🎨 Building DOT dependency graph for all packages...")
-    dot_graph_all = build_dot_dependency_graph(packages)
-
-    dot_path = Path(dot_output)
-    dot_path.write_text(dot_graph_all)
-    print(f"✅ DOT graph saved to: {dot_path}")
-
-    svg_all_path = dot_path.with_suffix(".svg")
-    generate_svg_from_dot(dot_graph_all, svg_all_path)
-
-    # Generate markdown report
-    print("\n📝 Generating markdown report...")
-    generate_markdown_report(report_file, svg_adjusted_path, svg_all_path, packages)
+    # Generate interactive HTML report
+    print("\n🌐 Generating interactive HTML report...")
+    output_dir = Path("output")
+    render_graph(output_dir, packages)
