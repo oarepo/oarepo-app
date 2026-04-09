@@ -9,7 +9,8 @@ dependencies = [
     "packaging>=24.0",
     "tomli",
     "tomli-w",
-    "jinja2"
+    "jinja2",
+    "networkx>=3.6.1",
 ]
 
 [project.scripts]

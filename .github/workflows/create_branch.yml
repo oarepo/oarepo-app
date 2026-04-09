@@ -7,6 +7,11 @@ on:
         description: "Exact oarepo version to use (optional; defaults to the latest for the branch's major version)"
         required: false
         type: string
+      upgrade-major-versions:
+        description: "Allow upgrading to new major versions of dependencies"
+        required: false
+        type: boolean
+        default: false
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -47,6 +52,9 @@ jobs:
           OAREPO_VERSION: ${{ inputs.oarepo-version }}
         run: |
           ARGS=("${{ steps.version.outputs.value }}")
+          if [ "${{ inputs.upgrade-major-versions }}" = "true" ]; then
+            ARGS+=(--upgrade-major-versions)
+          fi
           if [ -n "$OAREPO_VERSION" ]; then
             ARGS+=(--oarepo-version "$OAREPO_VERSION")
           fi

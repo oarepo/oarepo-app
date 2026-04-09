@@ -5,19 +5,17 @@ import typer
 from packaging.version import Version
 from rich import print
 
-from oarepo_build_tools.constants import (
-    OAREPO_EXCLUDED_PACKAGES,
-    OAREPO_INCLUDED_PACKAGES,
-)
 from oarepo_build_tools.git import switch_branch
 from oarepo_build_tools.logs import create_log_entry, render_changelog_md
 from oarepo_build_tools.python import (
-    get_available_versions,
+    get_latest_oarepo_version,
     get_oarepo_app_version,
     set_pyproject_version,
     update_versions,
 )
 from oarepo_build_tools.upload_old_packages import upload_old_packages
+
+from .dependency_tree import build_dependency_tree
 
 app = typer.Typer()
 
@@ -25,20 +23,6 @@ app = typer.Typer()
 @app.callback()
 def callback() -> None:
     """oarepo-app build tools."""
-
-
-def get_latest_oarepo_version(major_version: int) -> str:
-    versions: list[Version] = get_available_versions("oarepo")
-
-    candidates = [v for v in versions if v.major == major_version]
-
-    if not candidates:
-        print(
-            f"[bold red]✗[/bold red] No oarepo releases found for major version [cyan]{major_version}[/cyan]."
-        )
-        raise typer.Exit(1)
-
-    return str(max(candidates))
 
 
 @app.command()
@@ -55,6 +39,11 @@ def setup(
     directory: str = typer.Option(
         ".",
         help="Repository directory to operate in.",
+    ),
+    upgrade_major_versions: bool = typer.Option(
+        False,
+        "--upgrade-major-versions",
+        help="Upgrade major versions of oarepo dependencies.",
     ),
 ) -> None:
     """Set up the repository for the given oarepo major version."""
@@ -74,7 +63,7 @@ def setup(
     print(f"🌿 Switching to branch [cyan]temporary-{latest_oarepo_version}[/cyan] …")
     switch_branch(root, f"temporary-{latest_oarepo_version}")
     print("🔄 Updating dependency versions …")
-    update_versions(root)
+    update_versions(root, upgrade_major_versions)
     create_log_entry(root)
 
     print("🏷️  Computing [bold]oarepo-app[/bold] version …")
@@ -97,6 +86,7 @@ def setup(
 
 
 app.command()(upload_old_packages)
+app.command()(build_dependency_tree)
 
 
 def main() -> None:
