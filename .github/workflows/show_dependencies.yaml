@@ -32,6 +32,9 @@ jobs:
       - name: Init tools
         uses: ./.github/actions/init-tools
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Detect InvenioRDM version from branch
         id: version
         run: |
@@ -62,7 +65,7 @@ jobs:
         if: always()
         with:
           name: dependency-graphs
-          path: output/index.html
+          path: output/
           if-no-files-found: warn
 
       - name: Prepare GitHub Pages content
@@ -71,14 +74,19 @@ jobs:
           mkdir -p pages
           touch pages/.nojekyll
 
-          # Copy the generated interactive HTML report
+          # Copy the generated interactive HTML report and its assets
           if [ -f "output/index.html" ]; then
-            cp output/index.html pages/
-            echo "✅ Copied interactive HTML report"
+            cp -r output/. pages/
+            echo "✅ Copied interactive HTML report and assets"
           else
             echo "⚠️ No interactive HTML report found, creating basic page"
             echo "<html><body><h1>No report generated</h1></body></html>" > pages/index.html
           fi
+
+          echo "--- output/ contents ---"
+          ls -lR output/ || echo "(output/ not found)"
+          echo "--- pages/ contents ---"
+          ls -lR pages/
 
       - name: Upload GitHub Pages artifact
         if: always()

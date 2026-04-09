@@ -507,10 +507,16 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
                         break
                 except Exception:
                     pass
+        src_info = packages.get(src, {})
+        dst_info = packages.get(dst, {})
         all_dependencies.append(
             {
                 "source": src,
+                "source_version": src_info.get("version", ""),
+                "source_bumped": src_info.get("bumped", ""),
                 "target": dst,
+                "target_version": dst_info.get("version", ""),
+                "target_bumped": dst_info.get("bumped", ""),
                 "spec": version_spec,
             }
         )
@@ -526,11 +532,13 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
         node_color = get_node_color(pkg_name, compiled_styles)
 
         # Build label
+        version = pkg_info.get("version", "N/A")
         label = pkg_name
         if is_bumped:
-            original_version = pkg_info.get("version", "N/A")
             bumped_version = pkg_info.get("bumped", "N/A")
-            label = f"{pkg_name}\n{original_version} → {bumped_version}"
+            label = f"{pkg_name}\n{version} → {bumped_version}"
+        else:
+            label = f"{pkg_name}\n{version}"
         if in_cycle:
             label += "\n⚠️ dep"
 

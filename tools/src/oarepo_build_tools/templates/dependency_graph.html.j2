@@ -78,7 +78,9 @@
                 <thead>
                     <tr>
                         <th>Source Package</th>
+                        <th>Version</th>
                         <th>Depends On</th>
+                        <th>Version</th>
                         <th>Version Spec</th>
                     </tr>
                 </thead>
@@ -86,7 +88,9 @@
                     {% for dep in dependencies %}
                     <tr>
                         <td><strong>{{ dep.source }}</strong></td>
+                        <td>{% if dep.source_bumped %}{{ dep.source_version }} → <span class="badge badge-bumped">{{ dep.source_bumped }}</span>{% else %}{{ dep.source_version }}{% endif %}</td>
                         <td>{{ dep.target }}</td>
+                        <td>{% if dep.target_bumped %}{{ dep.target_version }} → <span class="badge badge-bumped">{{ dep.target_bumped }}</span>{% else %}{{ dep.target_version }}{% endif %}</td>
                         <td><code>{{ dep.spec }}</code></td>
                     </tr>
                     {% endfor %}
