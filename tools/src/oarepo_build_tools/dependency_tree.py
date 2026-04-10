@@ -22,13 +22,12 @@ from pathlib import Path
 
 import typer
 from jinja2 import Environment, FileSystemLoader
-from oarepo_build_tools.python import (
-    get_latest_oarepo_version,
-)
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 from rich import print
+
+from oarepo_build_tools.python import get_latest_oarepo_version, update_versions
 
 # Constants for dependency graph generation
 DEPGRAPH_INITIAL_NODES_REGEXP = r"^oarepo-.*"
@@ -717,6 +716,10 @@ def build_dependency_tree(
         )
         latest_oarepo_version = get_latest_oarepo_version(major_version)
         print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
+
+    root = Path(directory).resolve()
+    print("🔄 Updating dependency versions …")
+    update_versions(root, True)
 
     # now we have a lockfile with pinned versions, including upgraded packages
     # we now sync the lockfile with the local environment

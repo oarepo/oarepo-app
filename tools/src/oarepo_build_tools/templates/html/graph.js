@@ -17,6 +17,8 @@ function initGraphData(nodesAll, edgesAll, nodesBumped, edgesBumped) {
     edgesDataAll = edgesAll;
     nodesDataBumped = nodesBumped;
     edgesDataBumped = edgesBumped;
+    // If there are no bumped packages, default to showing all
+    if (nodesBumped.length === 0) currentView = 'all';
 }
 
 // Tarjan's algorithm to find strongly connected components (SCCs).
@@ -331,7 +333,7 @@ async function renderGraph(view, direction) {
 
 // Initialize graph when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    renderGraph('bumped', 'LR');
+    renderGraph(currentView, 'LR');
 
     document.querySelectorAll('input[name="graph-view"]').forEach(radio => {
         radio.addEventListener('change', (e) => {

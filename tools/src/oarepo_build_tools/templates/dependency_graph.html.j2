@@ -24,6 +24,7 @@
         <div class="section">
             <h2>📊 Dependency Graph</h2>
             <div class="controls">
+                {% if bumped_packages %}
                 <label>
                     <input type="radio" name="graph-view" value="all">
                     Show All Packages
@@ -33,6 +34,7 @@
                     Show Bumped Packages Only
                 </label>
                 <span style="margin: 0 8px; color: #bbb;">|</span>
+                {% endif %}
                 <label>
                     <input type="radio" name="graph-direction" value="TB">
                     Top → Bottom
