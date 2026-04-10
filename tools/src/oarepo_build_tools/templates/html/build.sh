@@ -6,7 +6,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "🔧 Building d3 and d3-dag libraries..."
+echo "🔧 Building d3 and elkjs libraries..."
 echo ""
 
 # Check if pnpm is installed

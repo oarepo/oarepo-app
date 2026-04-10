@@ -1,11 +1,7 @@
 import * as d3 from 'd3';
-import {
-    graphConnect,
-    sugiyama,
-    layeringSimplex,
-    decrossTwoLayer,
-    coordCenter,
-} from 'd3-dag';
+import ELK from 'elkjs/lib/elk.bundled.js';
+
+const elk = new ELK();
 
 // Global variables for graph data (will be set by the HTML template)
 let nodesDataAll = [];
@@ -120,43 +116,10 @@ function transitiveReduction(edges) {
     return [...intraEdges, ...reducedInterEdges];
 }
 
-// Compute horizontal offsets to fan parallel edges across node entry/exit points
-function computeEdgeOffsets(links, nodeWidth, nodeHeight, direction) {
-    const bySource = new Map();
-    const byTarget = new Map();
+const nodeWidth  = 160;
+const nodeHeight = 60;
 
-    for (const link of links) {
-        if (!bySource.has(link.source)) bySource.set(link.source, []);
-        if (!byTarget.has(link.target)) byTarget.set(link.target, []);
-        bySource.get(link.source).push(link);
-        byTarget.get(link.target).push(link);
-    }
-
-    const sourceOffsets = new Map();
-    const targetOffsets = new Map();
-    // In TB: fan horizontally across 40% of nodeWidth; in LR: fan vertically across 40% of nodeHeight
-    const maxSpread = (direction === 'LR' ? nodeHeight : nodeWidth) * 0.40;
-
-    for (const ls of bySource.values()) {
-        ls.sort((a, b) => a.target.x - b.target.x);
-        const step = ls.length > 1 ? maxSpread / (ls.length - 1) : 0;
-        ls.forEach((link, i) => {
-            sourceOffsets.set(link, ls.length > 1 ? -maxSpread / 2 + i * step : 0);
-        });
-    }
-
-    for (const ls of byTarget.values()) {
-        ls.sort((a, b) => a.source.x - b.source.x);
-        const step = ls.length > 1 ? maxSpread / (ls.length - 1) : 0;
-        ls.forEach((link, i) => {
-            targetOffsets.set(link, ls.length > 1 ? -maxSpread / 2 + i * step : 0);
-        });
-    }
-
-    return { sourceOffsets, targetOffsets };
-}
-
-function renderGraph(view, direction) {
+async function renderGraph(view, direction) {
     if (direction === undefined) direction = currentDirection;
     currentDirection = direction;
     currentView = view;
@@ -189,61 +152,62 @@ function renderGraph(view, direction) {
     // Drop edges that are implied by a longer path to reduce visual clutter
     filteredEdges = transitiveReduction(filteredEdges);
 
-    // Build DAG
-    let dag;
+    // Build ELK graph specification
+    const elkGraph = {
+        id: 'root',
+        layoutOptions: {
+            'elk.algorithm': 'layered',
+            'elk.direction': direction === 'LR' ? 'RIGHT' : 'DOWN',
+            'elk.spacing.nodeNode': '50',
+            'elk.layered.spacing.nodeNodeBetweenLayers': '80',
+            'elk.edgeRouting': 'SPLINES',
+            'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
+            'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+        },
+        children: filteredNodes.map(n => ({
+            id: n.id,
+            width: nodeWidth,
+            height: nodeHeight,
+        })),
+        edges: filteredEdges.map((e, i) => ({
+            id: `e${i}`,
+            sources: [e.source],
+            targets: [e.target],
+        })),
+    };
+
+    let elkedGraph;
     try {
-        dag = graphConnect()(filteredEdges.map(e => [e.source, e.target]));
-    } catch (e) {
-        console.error('Error creating DAG:', e);
+        elkedGraph = await elk.layout(elkGraph);
+    } catch (err) {
+        console.error('ELK layout error:', err);
         svg.append('text')
             .attr('x', containerW / 2).attr('y', containerH / 2)
             .attr('text-anchor', 'middle')
             .style('font-size', '18px').style('fill', '#999')
-            .text('Graph contains cycles or cannot be rendered');
+            .text('Graph layout failed');
         return;
     }
 
-    const nodeWidth = 160;
-    const nodeHeight = 60;
-    const hGap = 80;
-    const vGap = 60;
+    // Pair each input edge with its ELK-computed layout (matched by index)
+    const edgesWithLayout = filteredEdges.map((e, i) => ({
+        ...e,
+        elkEdge: elkedGraph.edges[i],
+    }));
 
-    const layout = sugiyama()
-        // nodeSize is [cross-axis-size, layer-axis-size]:
-        //   TB: cross=horizontal (nodeWidth), layer=vertical (nodeHeight)
-        //   LR: cross=vertical  (nodeHeight), layer=horizontal (nodeWidth)
-        .nodeSize(direction === 'LR'
-            ? [nodeHeight + vGap, nodeWidth + hGap]
-            : [nodeWidth + hGap, nodeHeight + vGap])
-        .layering(layeringSimplex())
-        .decross(decrossTwoLayer())
-        .coord(coordCenter());
-
-    layout(dag);
-
-    const allLinks = [...dag.links()];
-    const { sourceOffsets, targetOffsets } = computeEdgeOffsets(allLinks, nodeWidth, nodeHeight, direction);
-
-    // Map layout coords → screen coords.
-    // LR swaps layout.x (cross/vertical) and layout.y (layer/horizontal).
-    const screenPos = direction === 'LR'
-        ? n => ({ x: n.y, y: n.x })
-        : n => ({ x: n.x, y: n.y });
-
-    // Content bounding box (screen coords)
+    // Bounding box over laid-out nodes
     let minX = Infinity, maxX = -Infinity;
     let minY = Infinity, maxY = -Infinity;
-    for (const node of dag.nodes()) {
-        const p = screenPos(node);
-        minX = Math.min(minX, p.x);
-        maxX = Math.max(maxX, p.x);
-        minY = Math.min(minY, p.y);
-        maxY = Math.max(maxY, p.y);
+    for (const n of elkedGraph.children) {
+        minX = Math.min(minX, n.x);
+        maxX = Math.max(maxX, n.x + nodeWidth);
+        minY = Math.min(minY, n.y);
+        maxY = Math.max(maxY, n.y + nodeHeight);
     }
 
     const padding = 60;
-    const graphW = maxX - minX + nodeWidth + 2 * padding;
-    const graphH = maxY - minY + nodeHeight + 2 * padding;
+    const graphW = maxX - minX + 2 * padding;
+    const graphH = maxY - minY + 2 * padding;
 
     // Initial zoom: scale to fit the full graph inside the container (never upscale past 1)
     const initScale = Math.min(containerW / graphW, containerH / graphH, 1) * 0.95;
@@ -263,7 +227,8 @@ function renderGraph(view, direction) {
     // Apply initial transform (fires zoom event — zoomG is already defined above)
     svg.call(zoomBehavior.transform, fitTransform);
 
-    // Arrow markers — refX:10 places the arrow tip exactly at the path endpoint
+    // Arrow markers — refX:10 places the tip (x=10 in the path M0,-5L10,0L0,5)
+    // exactly at ELK's endPoint on the node border; the body extends back along the path.
     const defs = svg.append('defs');
     const edgeColors = new Set(filteredEdges.map(e => e.color));
     edgeColors.forEach(color => {
@@ -284,77 +249,35 @@ function renderGraph(view, direction) {
     const g = zoomG.append('g')
         .attr('transform', `translate(${padding - minX},${padding - minY})`);
 
-    // Edge path helpers
-    const arrowClearance = 7;
-
-    // Bump along the main flow axis: curveBumpY (TB) / curveBumpX (LR)
-    // Both produce tangent-parallel entries/exits at node borders.
-    const lineBump     = d3.line().curve(direction === 'LR' ? d3.curveBumpX     : d3.curveBumpY);
-    // Monotone along the main flow axis: never backtracks, keeps paths tight
-    const lineMonotone = d3.line().curve(direction === 'LR' ? d3.curveMonotoneX : d3.curveMonotoneY);
+    // Smooth Catmull-Rom spline through ELK's route waypoints
+    const lineGen = d3.line().curve(d3.curveCatmullRom.alpha(0.5));
 
     const linkSel = g.selectAll('.link')
-        .data(allLinks)
+        .data(edgesWithLayout)
         .join('path')
         .attr('class', 'link')
-        .attr('stroke', link => {
-            const edgeData = filteredEdges.find(e =>
-                e.source === link.source.data && e.target === link.target.data);
-            return edgeData ? edgeData.color : '#999';
-        })
-        .attr('marker-end', link => {
-            const sp = screenPos(link.source);
-            const tp = screenPos(link.target);
-            const backward = direction === 'LR' ? tp.x < sp.x : tp.y < sp.y;
-            if (!backward) return null;
-            const edgeData = filteredEdges.find(e =>
-                e.source === link.source.data && e.target === link.target.data);
-            const color = edgeData ? edgeData.color : '#999';
-            return `url(#arr-${color.replace('#', '')})`;
-        })
-        .attr('d', link => {
-            const srcDelta = sourceOffsets.get(link) || 0;
-            const tgtDelta = targetOffsets.get(link) || 0;
-            const sp = screenPos(link.source);
-            const tp = screenPos(link.target);
-            let sx, sy, tx, ty;
-            if (direction === 'LR') {
-                // Backward edge: target is to the left of source → exit left, enter right
-                const backward = tp.x < sp.x;
-                sx = sp.x + (backward ? -nodeWidth / 2 : nodeWidth / 2);
-                sy = sp.y + srcDelta;
-                tx = tp.x + (backward ? nodeWidth / 2 + arrowClearance : -nodeWidth / 2 - arrowClearance);
-                ty = tp.y + tgtDelta;
-            } else {
-                // Backward edge: target is above source → exit top, enter bottom
-                const backward = tp.y < sp.y;
-                sx = sp.x + srcDelta;
-                sy = sp.y + (backward ? -nodeHeight / 2 : nodeHeight / 2);
-                tx = tp.x + tgtDelta;
-                ty = tp.y + (backward ? nodeHeight / 2 + arrowClearance : -nodeHeight / 2 - arrowClearance);
-            }
-            if (link.points.length === 2) {
-                return lineBump([[sx, sy], [tx, ty]]);
-            }
-            // Map layout waypoints to screen coords
-            // d3-dag v1.x stores points as [x, y] arrays (not {x,y} objects)
-            const mid = link.points.slice(1, -1).map(p =>
-                direction === 'LR' ? [p[1], p[0]] : [p[0], p[1]]);
-            return lineMonotone([[sx, sy], ...mid, [tx, ty]]);
+        .attr('stroke', e => e.color || '#999')
+        .attr('marker-end', e => `url(#arr-${(e.color || '#999').replace('#', '')})`)
+        .attr('d', e => {
+            const sec = e.elkEdge && e.elkEdge.sections && e.elkEdge.sections[0];
+            if (!sec) return '';
+            const pts = [
+                [sec.startPoint.x, sec.startPoint.y],
+                ...(sec.bendPoints || []).map(p => [p.x, p.y]),
+                [sec.endPoint.x, sec.endPoint.y],
+            ];
+            return lineGen(pts);
         });
 
     // Draw nodes on top of edges
     const nodeSel = g.selectAll('.node')
-        .data(dag.nodes())
+        .data(elkedGraph.children)
         .join('g')
         .attr('class', 'node')
-        .attr('transform', d => {
-            const p = screenPos(d);
-            return `translate(${p.x - nodeWidth / 2},${p.y - nodeHeight / 2})`;
-        });
+        .attr('transform', n => `translate(${n.x},${n.y})`);
 
-    nodeSel.each(function(d) {
-        const nodeData = nodeMap.get(d.data);
+    nodeSel.each(function(n) {
+        const nodeData = nodeMap.get(n.id);
         if (!nodeData) return;
 
         const nodeGroup = d3.select(this);
@@ -382,24 +305,23 @@ function renderGraph(view, direction) {
                 .style('font-weight', i === 0 ? 'bold' : 'normal')
                 .text(line);
         });
-
     });
 
     // Hover interactions: dim unrelated nodes/edges, highlight connected ones
     nodeSel
         .on('mouseenter', function(event, d) {
-            const hoveredId = d.data;
+            const hoveredId = d.id;
             const connected = new Set([hoveredId]);
             filteredEdges.forEach(e => {
                 if (e.source === hoveredId) connected.add(e.target);
                 if (e.target === hoveredId) connected.add(e.source);
             });
             nodeSel
-                .classed('node-dimmed', n => !connected.has(n.data))
-                .classed('node-hovered', n => n.data === hoveredId);
+                .classed('node-dimmed', n => !connected.has(n.id))
+                .classed('node-hovered', n => n.id === hoveredId);
             linkSel
-                .classed('link-dimmed',      lnk => lnk.source.data !== hoveredId && lnk.target.data !== hoveredId)
-                .classed('link-highlighted', lnk => lnk.source.data === hoveredId || lnk.target.data === hoveredId);
+                .classed('link-dimmed',      e => e.source !== hoveredId && e.target !== hoveredId)
+                .classed('link-highlighted', e => e.source === hoveredId || e.target === hoveredId);
         })
         .on('mouseleave', function() {
             nodeSel.classed('node-dimmed', false).classed('node-hovered', false);
