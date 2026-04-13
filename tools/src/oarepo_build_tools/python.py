@@ -4,15 +4,18 @@ from __future__ import annotations
 
 import os
 import re
+import shutil
 import subprocess
 import tomllib
 import urllib.error
 import urllib.request
 from copy import replace
 from pathlib import Path
+from struct import pack
 
 import tomli_w
 from packaging.requirements import Requirement
+from packaging.specifiers import SpecifierSet
 from packaging.utils import parse_sdist_filename, parse_wheel_filename
 from packaging.version import Version
 from rich import print
@@ -189,7 +192,10 @@ def pin_development_major_versions(
 # ─── uv lock helpers ─────────────────────────────────────────────────────────
 
 
-def run_uv_lock(directory: Path, extra_options: list[str] | None = None) -> None:
+def run_uv_lock(
+    directory: Path,
+    extra_options: list[str] | None = None,
+) -> None:
     """Run ``uv lock`` inside *directory* to regenerate the lock file."""
     # clean the cache first to avoid stale lock file issues
     subprocess.run(["uv", "cache", "clean"])
@@ -198,9 +204,13 @@ def run_uv_lock(directory: Path, extra_options: list[str] | None = None) -> None
     if lock_file_path.exists():
         lock_file_path.unlink()
 
+    lock_command = ["uv", "lock", "--prerelease=allow"]
+    if extra_options:
+        lock_command.extend(extra_options)
+
     # and lock the dependencies
     subprocess.run(
-        ["uv", "lock", "--prerelease=allow"],
+        lock_command,
         cwd=directory,
         check=True,
         env={**os.environ, "UV_EXTRA_INDEX_URL": CESNET_PYPI_URL},
@@ -359,7 +369,10 @@ def get_pyproject_version(pyproject_path: Path) -> str:
     """Get the version from the pyproject.toml file."""
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
-    return data["project"]["version"]
+    try:
+        return data.get("project", {})["version"]
+    except KeyError:
+        raise KeyError(f"Version not found in pyproject.toml in {pyproject_path}")
 
 
 def set_pyproject_version(pyproject_path: Path, version: str) -> None:
@@ -370,10 +383,358 @@ def set_pyproject_version(pyproject_path: Path, version: str) -> None:
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
+def extract_oarepo_packages(pyproject_path: Path) -> dict[str, tuple[str, str, str]]:
+    """Extract OARepo packages from the pyproject.toml file."""
+    with pyproject_path.open("rb") as fh:
+        data = tomllib.load(fh)
+        project = data.get("project", {})
+    development_deps = project.get("optional-dependencies", {}).get("development", [])
+    oarepo_github = data.get("tool", {}).get("oarepo", {}).get("github", {})
+    packages = {}
+    for dep in development_deps:
+        req = Requirement(dep)
+        try:
+            org, repo, branch = find_package_on_github(oarepo_github, req.name)
+        except KeyError:
+            continue
+        packages[req.name] = (org, repo, branch)
+    return packages
+
+
+def find_package_on_github(oarepo_github: dict, name: str) -> tuple[str, str, str]:
+    """Find a package on GitHub based on the pyproject.toml configuration.
+
+    Sections are matched in alphabetical key order (first match wins).
+
+    Each section must have an ``org`` field and one of:
+    - ``include``: a regex pattern string matched against the package name.
+      The repo name is the package name itself.
+    - ``package`` + ``repository``: an exact package name and the corresponding
+      GitHub repository name (used when they differ).
+
+    An optional ``exclude`` field (regex pattern string) vetoes a match even
+    when ``include`` would otherwise match.
+
+    An optional section-level ``branch`` field sets the branch (default: ``"main"``).
+
+    Args:
+        oarepo_github: The "tool.oarepo.github" section from the pyproject.toml.
+        name: The package name to search for.
+
+    Returns:
+        A tuple of (org, repo, branch) if found, otherwise raises KeyError.
+    """
+    for _key in sorted(oarepo_github):
+        section = oarepo_github[_key]
+        org = section["org"]
+        branch = section.get("branch", "main")
+        if "package" in section:
+            if section["package"] == name:
+                repo = section.get("repository", name)
+                return org, repo, branch
+        else:
+            includes = section.get("include", "")
+            excludes = section.get("exclude", "")
+            if includes and re.match(includes, name):
+                if not excludes or not re.match(excludes, name):
+                    return org, name, branch
+    raise KeyError(name)
+
+
+def clone_oarepo_packages(
+    local_packages_dir: Path,
+    oarepo_packages_map: dict[str, tuple[str, str, str]],
+    upgraded_packages: list[str] | None = None,
+) -> dict[str, Path]:
+    """Clone OARepo packages from GitHub into *local_packages_dir*.
+
+    Args:
+        local_packages_dir: The directory to clone the packages into.
+        oarepo_packages_map: A mapping of package names to (org, repo, branch) tuples.
+
+    Returns:
+        A dictionary mapping package names to the local path of the cloned package.
+    """
+    upgraded_packages = upgraded_packages or []
+    upgraded_packages_map: dict[str, str] = {}
+    for pkg in upgraded_packages:
+        org, repo, branch = parse_github_pr_branch_identification(pkg)
+        upgraded_packages_map[f"{org}/{repo}"] = branch
+
+    cloned_packages = {}
+    for name, (org, repo, branch) in oarepo_packages_map.items():
+        org_with_repo = f"{org}/{repo}"
+        package_path = local_packages_dir / name
+        cloned_packages[name] = package_path
+        if package_path.exists():
+            continue
+
+        subprocess.check_call(
+            [
+                "gh",
+                "repo",
+                "clone",
+                org_with_repo,
+                package_path,
+                "--",
+                "--depth",
+                "1",
+            ]
+        )
+        current_package_version = get_pyproject_version(package_path / "pyproject.toml")
+        subprocess.call(
+            ["git", "switch", upgraded_packages_map.get(org_with_repo, branch)],
+            cwd=package_path,
+        )
+        if org_with_repo in upgraded_packages_map:
+            set_original_package_version(
+                package_path / "pyproject.toml", current_package_version
+            )
+    return cloned_packages
+
+
+def _resolve_pr_branch(org: str, repo: str, pr_number: str) -> str:
+    """Resolve a GitHub PR number to its head branch name using the ``gh`` CLI."""
+    result = subprocess.check_output(
+        [
+            "gh",
+            "pr",
+            "view",
+            pr_number,
+            "--repo",
+            f"{org}/{repo}",
+            "--json",
+            "headRefName",
+            "--jq",
+            ".headRefName",
+        ],
+        text=True,
+    )
+    return result.strip()
+
+
+def parse_github_pr_branch_identification(pkg: str) -> tuple[str, str, str]:
+    """Parse the github identification and return a tuple of (org, repo, branch_name)
+    pkg can be:
+        * org/repo#pr
+        * org/repo@branch
+        * github pr url
+        * github branch url
+    """
+    # https://github.com/org/repo/pull/123
+    m = re.match(r"https?://github\.com/([^/]+)/([^/]+)/pull/(\d+)/?$", pkg)
+    if m:
+        org, repo, pr_number = m.groups()
+        return org, repo, _resolve_pr_branch(org, repo, pr_number)
+
+    # https://github.com/org/repo/tree/some/branch/name
+    m = re.match(r"https?://github\.com/([^/]+)/([^/]+)/tree/(.+?)/?$", pkg)
+    if m:
+        org, repo, branch = m.groups()
+        return org, repo, branch
+
+    # org/repo#123
+    m = re.match(r"([^/]+)/([^@#/]+)#(\d+)$", pkg)
+    if m:
+        org, repo, pr_number = m.groups()
+        return org, repo, _resolve_pr_branch(org, repo, pr_number)
+
+    # org/repo@branch
+    m = re.match(r"([^/]+)/([^@#/]+)@(.+)$", pkg)
+    if m:
+        org, repo, branch = m.groups()
+        return org, repo, branch
+
+    raise ValueError(
+        f"Cannot parse GitHub PR/branch identification: {pkg!r}. "
+        "Expected one of: 'org/repo#<pr>', 'org/repo@<branch>', "
+        "a GitHub PR URL (…/pull/<n>), or a GitHub branch URL (…/tree/<branch>)."
+    )
+
+
+def set_original_package_version(pyproject_path: Path, version: str) -> None:
+    data = tomllib.loads(pyproject_path.read_text())
+    tool = data.setdefault("tool", {})
+    oarepo_tool = tool.setdefault("oarepo", {})
+    oarepo_tool["original_version"] = version
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
+def unpin_versions_in_oarepo_packages(path: Path) -> None:
+    """Load pyproject.toml from *path* and unpin all dependency versions
+    (that is, remove <abc from requirement version specifiers).
+    """
+    pyproject_path = path / "pyproject.toml"
+    data = tomllib.loads(pyproject_path.read_text())
+    project = data.get("project", {})
+    tool = data.setdefault("tool", {})
+    oarepo_tool = tool.setdefault("oarepo", {})
+    original_dependencies = oarepo_tool.setdefault("original-dependencies", {})
+    original_dependencies["__main__"] = project.get("dependencies", {})
+    project["dependencies"] = unpin_upper_bound_in_dependencies(
+        project.get("dependencies", {}),
+    )
+    optional_dependencies = project.get("optional-dependencies", {})
+    for optional_name, optional_deps in optional_dependencies.items():
+        original_dependencies[optional_name] = optional_deps
+        optional_dependencies[optional_name] = unpin_upper_bound_in_dependencies(
+            optional_deps,
+        )
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
+def pin_upper_bound_in_dependencies(
+    package_name: str,
+    dependencies: list[str],
+    original_dependencies: list[str],
+    versions: dict[str, str],
+) -> tuple[list[str], bool]:
+    """Replace unpinned versions with range-pinned versions.
+
+    Returns a tuple of the pinned dependencies and a boolean indicating whether
+    a major version bump is needed (the pinned dependencies differ from the original in the major version).
+    """
+    deps = []
+    major_version_needed = False
+    dependencies_by_name: dict[str, Requirement] = {
+        r.name: r for r in map(Requirement, original_dependencies)
+    }
+    original_dependencies_by_name: dict[str, Requirement] = {
+        r.name: r for r in map(Requirement, original_dependencies)
+    }
+    for dep_name, r in dependencies_by_name.items():
+        if r.name not in versions:
+            deps.append(str(r))
+            continue
+        original_r = original_dependencies_by_name[dep_name]
+        if "invenio" not in r.name:
+            deps.append(str(original_r))
+            continue
+
+        lower_bound = versions[r.name]
+        if "+" in lower_bound:
+            lower_bound = lower_bound.split("+")[0]
+        upper_bound = f"{(1 + int(lower_bound.split('.', maxsplit=1)[0]))}.0.0"
+        deps.append(f"{r.name}>={lower_bound},<{upper_bound}")
+        if not original_r.specifier.contains(lower_bound):
+            print(
+                f"  ⬆️  {package_name} needs upgrade: {dep_name} with specifier{original_r.specifier} (bumped to {lower_bound})"
+            )
+            major_version_needed = True
+    return deps, major_version_needed
+
+
+def unpin_upper_bound_in_dependencies(dependencies: list[str]) -> list[str]:
+    """Unpin upper bounds in dependency version specifiers (remove <abc)."""
+    deps = []
+    for dep in dependencies:
+        r = Requirement(dep)
+        filtered_specifiers = [s for s in r.specifier if not s.operator.startswith("<")]
+        deps.append(
+            _rebuild_requirement(
+                r,
+                str(
+                    SpecifierSet(
+                        filtered_specifiers, prereleases=r.specifier.prereleases
+                    )
+                ),
+            )
+        )
+    return deps
+
+
+def update_pyproject_source_map(
+    pyproject_path: Path, oarepo_packages_to_path: dict[str, Path]
+):
+    """Update the source map in pyproject.toml for OARepo packages."""
+    data = tomllib.loads(pyproject_path.read_text())
+    # update the tool.uv.sources
+    sources = data.setdefault("tool", {}).setdefault("uv", {}).setdefault("sources", {})
+    for oarepo_name, path in oarepo_packages_to_path.items():
+        sources[oarepo_name] = {
+            "path": str(path),
+            "editable": True,
+        }
+    data["tool"]["uv"]["sources"] = sources
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
+def delete_pyproject_source_map(
+    pyproject_path, oarepo_packages_to_path: dict[str, Path]
+):
+    """Delete the source map in pyproject.toml for OARepo packages."""
+    data = tomllib.loads(pyproject_path.read_text())
+    sources = data.setdefault("tool", {}).setdefault("uv", {}).setdefault("sources", {})
+    for oarepo_name in oarepo_packages_to_path.keys():
+        sources.pop(oarepo_name, None)
+    data["tool"]["uv"]["sources"] = sources
+    pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+
+
+def propagate_resolved_versions(
+    oarepo_packages_to_path: dict[str, Path], resolved: dict[str, str]
+) -> dict[str, tuple[str, bool]]:
+    """Propagate resolved versions from uv.lock to pyproject.toml for OARepo packages.
+
+    Returns a dict of package names -> (original version, major_bump_needed) that need a major bump due to version conflicts.
+    Note that this list is not exhaustive - it only includes packages that have direct version conflicts,
+    but not transitive ones.
+    """
+    packages_with_major_bump_needed = {}
+    for package_name, package_path in oarepo_packages_to_path.items():
+        pyproject_path = package_path / "pyproject.toml"
+        data = tomllib.loads(pyproject_path.read_text())
+        project = data.get("project", {})
+        tool = data.setdefault("tool", {})
+        oarepo_tool = tool.setdefault("oarepo", {})
+        current_version = project.get("version", "0.0.0")
+        original_version = oarepo_tool.get("original_version", None)
+        original_dependencies = oarepo_tool.setdefault("original-dependencies", {})
+
+        need_major_bump = (
+            original_version is not None
+            and original_version.split(".")[0] != current_version.split(".")[0]
+        )
+
+        project["dependencies"], dependencies_need_major_bump = (
+            pin_upper_bound_in_dependencies(
+                package_name,
+                project.get("dependencies", {}),
+                original_dependencies["__main__"],
+                resolved,
+            )
+        )
+        need_major_bump = need_major_bump or dependencies_need_major_bump
+        optional_dependencies = project.get("optional-dependencies", {})
+        for optional_name, optional_deps in optional_dependencies.items():
+            optional_dependencies[optional_name], optional_need_major_bump = (
+                pin_upper_bound_in_dependencies(
+                    package_name,
+                    optional_deps,
+                    original_dependencies.get(optional_name, None),
+                    resolved,
+                )
+            )
+            need_major_bump = need_major_bump or optional_need_major_bump
+        pyproject_path.write_bytes(tomli_w.dumps(data).encode())
+        if need_major_bump:
+            if original_version is None:
+                bumped_version = f"{1 + int(current_version.split('.', 1)[0])}.0.0"
+                packages_with_major_bump_needed[package_name] = (bumped_version, True)
+            else:
+                bumped_version = original_version
+                packages_with_major_bump_needed[package_name] = (bumped_version, False)
+    return packages_with_major_bump_needed
+
+
 # ─── update_versions ─────────────────────────────────────────────────────────
 
 
-def update_versions(directory: Path, upgrade_major_versions: bool) -> None:
+def update_versions(
+    directory: Path,
+    upgrade_major_versions: bool,
+    upgraded_packages: list[str] | None = None,
+) -> dict[str, tuple[str, bool]]:
     """Update pinned dependency versions in *directory*/pyproject.toml.
 
     Steps:
@@ -383,10 +744,17 @@ def update_versions(directory: Path, upgrade_major_versions: bool) -> None:
        dependency inside the "production" section of pyproject.toml to ``==<resolved>``.
     4. If a dependency is in development dependencies but not in the "production" section,
        add it to the "production" section.
+    5. Return a dict of packages that were either already bumped (were part of upgraded_packages)
+       or need a major bump due to version conflicts.
+       The dict contains both upgraded_packages and packages that have version conflicts
+       with invenio packages. The value is a tuple of the "bumped" version and a boolean
+       indicating whether the package needs to be bumped (True) or was already bumped (False).
     """
+    upgraded_packages = upgraded_packages or []
     root = directory.resolve()
     lock_path = root / "uv.lock"
     pyproject_path = root / "pyproject.toml"
+    local_packages_dir = root / ".local-packages"
 
     # ── Step 1: remove production section ─────────────────────────────────────
     print(
@@ -396,6 +764,14 @@ def update_versions(directory: Path, upgrade_major_versions: bool) -> None:
 
     if upgrade_major_versions:
         unpin_development_major_versions(pyproject_path)
+        # map from package name to (github_repo, github_branch)
+        oarepo_packages_map = extract_oarepo_packages(pyproject_path)
+        oarepo_packages_to_path = clone_oarepo_packages(
+            local_packages_dir, oarepo_packages_map, upgraded_packages
+        )
+        for name, path in oarepo_packages_to_path.items():
+            unpin_versions_in_oarepo_packages(path)
+        update_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
 
     # ── Step 2: uv lock ──────────────────────────────────────────────────────
     print("[bold blue]Step 2/3[/bold blue] 🔒 Running [cyan]uv lock[/cyan] …")
@@ -409,8 +785,12 @@ def update_versions(directory: Path, upgrade_major_versions: bool) -> None:
         print("  [dim]↳[/dim] 📌 [green]pinned[/green] pyproject.toml")
 
     pin_development_major_versions(pyproject_path, resolved)
-
+    if upgrade_major_versions:
+        upgraded_packages_with_versions = propagate_resolved_versions(
+            oarepo_packages_to_path, resolved
+        )
     print("🎉 [bold green]Done.[/bold green]")
+    return upgraded_packages_with_versions
 
 
 def get_latest_oarepo_version(major_version: int) -> str:
