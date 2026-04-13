@@ -64,3 +64,18 @@ packages = [
 include = [
     "src/oarepo_app",
 ]
+
+[tool.oarepo.github."01-ccmm"]
+org = "nrp-cz"
+include = "ccmm-invenio"
+branch = "main"
+
+[tool.oarepo.github."02-oarepo"]
+org = "oarepo"
+package = "oarepo-invenio-typing-stubs"
+repository = "invenio-typing-stubs"
+
+[tool.oarepo.github."03-oarepo"]
+org = "oarepo"
+include = "oarepo-.*"
+branch = "main"

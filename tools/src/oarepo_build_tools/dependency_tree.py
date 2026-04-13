@@ -295,9 +295,13 @@ def version_satisfies_spec(version_str: str, spec_str: str) -> bool:
 
 
 def apply_version_adjustments(
-    packages: dict[str, dict], upgraded_packages: set[str]
+    packages: dict[str, dict], upgraded_packages: dict[str, tuple[str, bool]]
 ) -> dict[str, dict]:
     """Apply version adjustments based on upgraded packages.
+    The upgraded packages is a dict of package_name -> (bumped_version, needs_upgrade).
+    if needs_upgrade is True, the package needs to be bumped and the bumped_version is the new version.
+    if needs_upgrade is False, the package was already bumped and the bumped_version is the version
+    passed in a PR/branch.
 
     First, bump major version for all packages in upgraded_packages.
     Then, iteratively adjust packages whose dependencies don't satisfy their specifiers.
@@ -310,12 +314,18 @@ def apply_version_adjustments(
         Updated packages dict with "bumped" field where applicable
     """
     # First pass: adjust all upgraded packages
-    for pkg_name in upgraded_packages:
+    for pkg_name, (original_version, needs_upgrade) in upgraded_packages.items():
         if pkg_name in packages:
-            original_version = packages[pkg_name]["version"]
-            bumped_version = bump_major_version(original_version)
-            packages[pkg_name]["bumped"] = bumped_version
-            print(f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (upgraded)")
+            # original version is already bumped, no need to bump again
+            packages[pkg_name]["bumped"] = original_version
+            if needs_upgrade:
+                print(
+                    f"  ⬆️  {pkg_name}: {original_version} (depends on invenio, version bumped)"
+                )
+            else:
+                print(
+                    f"  ⬆️  {pkg_name}: {original_version} (from PR/branch, version kept)"
+                )
 
     # Iteratively adjust packages whose dependencies don't match
     changed = True
@@ -338,24 +348,13 @@ def apply_version_adjustments(
                 try:
                     req = Requirement(dep_str)
                     dep_name = req.name.lower()
-                    version_spec = str(req.specifier) if req.specifier else ""
                 except Exception:
                     continue
 
                 # Only check dependencies on packages that were bumped
                 if dep_name in packages and "bumped" in packages[dep_name]:
                     # The dependency was bumped, check if new version satisfies spec
-                    dep_version = packages[dep_name]["bumped"]
-
-                    # Check if dependency version satisfies the spec
-                    if version_spec and not version_satisfies_spec(
-                        dep_version, version_spec
-                    ):
-                        needs_adjustment = True
-                        print(
-                            f"  ⚠️  {pkg_name} depends on {dep_name}{version_spec}, but {dep_name} is at {dep_version}"
-                        )
-                        break
+                    needs_adjustment = True
 
             if needs_adjustment:
                 original_version = pkg_info["version"]
@@ -696,7 +695,7 @@ def build_dependency_tree(
     upgraded_packages: str | None = typer.Option(
         None,
         "--upgraded-packages",
-        help="Comma-separated list of packages whose major version will be upgraded.",
+        help="Comma-separated list of pr urls or org/repo@branch",
     ),
     print_json: bool = typer.Option(
         False,
@@ -719,7 +718,16 @@ def build_dependency_tree(
 
     root = Path(directory).resolve()
     print("🔄 Updating dependency versions …")
-    update_versions(root, True)
+    if upgraded_packages:
+        upgraded_packages_list = [p.strip() for p in upgraded_packages.split(",")]
+        upgraded_packages_list = [p for p in upgraded_packages_list if p]
+        if not upgraded_packages_list:
+            upgraded_packages_list = None
+    else:
+        upgraded_packages_list = None
+    upgraded_packages_with_original_versions = update_versions(
+        root, True, upgraded_packages_list
+    )
 
     # now we have a lockfile with pinned versions, including upgraded packages
     # we now sync the lockfile with the local environment
@@ -759,15 +767,13 @@ def build_dependency_tree(
     packages = get_all_package_dependencies(installed_packages, python_path)
 
     # Apply version adjustments if upgraded_packages is specified
-    if upgraded_packages:
-        upgraded_set = set(
-            pkg.strip() for pkg in upgraded_packages.split(",") if pkg.strip()
+    if upgraded_packages_with_original_versions:
+        print(
+            f"\n📦 Applying version adjustments for upgraded packages: {', '.join(f'{k}=={v}' for k, v in upgraded_packages_with_original_versions.items())}"
         )
-        if upgraded_set:
-            print(
-                f"\n📦 Applying version adjustments for upgraded packages: {', '.join(sorted(upgraded_set))}"
-            )
-            packages = apply_version_adjustments(packages, upgraded_set)
+        packages = apply_version_adjustments(
+            packages, upgraded_packages_with_original_versions
+        )
 
     if print_json:
         print("\n📋 Final package information:")
