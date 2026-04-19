@@ -785,6 +785,7 @@ def update_versions(
         print("  [dim]↳[/dim] 📌 [green]pinned[/green] pyproject.toml")
 
     pin_development_major_versions(pyproject_path, resolved)
+    upgraded_packages_with_versions: dict[str, tuple[str, bool]] = {}
     if upgrade_major_versions:
         upgraded_packages_with_versions = propagate_resolved_versions(
             oarepo_packages_to_path, resolved
