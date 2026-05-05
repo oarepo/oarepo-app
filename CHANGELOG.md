@@ -2,9 +2,117 @@
 
 ## Contents
 
-- [2.0.1](#300)
+- [2.1.0](#210)
+- [2.0.1](#201)
 - [1.0.0](#100)
 - [0.0.1](#001)
+
+---
+
+## 2.1.0
+
+Released: **May 5, 2026 at 18:51 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.4
+[1.1.2 → 1.1.4](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.2...v1.1.4)
+
+- [`c4c8c66c`](https://github.com/nrp-cz/ccmm-invenio/commit/c4c8c66cc3e5d3930e241887ab36394842057e01) Bump version from 1.1.3 to 1.1.4
+- [`0f213b69`](https://github.com/nrp-cz/ccmm-invenio/commit/0f213b69ef8e72037890bbe75818a178770b80a5) added export for citations
+- [`007ea256`](https://github.com/nrp-cz/ccmm-invenio/commit/007ea256e44f36e0d237017c9061e5df64935fd1) Bump version from 1.1.2 to 1.1.3
+- [`eda2fe5f`](https://github.com/nrp-cz/ccmm-invenio/commit/eda2fe5fefacb2da496511066d144f3bd4718640) reordering and section customization
+- [`3e1abc2e`](https://github.com/nrp-cz/ccmm-invenio/commit/3e1abc2e812cb278f2dce3603871f91d883b6fae) added translations
+
+#### `oarepo-app` 2.0.1
+2.0.0 → 2.0.1
+
+
+#### `oarepo-communities` 8.1.0
+[8.0.0 → 8.1.0](https://github.com/oarepo/oarepo-communities/compare/v8.0.0...v8.1.0)
+
+- [`08554baf`](https://github.com/oarepo/oarepo-communities/commit/08554bafde999857858cf1c81da9bafe3a95ba91) removed ModelRefTypes
+
+#### `oarepo-glitchtip` 1.3.0
+[1.1.1 → 1.3.0](https://github.com/oarepo/oarepo-glitchtip/compare/v1.1.1...v1.3.0)
+
+- [`996d4e3c`](https://github.com/oarepo/oarepo-glitchtip/commit/996d4e3c29bb1f8c5cd628616db4096bf57f9407) reverting enabled logs - not available in current sentry-sdk version (#9)
+- [`f518289e`](https://github.com/oarepo/oarepo-glitchtip/commit/f518289e63fa96311cdb1c6cc53e9e80b76640bc) Bump version from 1.1.2 to 1.2.0 (#8)
+- [`de2e9aca`](https://github.com/oarepo/oarepo-glitchtip/commit/de2e9acab5410c2e02138b43ef39d2b6c6247ff0) Specify Sentry SDK version range in pyproject.toml (#7)
+- [`38059614`](https://github.com/oarepo/oarepo-glitchtip/commit/380596149845721d64e853e079152edbf70dabae) chore: migrated to pyproject.toml with hatchling (#6)
+- [`b4b6f4a3`](https://github.com/oarepo/oarepo-glitchtip/commit/b4b6f4a36e93579fa331a4ba271a9a37186c1add) Fake test runner (#5)
+
+#### `oarepo-model` 2.2.0
+[2.0.0 → 2.2.0](https://github.com/oarepo/oarepo-model/compare/v2.0.0...v2.2.0)
+
+- [`ed6175c9`](https://github.com/oarepo/oarepo-model/commit/ed6175c929583f25fc21e0d8cc360526d7115f2a) feat: get facet label from model (#108)
+- [`e5fe78f7`](https://github.com/oarepo/oarepo-model/commit/e5fe78f7ab09290522bed6ab7006bd00cfe1e505) fixed wrong facet path for fields under metadata (#107)
+- [`d064a601`](https://github.com/oarepo/oarepo-model/commit/d064a601aeafa7e8fd35429c0d173bab05e6e9fd) [skip ci] Bump version to v2.1.0
+- [`63d25858`](https://github.com/oarepo/oarepo-model/commit/63d25858a3c4195d46182bd27cc5af268955fa52) add `override_values` option to `AddToDictionary` customization, enab… (#106)
+- [`f89be52b`](https://github.com/oarepo/oarepo-model/commit/f89be52b7b02a793fb4ee17895a39cc6c03616d9) added is_published facet (#96)
+
+#### `oarepo-oidc-einfra` 4.1.0
+[4.0.0 → 4.1.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v4.0.0...v4.1.0)
+
+- [`a2a44024`](https://github.com/oarepo/oarepo-oidc-einfra/commit/a2a440248af2f7854c820217840b3bf3d0edb1fb) Feat OIDC groups roles (#40)
+
+#### `oarepo-rdm` 3.1.4
+[3.0.0 → 3.1.4](https://github.com/oarepo/oarepo-rdm/compare/v3.0.0...v3.1.4)
+
+- [`a844bd9f`](https://github.com/oarepo/oarepo-rdm/commit/a844bd9f07fb24a0966a8954fc18176304eb46ad) fix: added is_preview tag and latest version read to redirector (#85)
+- [`c5b62edf`](https://github.com/oarepo/oarepo-rdm/commit/c5b62edfe624a84ce3499fed1c04dd659ad9346d) fix: safely check search options
+- [`ef0199aa`](https://github.com/oarepo/oarepo-rdm/commit/ef0199aae470870bd7e586a286c093078b9cec0d) [skip ci] Bump version to v3.1.3
+- [`6d77d306`](https://github.com/oarepo/oarepo-rdm/commit/6d77d306ca0030da77521870dac2282e31b295ab) added components for RDM related variables
+- [`1aa735e1`](https://github.com/oarepo/oarepo-rdm/commit/1aa735e17983d2a5d62df75859749c1d4cb43b02) fixed tests
+- [`8d5f5595`](https://github.com/oarepo/oarepo-rdm/commit/8d5f5595051841b3abfe1cfc87b9ddf0cf690d18) [skip ci] Bump version to v3.1.2
+- [`75710a9c`](https://github.com/oarepo/oarepo-rdm/commit/75710a9c9a8c0e7074c2dd89c2d6648c8dfcee90) record detail iframe
+- [`42dd2a48`](https://github.com/oarepo/oarepo-rdm/commit/42dd2a48ea38778d637a1502cc47fb03fc205c95) passing query params when redirecting from rdm urls
+- [`167dbb58`](https://github.com/oarepo/oarepo-rdm/commit/167dbb581f9e5001fbbc57156d3a5ccd5da5e925) account for both draft and published record
+- [`2859b450`](https://github.com/oarepo/oarepo-rdm/commit/2859b450d5407657f91c1e5e73db6d2add6c5cd6) [skip ci] Bump version to v3.1.1
+- [`af95b0a6`](https://github.com/oarepo/oarepo-rdm/commit/af95b0a676c2a0756e4af292ad1d6b24e667f5ab) inheriting rdm links (#77)
+- [`be6a32d0`](https://github.com/oarepo/oarepo-rdm/commit/be6a32d0794cded0b6449f18af8625583c0a52fa) [skip ci] Bump version to v3.1.0
+- [`d0ebb94f`](https://github.com/oarepo/oarepo-rdm/commit/d0ebb94f5eb568ccfd1a91dd001262e96b64e8df) error handler for UndefinedModelError (#73)
+- [`624f6731`](https://github.com/oarepo/oarepo-rdm/commit/624f6731cf3f01932fc3ea9c47f9baba5a71ef14) RDM_PREFERRED_METADATA_SCHEMA option (#76)
+
+#### `oarepo-requests` 5.2.0
+[5.0.0 → 5.2.0](https://github.com/oarepo/oarepo-requests/compare/v5.0.0...v5.2.0)
+
+- [`ae057aea`](https://github.com/oarepo/oarepo-requests/commit/ae057aeacca06056ab359350e43735cfb8717532) Error handlers (#182)
+- [`9b3593d2`](https://github.com/oarepo/oarepo-requests/commit/9b3593d2134bdab8df677e53e3d5e93632e60804) [skip ci] Bump version to v5.1.0
+- [`1d88d940`](https://github.com/oarepo/oarepo-requests/commit/1d88d9409f59f922062df602dd6dfd62331aac64) ron/be-1070-remove-entity_type-from-model-and-its-uses (#181)
+
+#### `oarepo-runtime` 4.2.0
+[4.0.0 → 4.2.0](https://github.com/oarepo/oarepo-runtime/compare/v4.0.0...v4.2.0)
+
+- [`6b74661e`](https://github.com/oarepo/oarepo-runtime/commit/6b74661e4c40023ddea82b35e97081dceda02731) feat: taking labels from model if they exist
+- [`e5118727`](https://github.com/oarepo/oarepo-runtime/commit/e51187278b5dc57ca220ba55e250fa05ecbe48ae) [skip ci] Bump version to v4.1.0
+- [`53c85395`](https://github.com/oarepo/oarepo-runtime/commit/53c853959f95b56bac78590c727a980780c410c3) entity_type removed from model
+
+#### `oarepo-ui` 9.1.3
+[9.0.0 → 9.1.3](https://github.com/oarepo/oarepo-ui/compare/v9.0.0...v9.1.3)
+
+- [`56fe3e81`](https://github.com/oarepo/oarepo-ui/commit/56fe3e815c4308b98076a22654fa69f12b9d89b2) moved rdm related things to components in oarepo-rdm
+- [`401c3709`](https://github.com/oarepo/oarepo-ui/commit/401c3709c696d24cbf2f1ae7f0c821f17174fbc7) section config that forces save on leaving tab
+- [`54c8c896`](https://github.com/oarepo/oarepo-ui/commit/54c8c896a202573c69d63b5aa153940650b77ca4) [skip ci] Bump version to v9.1.2
+- [`752f27cd`](https://github.com/oarepo/oarepo-ui/commit/752f27cdbe98f54b91f91f504ec22eb99ddaf683) fix: pages prefix duplicated
+- [`1cecfbd1`](https://github.com/oarepo/oarepo-ui/commit/1cecfbd16edc80c1a6bed199314926eaa6097f4e) chore: format
+- [`f47767fa`](https://github.com/oarepo/oarepo-ui/commit/f47767fa165ae9f05c23daf7be00b3c2c6cc5c4e) fix: bad variable name
+- [`dd5020bd`](https://github.com/oarepo/oarepo-ui/commit/dd5020bda870bd2fda43f77ae123a210569e2a66) renamed render to component
+- [`a0cd537a`](https://github.com/oarepo/oarepo-ui/commit/a0cd537a22b5798de6649c01259b30c1711a69ad) [skip ci] Bump version to v9.1.1
+- [`e98f9c8d`](https://github.com/oarepo/oarepo-ui/commit/e98f9c8d920d2398d7dc1eeea3446c49411ca175) override multiple options search bar on /search
+- [`dc46c4d4`](https://github.com/oarepo/oarepo-ui/commit/dc46c4d4090047ffa1cd65b180d61229942ea5a9) fix: remove back/forward buttons
+- [`91407f5c`](https://github.com/oarepo/oarepo-ui/commit/91407f5ce9e11de95c88ddeb5e06fe2423086206) [skip ci] Bump version to v9.1.0
+- [`26f86553`](https://github.com/oarepo/oarepo-ui/commit/26f86553bacdf05cac33c240d3f77740f8dd4069) feat: append query params filter function
+- [`4e6b9df3`](https://github.com/oarepo/oarepo-ui/commit/4e6b9df3e40cad7d235f81f0ff3fdbd9b74366de) passing embedded tag to detail page
+- [`0597b131`](https://github.com/oarepo/oarepo-ui/commit/0597b131f016b8ee2640562c140f40d692e4aab0) fix: using vnd accept header inside of the form
+
+#### `oarepo-workflows` 4.0.2
+[4.0.0 → 4.0.2](https://github.com/oarepo/oarepo-workflows/compare/v4.0.0...v4.0.2)
+
+- [`e0707877`](https://github.com/oarepo/oarepo-workflows/commit/e07078777eea5ff3a7fb0282e0eed974440062fb) fix: SameAs not working in policy (#52)
+- [`0cf37c86`](https://github.com/oarepo/oarepo-workflows/commit/0cf37c861d4f48ddd3ace004d760a32a55623eef) [skip ci] Bump version to v4.0.1
+- [`f6c27559`](https://github.com/oarepo/oarepo-workflows/commit/f6c2755962e5d490ec84e2deae3767e28828f44a) Fix workflow field to allow null values (#48)
+- [`cd4aac0a`](https://github.com/oarepo/oarepo-workflows/commit/cd4aac0a397a3219aad46d32fd0f8a046e3ad4db) using CommentEvent as default for can_create_comment (#49)
 
 ---
 
