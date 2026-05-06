@@ -14,13 +14,12 @@ from pathlib import Path
 from struct import pack
 
 import tomli_w
+from oarepo_build_tools.constants import CESNET_PYPI_URL
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.utils import parse_sdist_filename, parse_wheel_filename
 from packaging.version import Version
 from rich import print
-
-from oarepo_build_tools.constants import CESNET_PYPI_URL
 
 # ─── PyPI version querying ────────────────────────────────────────────────────
 
@@ -790,6 +789,8 @@ def update_versions(
         upgraded_packages_with_versions = propagate_resolved_versions(
             oarepo_packages_to_path, resolved
         )
+        # ── Cleanup: remove the temporary local-path source overrides ──────
+        delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
     print("🎉 [bold green]Done.[/bold green]")
     return upgraded_packages_with_versions
 
