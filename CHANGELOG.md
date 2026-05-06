@@ -2,10 +2,46 @@
 
 ## Contents
 
+- [2.2.0](#220)
 - [2.1.0](#210)
 - [2.0.1](#201)
 - [1.0.0](#100)
 - [0.0.1](#001)
+
+---
+
+## 2.2.0
+
+Released: **May 6, 2026 at 14:46 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 2.1.0
+2.0.1 → 2.1.0
+
+
+#### `oarepo-model` 2.3.0
+[2.2.0 → 2.3.0](https://github.com/oarepo/oarepo-model/compare/v2.2.0...v2.3.0)
+
+- [`502bec82`](https://github.com/oarepo/oarepo-model/commit/502bec8228019b1a123c31a88ec63a9792b1f920) feat: add exporter parameter for record about section (#110)
+- [`2f97183b`](https://github.com/oarepo/oarepo-model/commit/2f97183b9691b6c738c40fabe0d00ae039d1e32b) [skip ci] Bump version to v2.2.0
+
+#### `oarepo-rdm` 3.2.0
+[3.1.4 → 3.2.0](https://github.com/oarepo/oarepo-rdm/compare/v3.1.4...v3.2.0)
+
+- [`10b85fde`](https://github.com/oarepo/oarepo-rdm/commit/10b85fde09d674b145e0eb4ea52674a84e83894d) fix: using proper serializer for each model (#83)
+- [`67e20b75`](https://github.com/oarepo/oarepo-rdm/commit/67e20b75b3008fd3c31e5a7888e911b30e313ffd) fixing metadata (#82)
+- [`71c9042d`](https://github.com/oarepo/oarepo-rdm/commit/71c9042d66df8bfa7a5158d3a8f3421ccecf9402) added static assets skeleton (#84)
+- [`476951f0`](https://github.com/oarepo/oarepo-rdm/commit/476951f0d1fc48317bf3f12a0d2d7b9d196f8ed7) feat: add about serializer to OAI config (#86)
+- [`fde9acdd`](https://github.com/oarepo/oarepo-rdm/commit/fde9acdda60561724f3a0c0fa71020f3cee4dfa2) [skip ci] Bump version to v3.1.4
+
+#### `oarepo-runtime` 4.3.0
+[4.2.0 → 4.3.0](https://github.com/oarepo/oarepo-runtime/compare/v4.2.0...v4.3.0)
+
+- [`19a374c6`](https://github.com/oarepo/oarepo-runtime/commit/19a374c6dac70efde3281c32bed9fc0879f5a9e4) fix: Limit maximum number of creators to 30 during signposting.
+- [`55572f92`](https://github.com/oarepo/oarepo-runtime/commit/55572f9260ff4f5d3e2b582c579a89616e7333e8) fix: babel.getlocale instead of current_i18n
+- [`8f64cc83`](https://github.com/oarepo/oarepo-runtime/commit/8f64cc83a71493b2694c1420e21ad06be294d1fc) feat: add exporter parameter for record about section
+- [`370aaeb3`](https://github.com/oarepo/oarepo-runtime/commit/370aaeb32d18b12105c0b2889c45faca3b3f9f54) [skip ci] Bump version to v4.2.0
 
 ---
 
