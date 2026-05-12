@@ -215,3 +215,10 @@ output/
 pnpm-lock.yaml
 
 .local-packages
+
+
+.idea/
+tools/.venv/
+.local-packages/
+dist/
+*.egg-info/
