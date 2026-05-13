@@ -117,7 +117,7 @@ def remove_production_section(pyproject_path: Path) -> None:
         data = tomllib.load(fh)
         project = data.get("project", {})
     project.get("optional-dependencies", {}).pop("production", None)
-    project.get("optional-dependencies", {}).pop("ccmm-production", None)
+    project.get("optional-dependencies", {}).pop("ccmm", None)
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
@@ -144,7 +144,7 @@ def pin_pyproject_deps(
     optional_dependencies = project.get("optional-dependencies", {})
     for source_extra, target_extra in [
         ("development", "production"),
-        ("ccmm-development", "ccmm-production"),
+        ("ccmm-development", "ccmm"),
     ]:
         development_dependencies = optional_dependencies.get(source_extra, [])
         production_dependencies = [_pin(dep) for dep in development_dependencies]
@@ -163,7 +163,7 @@ def unpin_development_major_versions(pyproject_path: Path) -> None:
     for extra_name in ["development", "ccmm-development"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
-            if dep.startswith("oarepo-"):  # todo??  or dep.startswith("ccmm-invenio")
+            if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
                 # always suppose that the first specifier is the >= specifier
                 req = Requirement(dep)
                 first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
@@ -185,7 +185,7 @@ def pin_development_major_versions(
     for extra_name in ["development", "ccmm-development"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
-            if dep.startswith("oarepo-"): #todo?? or dep.startswith("ccmm-invenio")
+            if dep.startswith("oarepo-"): # Apply only to oarepo packages, others use different versioning schemes
                 req = Requirement(dep)
                 if req.name not in resolved:
                     raise ValueError(f"Dependency {dep} not found in resolved dependencies")
