@@ -117,6 +117,7 @@ def remove_production_section(pyproject_path: Path) -> None:
         data = tomllib.load(fh)
         project = data.get("project", {})
     project.get("optional-dependencies", {}).pop("production", None)
+    project.get("optional-dependencies", {}).pop("ccmm", None)
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
@@ -141,9 +142,13 @@ def pin_pyproject_deps(
         project = data.get("project", {})
     original_data = tomli_w.dumps(data).encode()
     optional_dependencies = project.get("optional-dependencies", {})
-    development_dependencies = optional_dependencies.get("development", None)
-    production_dependencies = [_pin(dep) for dep in development_dependencies]
-    optional_dependencies["production"] = production_dependencies
+    for source_extra, target_extra in [
+        ("development", "production"),
+        ("ccmm-development", "ccmm"),
+    ]:
+        development_dependencies = optional_dependencies.get(source_extra, [])
+        production_dependencies = [_pin(dep) for dep in development_dependencies]
+        optional_dependencies[target_extra] = production_dependencies
     new_data = tomli_w.dumps(data).encode()
     pyproject_path.write_bytes(new_data)
     return original_data != new_data
@@ -154,15 +159,17 @@ def unpin_development_major_versions(pyproject_path: Path) -> None:
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
         project = data.get("project", {})
-    development_deps = project.get("optional-dependencies", {}).get("development", [])
-    for idx, dep in enumerate(development_deps):
-        if dep.startswith("oarepo-"):
-            # always suppose that the first specifier is the >= specifier
-            req = Requirement(dep)
-            first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
-            development_deps[idx] = _rebuild_requirement(
-                req, f">={first_specifier.version}"
-            )
+    optional_dependencies = project.get("optional-dependencies", {})
+    for extra_name in ["development", "ccmm-development"]:
+        development_deps = optional_dependencies.get(extra_name, [])
+        for idx, dep in enumerate(development_deps):
+            if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
+                # always suppose that the first specifier is the >= specifier
+                req = Requirement(dep)
+                first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
+                development_deps[idx] = _rebuild_requirement(
+                    req, f">={first_specifier.version}"
+                )
 
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
@@ -174,16 +181,18 @@ def pin_development_major_versions(
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
         project = data.get("project", {})
-    development_deps = project.get("optional-dependencies", {}).get("development", [])
-    for idx, dep in enumerate(development_deps):
-        if dep.startswith("oarepo-"):
-            req = Requirement(dep)
-            if req.name not in resolved:
-                raise ValueError(f"Dependency {dep} not found in resolved dependencies")
-            next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
-            development_deps[idx] = _rebuild_requirement(
-                req, f">={resolved[req.name]},<{next_major_version}.0.0"
-            )
+    optional_dependencies = project.get("optional-dependencies", {})
+    for extra_name in ["development", "ccmm-development"]:
+        development_deps = optional_dependencies.get(extra_name, [])
+        for idx, dep in enumerate(development_deps):
+            if dep.startswith("oarepo-"): # Apply only to oarepo packages, others use different versioning schemes
+                req = Requirement(dep)
+                if req.name not in resolved:
+                    raise ValueError(f"Dependency {dep} not found in resolved dependencies")
+                next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
+                development_deps[idx] = _rebuild_requirement(
+                    req, f">={resolved[req.name]},<{next_major_version}.0.0"
+                )
 
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
@@ -387,16 +396,18 @@ def extract_oarepo_packages(pyproject_path: Path) -> dict[str, tuple[str, str, s
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
         project = data.get("project", {})
-    development_deps = project.get("optional-dependencies", {}).get("development", [])
+    optional_dependencies = project.get("optional-dependencies", {})
     oarepo_github = data.get("tool", {}).get("oarepo", {}).get("github", {})
     packages = {}
-    for dep in development_deps:
-        req = Requirement(dep)
-        try:
-            org, repo, branch = find_package_on_github(oarepo_github, req.name)
-        except KeyError:
-            continue
-        packages[req.name] = (org, repo, branch)
+    for extra_name in ["development", "ccmm-development"]:
+        development_deps = optional_dependencies.get(extra_name, [])
+        for dep in development_deps:
+            req = Requirement(dep)
+            try:
+                org, repo, branch = find_package_on_github(oarepo_github, req.name)
+            except KeyError:
+                continue
+            packages[req.name] = (org, repo, branch)
     return packages
 
 
