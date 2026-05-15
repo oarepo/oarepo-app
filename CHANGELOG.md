@@ -2,11 +2,39 @@
 
 ## Contents
 
+- [3.0.0](#300)
 - [2.3.0](#230)
 - [2.2.0](#220)
 - [2.1.0](#210)
 - [2.0.1](#201)
-- [1.0.0](#100)
+
+---
+
+## 3.0.0
+
+Released: **May 15, 2026 at 07:46 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 2.3.1
+2.2.0 → 2.3.1
+
+
+#### `oarepo-runtime` 4.5.0
+[4.3.0 → 4.5.0](https://github.com/oarepo/oarepo-runtime/compare/v4.3.0...v4.5.0)
+
+- [`838e62a1`](https://github.com/oarepo/oarepo-runtime/commit/838e62a1b9308984bcc92a6f93850aeb65271b01) fix: Fix return types of ExportEngine, add option to choose export representation.
+- [`6bf6f911`](https://github.com/oarepo/oarepo-runtime/commit/6bf6f911a3b76b1086cccfff077509e398e2329d) fix: Fix return types of ExportEngine, add option to choose export representation.
+- [`679c5dd4`](https://github.com/oarepo/oarepo-runtime/commit/679c5dd44cb900a735b9045a2609f923a2db7ad9) [skip ci] Bump version to v4.4.0
+- [`1461af57`](https://github.com/oarepo/oarepo-runtime/commit/1461af570fa44ba222155b72a2faa8d0f473c3e8) feat: Introduce ExportEngine class with a caching mechanism to avoid doing the same export multiple times.
+- [`4d857740`](https://github.com/oarepo/oarepo-runtime/commit/4d85774068b4874cbd6a359e294dee8810ac51c7) chore: format
+- [`db233966`](https://github.com/oarepo/oarepo-runtime/commit/db2339669fc03b2235da99a85042b87c6a573230) [skip ci] Bump version to v4.3.0
+
+#### `oarepo-ui` 9.2.0
+[9.1.5 → 9.2.0](https://github.com/oarepo/oarepo-ui/compare/v9.1.5...v9.2.0)
+
+- [`8cf56bc7`](https://github.com/oarepo/oarepo-ui/commit/8cf56bc7d67a556fe5a83de0857fd2219a4c7375) feat: use ExportEngine cache context to optimize export caching in record_detail
+- [`db32b181`](https://github.com/oarepo/oarepo-ui/commit/db32b181a725817a7282e8fc585078360b51cf92) [skip ci] Bump version to v9.1.5
 
 ---
 
