@@ -2,11 +2,49 @@
 
 ## Contents
 
+- [4.0.0](#400)
 - [3.0.0](#300)
 - [2.3.0](#230)
 - [2.2.0](#220)
 - [2.1.0](#210)
-- [2.0.1](#201)
+
+---
+
+## 4.0.0
+
+Released: **May 15, 2026 at 09:16 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `oarepo-app` 3.0.0 💥
+2.3.1 → 3.0.0
+
+
+#### `oarepo-doi` 4.0.1 💥
+[3.0.2 → 4.0.1](https://github.com/oarepo/oarepo-doi/compare/v3.0.2...v4.0.1)
+
+- [`18b477c7`](https://github.com/oarepo/oarepo-doi/commit/18b477c7a81c0b5cd78a8cb2b0779f89f7f36f3c) Merge pull request #44 from oarepo/default-configuration
+- [`1723a882`](https://github.com/oarepo/oarepo-doi/commit/1723a882b819f8619b4e737243b314d0a3adaacf) default configuration special fallback
+- [`a7f05f5f`](https://github.com/oarepo/oarepo-doi/commit/a7f05f5fbefa28ccfb196df4207c0adf72a32da8) chore: bump version
+- [`07edae16`](https://github.com/oarepo/oarepo-doi/commit/07edae16d5194bd2dfd39c7b37da1078a93ac990) feat: add default community fallback for DOI configuration
+- [`b6511f77`](https://github.com/oarepo/oarepo-doi/commit/b6511f772acc65d7043ffa74e9506eb0b76c3574) version
+- [`ba11529d`](https://github.com/oarepo/oarepo-doi/commit/ba11529d8833fd9361d8404c9c1272fab5cd7c51) add documentation
+- [`28e4e292`](https://github.com/oarepo/oarepo-doi/commit/28e4e292233ff1fe44f5ac0d1119b67ade44d97e) fix: test linter
+- [`8e125169`](https://github.com/oarepo/oarepo-doi/commit/8e125169c3e04f029f8fd47d04c0cde799fb8ca0) remove unused code
+- [`ca08989f`](https://github.com/oarepo/oarepo-doi/commit/ca08989f72ca769ce9a0a5a9165a09893b975696) datacite provider test
+- [`71a9c28a`](https://github.com/oarepo/oarepo-doi/commit/71a9c28af8d3764c58228a9a45adc5148d1fe74b) chore: lint
+- [`5661dcc6`](https://github.com/oarepo/oarepo-doi/commit/5661dcc61251416d7f2fdac0b35ab8902fa35bec) fix(ci): restore jobs block in test workflow
+- [`b2a42e21`](https://github.com/oarepo/oarepo-doi/commit/b2a42e21c31982f4273db6d2b97cdd3f425c7db6) chore: bump Python version
+- [`63e374c2`](https://github.com/oarepo/oarepo-doi/commit/63e374c2fdf15573d2544a8b1816b544b22030a4) feat: add record aware provider
+- [`7346c6d0`](https://github.com/oarepo/oarepo-doi/commit/7346c6d0d954d77e79cc43f3e6aebac9dacbaaba) format
+- [`986eb5f0`](https://github.com/oarepo/oarepo-doi/commit/986eb5f0caca10a218d1f15701f1fd77e39a663e) record aware code
+- [`d379a308`](https://github.com/oarepo/oarepo-doi/commit/d379a308a14be6789269f0b6dd99d0cd1a7beb2a) doi config on rdm14
+- [`474b18f7`](https://github.com/oarepo/oarepo-doi/commit/474b18f796dbe63aea90d4e13755ffe4efa3fb1d) doi config on rdm13
+- [`b82339ad`](https://github.com/oarepo/oarepo-doi/commit/b82339adac20214cda31c3b6642969284ea6dc89) version
+- [`251a6636`](https://github.com/oarepo/oarepo-doi/commit/251a6636f2eb0d0e5ef06f73905d274c128d29d9) disable tests
+- [`cf881f0f`](https://github.com/oarepo/oarepo-doi/commit/cf881f0f64bd6f349b6a0ac563881da87b82eb9b) rdm13 refactor
 
 ---
 
