@@ -2,16 +2,43 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-from typing import Callable
+from typing import Any, Callable
 
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
-from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.generators import AuthenticatedUser, Generator
 from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_workflows.base import Workflow
 from oarepo_workflows.requests.policy import WorkflowRequestPolicy
+from oarepo_workflows.services.permissions import IfInState
+from oarepo_workflows.services.permissions.generators import HasActionNeed, UserWithRole
 
 from .workflow_permissions import DefaultRDMWorkflowPermissions
+
+
+def add_if_in_state(
+    states: list[str],
+    generators: tuple[Generator, ...] | list[Generator],
+) -> list[Generator]:
+    """Wrap generators in an :class:`IfInState` constraint when states are provided.
+
+    If *states* is non-empty, returns a single-element list containing an
+    :class:`~oarepo_workflows.services.permissions.IfInState` generator that
+    activates *generators* only when the record is in one of the listed states.
+    If *states* is empty the generators are returned unchanged as a plain list.
+
+    Args:
+        states: Workflow state names that gate the generators.  Pass an empty
+            list to apply the generators unconditionally.
+        generators: Permission generators to conditionally wrap.
+
+    Returns:
+        A list of generators, optionally wrapped in an :class:`IfInState`
+        constraint.
+    """
+    if not states:
+        return list(generators)
+    return [IfInState(states, then_=generators)]
 
 
 @dataclasses.dataclass
@@ -70,6 +97,28 @@ class BaseWorkflowSettings:
     it will be used as a mixin for the generated request policy.
     """
 
+    authenticated_draft_creation: bool = False
+    """Allow authenticated users to create draft records.
+
+    When enabled and no role- or need-based restrictions are configured, any
+    authenticated user may create a draft.  Subclasses may override this
+    default (e.g. :class:`IndividualWorkflow` sets it to ``True``).
+    """
+
+    draft_creation_roles: list[str] = dataclasses.field(default_factory=list)
+    """Restrict draft creation to users who hold at least one of these site-wide roles.
+
+    When non-empty, takes priority over :attr:`authenticated_draft_creation`.
+    """
+
+    draft_creation_needs: list[str] = dataclasses.field(default_factory=list)
+    """Restrict draft creation to users who hold at least one of these permission needs.
+
+    When non-empty, takes priority over :attr:`authenticated_draft_creation`.
+    """
+
+    # --- public API -----------------------------------------------------------
+
     def build_workflow(self) -> Workflow:
         """Build and return the workflow instance."""
         permissions: type[BasePermissionPolicy] = self._build_permission_policy()
@@ -95,6 +144,78 @@ class BaseWorkflowSettings:
             permission_policy_cls=permissions,
             request_policy_cls=request_policy,
         )
+
+    # --- protected helpers ----------------------------------------------------
+
+    def _build_record_view_permissions(self) -> tuple[Generator, ...]:
+        """Build per-state view permission generators from :attr:`record_view_permissions`.
+
+        Returns:
+            A tuple of :class:`~oarepo_workflows.services.permissions.IfInState`
+            generators – one per entry in :attr:`record_view_permissions` – or
+            an empty tuple when no overrides are configured.
+        """
+        if not self.record_view_permissions:
+            return ()
+        return tuple(
+            IfInState(state, then_=generators)
+            for state, generators in self.record_view_permissions.items()
+        )
+
+    def _build_record_create_generators(self) -> tuple[Generator, ...]:
+        """Build generators that control who may create a new draft record.
+
+        Applies the following priority order:
+
+        1. **Role-based** – :attr:`draft_creation_roles`: users holding any of
+           these site-wide roles are allowed.
+        2. **Need-based** – :attr:`draft_creation_needs`: users possessing any
+           of these permission needs are allowed.
+        3. **Authenticated fallback** – when neither (1) nor (2) are set and
+           :attr:`authenticated_draft_creation` is ``True``, any authenticated
+           user is allowed.
+
+        Subclasses may call ``super()._build_record_create_generators()`` and
+        extend the returned tuple with additional generators.
+
+        Returns:
+            A tuple of permission generators for the ``can_create`` policy action.
+        """
+        create_generators: list[Generator] = []
+        if self.draft_creation_roles:
+            create_generators += [
+                UserWithRole(role) for role in self.draft_creation_roles
+            ]
+        if self.draft_creation_needs:
+            create_generators += [
+                HasActionNeed(action) for action in self.draft_creation_needs
+            ]
+        if not create_generators and self.authenticated_draft_creation:
+            create_generators = [AuthenticatedUser()]
+        return tuple(create_generators)
+
+    def _create_request_policy(
+        self,
+        class_name: str,
+        requests: dict[str, Any],
+    ) -> type[WorkflowRequestPolicy]:
+        """Dynamically create a named :class:`WorkflowRequestPolicy` subclass.
+
+        This is a thin convenience wrapper around :func:`type` that removes the
+        boilerplate of repeating ``(self.base_request_policy,)`` in every
+        ``_build_request_policy`` override.
+
+        Args:
+            class_name: The ``__name__`` to assign to the generated class.
+            requests: A mapping of request-type IDs to
+                :class:`~oarepo_workflows.requests.WorkflowRequest` instances
+                that will become class-level attributes of the new policy.
+
+        Returns:
+            A freshly created subclass of :attr:`base_request_policy` with
+            *requests* merged in as class attributes.
+        """
+        return type(class_name, (self.base_request_policy,), requests)
 
     @abc.abstractmethod
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
