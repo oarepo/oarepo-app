@@ -17,3 +17,12 @@ jobs:
 
       - name: Build package
         run: uv build
+
+  integration:
+    permissions:
+      contents: read
+    uses: oarepo/oarepo/.github/workflows/repository-generation-test.yaml@main
+    with:
+      model_template: ${{ github.event.pull_request.head.repo.html_url }}
+      model_template_version: ${{ github.event.pull_request.head.sha }}
+      oarepo_app_ref: ${{ github.event.pull_request.head.sha }}
