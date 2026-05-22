@@ -70,6 +70,29 @@ def app_config(app_config):
         ).build_workflow(),
         # community workflows. Note: using slugs because we name communities in tests in the same way as workflows they use
         CommunityWorkflow(code="default-community").build_workflow(),
+        # members can also create drafts
+        CommunityWorkflow(
+            code="community-member-creates",
+            draft_creation_community_roles=["member", "submitter"],
+        ).build_workflow(),
+        # any authenticated user can create (community-open)
+        CommunityWorkflow(
+            code="community-open", authenticated_draft_creation=True
+        ).build_workflow(),
+        # curators are added as review requesters
+        CommunityWorkflow(
+            code="community-curator-requests", community_curator_roles=["curator"]
+        ).build_workflow(),
+        # members can read drafts/submitted + restricted published records
+        CommunityWorkflow(
+            code="community-member-reads",
+            read_draft_community_roles=["member"],
+            read_restricted_community_roles=["member"],
+        ).build_workflow(),
+        # members can manage records
+        CommunityWorkflow(
+            code="community-member-manages", record_manage_community_roles=["member"]
+        ).build_workflow(),
     ]
 
     app_config["COMMUNITIES_ROLES"] = [
@@ -189,6 +212,37 @@ def communities(
 
     return {
         "default-community": create_community("default-community"),
+        "community-member-creates": create_community("community-member-creates"),
+        "community-open": create_community("community-open"),
+        "community-curator-requests": create_community("community-curator-requests"),
+        "community-member-reads": create_community("community-member-reads"),
+        "community-member-manages": create_community("community-member-manages"),
+    }
+
+
+@pytest.fixture
+def restricted_record():
+    return {
+        "metadata": {
+            "title": "restricted blah",
+            "resource_type": {"id": "dataset"},
+            "publication_date": "2024-01-01",
+            "creators": [
+                {
+                    "person_or_org": {
+                        "type": "personal",
+                        "name": "Jane Doe",
+                        "first_name": "Jane",
+                        "family_name": "Doe",
+                    }
+                }
+            ],
+        },
+        "access": {
+            "record": "restricted",
+            "files": "restricted",
+        },
+        "files": {"enabled": False},
     }
 
 

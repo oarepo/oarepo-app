@@ -225,3 +225,6 @@ dist/
 
 .env-services
 .runner.sh
+
+coverage.json
+junit.xml

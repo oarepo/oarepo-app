@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 
+from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.generators import RecordOwners
 from invenio_records_permissions.generators import Generator
@@ -24,10 +25,10 @@ from .base import BaseWorkflowSettings, add_if_in_state
 class IndividualWorkflow(BaseWorkflowSettings):
     """Workflow configuration for deposits outside of communities."""
 
-    code = "individual"
+    code: str = "individual"
     """Unique code identifier for this workflow."""
 
-    label = _("Individual Submission Workflow")
+    label: LazyString = _("Individual Submission Workflow")
     """Human-readable label for this workflow."""
 
     authenticated_draft_creation: bool = True
