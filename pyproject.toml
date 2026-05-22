@@ -13,7 +13,7 @@ dependencies = [
 
 [project.optional-dependencies]
 ccmm-development = [
-    "ccmm-invenio>=1.1.0,<1.2.0",
+    "ccmm-invenio>=1.1.9,<1.2.0",
 ]
 development = [
     "oarepo[s3]>=14.2.1b10dev7,<15.0.0",
@@ -59,7 +59,7 @@ production = [
     "oarepo-doi==4.0.1",
 ]
 ccmm = [
-    "ccmm-invenio==1.1.8",
+    "ccmm-invenio==1.1.9",
 ]
 
 [project.entry-points."invenio_config.module"]
