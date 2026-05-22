@@ -62,6 +62,10 @@ ccmm = [
     "ccmm-invenio==1.1.8",
 ]
 
+[project.entry-points."invenio_config.module"]
+oarepo_app = "oarepo_app.workarounds"
+
+
 [build-system]
 requires = [
     "hatchling",
