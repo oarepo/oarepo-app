@@ -1,0 +1,175 @@
+from __future__ import annotations
+
+import dataclasses
+
+from invenio_i18n import LazyString
+from invenio_i18n import lazy_gettext as _
+from invenio_rdm_records.services.generators import RecordOwners
+from invenio_records_permissions.generators import Generator
+from invenio_records_permissions.policies.base import BasePermissionPolicy
+from oarepo_requests.services.permissions.generators import RequestActive
+from oarepo_requests.types import PublishDraftRequestType
+from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
+from oarepo_workflows.requests.policy import WorkflowRequestPolicy
+from oarepo_workflows.services.permissions import IfInState
+from oarepo_workflows.services.permissions.composite import (
+    CompositeAndGenerator,
+    CompositePermissionPolicyMixin,
+)
+from oarepo_workflows.services.permissions.generators import HasActionNeed, UserWithRole
+
+from .base import BaseWorkflowSettings, add_if_in_state
+
+
+@dataclasses.dataclass
+class IndividualWorkflow(BaseWorkflowSettings):
+    """Workflow configuration for deposits outside of communities."""
+
+    code: str = "individual"
+    """Unique code identifier for this workflow."""
+
+    label: LazyString = _("Individual Submission Workflow")
+    """Human-readable label for this workflow."""
+
+    authenticated_draft_creation: bool = True
+    """Allow authenticated users to create drafts in this workflow.
+
+    Overrides the base-class default of ``False``; any authenticated user can
+    create a draft unless more-specific role or need restrictions are configured
+    via :attr:`~BaseWorkflowSettings.draft_creation_roles` or
+    :attr:`~BaseWorkflowSettings.draft_creation_needs`.
+    """
+
+    publish_without_review: bool = False
+    """Allow draft owners to publish without submitting a review request.
+
+    When enabled, draft owners can publish directly, subject to
+    :attr:`publish_without_review_states`.
+    """
+
+    publish_without_review_roles: list[str] = dataclasses.field(default_factory=list)
+    """Roles that allow a draft owner to publish without a review request.
+
+    Users must still be owners of the draft record. If the list is non-empty,
+    :attr:`publish_without_review` is ignored.
+    """
+
+    publish_without_review_needs: list[str] = dataclasses.field(default_factory=list)
+    """Permission needs that allow a draft owner to publish without a review request.
+
+    Users must still be owners of the draft record. If the list is non-empty,
+    :attr:`publish_without_review` is ignored.
+    """
+
+    publish_without_review_states: list[str] = dataclasses.field(
+        default_factory=lambda: ["draft"]
+    )
+    """Record workflow states in which publication without review is allowed."""
+
+    review_required: bool = False
+    """Require a review request before publication.
+
+    If :attr:`publish_without_review` is ``False`` and :attr:`review_required`
+    is ``False``, records can only be published through a community workflow.
+    """
+
+    reviewer_roles: list[str] = dataclasses.field(default_factory=list)
+    """Roles that allow users to review and curate records.
+
+    Users with these roles are also granted read access to draft records.
+    """
+
+    reviewer_needs: list[str] = dataclasses.field(default_factory=list)
+    """Permission needs that allow users to review and curate records.
+
+    Users with these needs are also granted read access to draft records.
+    """
+
+    def _build_permission_policy(self) -> type[BasePermissionPolicy]:
+        class PermissionPolicy(
+            CompositePermissionPolicyMixin, self.base_permission_policy
+        ):
+            """A permission policy for the workflow."""
+
+            can_create = self._build_record_create_generators()
+            can_publish = add_if_in_state(
+                self.publish_without_review_states,
+                self._build_record_publish_generators(),
+            ) + [IfInState("submitted", then_=[RequestActive()])]
+            can_read = (
+                self.base_permission_policy.can_read
+                + self._build_record_view_permissions()
+            )
+
+        return PermissionPolicy
+
+    def _build_record_publish_generators(self) -> tuple[Generator, ...]:
+        """Build generators that control who may publish a draft without a review request.
+
+        Applies the following priority order:
+
+        1. **Role-based** – :attr:`publish_without_review_roles`: owners who also
+           hold any of these roles may publish directly.
+        2. **Need-based** – :attr:`publish_without_review_needs`: owners who also
+           possess any of these permission needs may publish directly.
+        3. **Owner fallback** – when neither (1) nor (2) are set and
+           :attr:`publish_without_review` is ``True``, the draft owner may publish
+           directly.
+
+        Note:
+            ``SystemProcess`` is added automatically by the base policy; it does
+            not need to be included here.
+
+        Returns:
+            A tuple of permission generators for the ``can_publish`` policy action.
+        """
+        publish_generators: list[Generator] = []
+        if self.publish_without_review_roles:
+            publish_generators += [
+                CompositeAndGenerator(RecordOwners(), UserWithRole(role_name))
+                for role_name in self.publish_without_review_roles
+            ]
+        if self.publish_without_review_needs:
+            publish_generators += [
+                CompositeAndGenerator(RecordOwners(), HasActionNeed(action))
+                for action in self.publish_without_review_needs
+            ]
+        if not publish_generators and self.publish_without_review:
+            publish_generators = [RecordOwners()]
+        return tuple(publish_generators)
+
+    def _build_request_policy(self) -> type[WorkflowRequestPolicy]:
+        if not self.review_required:
+            return self.base_request_policy
+
+        reviewer_generators: list[UserWithRole | HasActionNeed] = []
+        if self.reviewer_roles:
+            reviewer_generators = [UserWithRole(role) for role in self.reviewer_roles]
+        if self.reviewer_needs:
+            reviewer_generators.extend(
+                [HasActionNeed(need) for need in self.reviewer_needs]
+            )
+        if not self.publish_after_review:
+            raise NotImplementedError(
+                "Disabling publish_after_review is not supported in this version, "
+                "please ask the maintainers to enable it"
+            )
+
+        requests = {
+            PublishDraftRequestType.type_id: WorkflowRequest(
+                requesters=[
+                    IfInState(
+                        ["draft", "review_requested"],
+                        [RecordOwners(), *reviewer_generators],
+                    )
+                ],
+                recipients=reviewer_generators,
+                transitions=WorkflowTransitions(
+                    submitted="submitted",
+                    accepted="published",
+                    declined="review_requested",
+                ),
+            )
+        }
+
+        return self._create_request_policy("GlobalReviewRequestPolicy", requests)

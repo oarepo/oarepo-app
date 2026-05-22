@@ -16,7 +16,7 @@ ccmm-development = [
     "ccmm-invenio>=1.1.0,<1.2.0",
 ]
 development = [
-    "oarepo[s3]>=14.0.0b1,<15.0.0",
+    "oarepo[s3]>=14.2.1b10dev7,<15.0.0",
     "marshmallow-i18n-messages>=0.1.0,<1.0.0",
     "oarepo-communities>=8.1.0,<9.0.0",
     "oarepo-dashboard>=4.0.0,<5.0.0",
@@ -54,6 +54,13 @@ production = [
 ccmm = [
     "ccmm-invenio==1.1.6",
 ]
+oarepo14 = [
+    "oarepo[rdm,tests]>=14.0.0,<15.0.0",
+]
+tests = [
+    "pytest",
+    "pytest-oarepo>=3,<4"
+]
 
 [build-system]
 requires = [
@@ -85,5 +92,8 @@ repository = "invenio-typing-stubs"
 org = "oarepo"
 include = "oarepo-.*"
 branch = "main"
+
+[tool.oarepo]
+default_extras = "development,tests,oarepo14"
 
 [tool.uv.sources]
