@@ -2,11 +2,92 @@
 
 ## Contents
 
+- [5.0.0](#500)
 - [4.0.0](#400)
 - [3.0.0](#300)
 - [2.3.0](#230)
 - [2.2.0](#220)
-- [2.1.0](#210)
+
+---
+
+## 5.0.0
+
+Released: **May 23, 2026 at 05:20 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.9
+[1.1.6 → 1.1.9](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.6...v1.1.9)
+
+- [`2c8061c6`](https://github.com/nrp-cz/ccmm-invenio/commit/2c8061c6ce300796f96c6333d7c8e37b5ac03ceb) major bump due to oarepo-ui major bump
+- [`aa6283b5`](https://github.com/nrp-cz/ccmm-invenio/commit/aa6283b5d15e82644c7ac2adb85d9da737c82ca0) [skip ci] Bump version to v1.1.8
+- [`e38cf4e0`](https://github.com/nrp-cz/ccmm-invenio/commit/e38cf4e03056feaba12975e9d154721ee7524513) custom fillfactor for files and access
+- [`9a19e1b4`](https://github.com/nrp-cz/ccmm-invenio/commit/9a19e1b4510d789fc0656a4a8b9ed17ea41e09ee) changed names for section props
+- [`e726005b`](https://github.com/nrp-cz/ccmm-invenio/commit/e726005bc55a5794399ed5f5800858d0c69707a6) [skip ci] Bump version to v1.1.7
+- [`0d68d38e`](https://github.com/nrp-cz/ccmm-invenio/commit/0d68d38eeea10787167153853a2d895b87385a59) feat: added doi widget
+- [`baa5a62a`](https://github.com/nrp-cz/ccmm-invenio/commit/baa5a62aec41c2d42d3e7836c6d84e69dca26ce3) removed invenio copyright header
+
+#### `oarepo-app` 4.0.0 💥
+3.0.0 → 4.0.0
+
+
+#### `oarepo-communities` 8.1.3
+[8.1.0 → 8.1.3](https://github.com/oarepo/oarepo-communities/compare/v8.1.0...v8.1.3)
+
+- [`045f70b0`](https://github.com/oarepo/oarepo-communities/commit/045f70b0632f658eda3a047e0d45989040f3610a) OARepoCommunityRoles generators return empty list on MissingCommunitiesError and MissingDefaultCommunityError
+- [`b2c2a192`](https://github.com/oarepo/oarepo-communities/commit/b2c2a192e45035c3808969edc53219927165e01a) [skip ci] Bump version to v8.1.2
+- [`f60717a2`](https://github.com/oarepo/oarepo-communities/commit/f60717a2e401d654811ab746dd599d7275e1f244) fix: InAnyCommunities can not be used in can_create - duplicated 'data'
+- [`66a10887`](https://github.com/oarepo/oarepo-communities/commit/66a108871bd0784738f627408cf531943458dfa9) [skip ci] Bump version to v8.1.1
+- [`b1715957`](https://github.com/oarepo/oarepo-communities/commit/b1715957fa07f4f1dab07c0445b641b6cd6141be) using invenio's subheader
+- [`6989463a`](https://github.com/oarepo/oarepo-communities/commit/6989463ab6c2da84f7e21d502b048c32fd5f5b9c) [skip ci] Bump version to v8.1.0
+
+#### `oarepo-dashboard` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/oarepo/oarepo-dashboard/compare/v4.0.0...v5.0.0)
+
+- [`cdd88be9`](https://github.com/oarepo/oarepo-dashboard/commit/cdd88be94e8ce3674b902b1c1ddf9bc81b3f0825) Major version bump
+
+#### `oarepo-rdm` 4.0.0 💥
+[3.2.0 → 4.0.0](https://github.com/oarepo/oarepo-rdm/compare/v3.2.0...v4.0.0)
+
+- [`19f181ef`](https://github.com/oarepo/oarepo-rdm/commit/19f181efc84b65ae6d9e68e940e9919d78b282ca) major bump due to oarepo-ui major version bump (#91)
+- [`1a5d8a96`](https://github.com/oarepo/oarepo-rdm/commit/1a5d8a960492de221e095756881f9d875c7dcc8d) [skip ci] Bump version to v3.4.0
+- [`7c7114bf`](https://github.com/oarepo/oarepo-rdm/commit/7c7114bffe6a35b0df60ab29d7c46f123efc3ae6) added doi field config to formconfig (#89)
+- [`1a852774`](https://github.com/oarepo/oarepo-rdm/commit/1a8527749b784ab891117004474ed7199c202899) renamed component from dummy to example (#87)
+- [`3ef4dcbb`](https://github.com/oarepo/oarepo-rdm/commit/3ef4dcbb934a81b779a2cf8941005903ca9b63d9) [skip ci] Bump version to v3.3.0
+- [`db8fec7b`](https://github.com/oarepo/oarepo-rdm/commit/db8fec7b6c83867a9a9253a8ae585812846c08e8) added uploads new point (moved from oarepo-ui) (#88)
+- [`c1c3775a`](https://github.com/oarepo/oarepo-rdm/commit/c1c3775a157aa7d9628af2f03e207d2ed92ce28c) [skip ci] Bump version to v3.2.0
+
+#### `oarepo-requests` 5.4.0
+[5.2.0 → 5.4.0](https://github.com/oarepo/oarepo-requests/compare/v5.2.0...v5.4.0)
+
+- [`f5228148`](https://github.com/oarepo/oarepo-requests/commit/f5228148796c4eec259c31a4117af09051f3e24f) Cache default request receiver function (#185)
+- [`a1af1d08`](https://github.com/oarepo/oarepo-requests/commit/a1af1d089c7c949464b6be687e13d11c94f20fab) [skip ci] Bump version to v5.3.0
+- [`e8b84303`](https://github.com/oarepo/oarepo-requests/commit/e8b84303fce41611479eaacfb1f305c1feb8b988) Feat: group recipient and notification resolver (#184)
+- [`e49d97cd`](https://github.com/oarepo/oarepo-requests/commit/e49d97cd7859a442c09488bcd90501bfcd61deb3) [skip ci] Bump version to v5.2.0
+
+#### `oarepo-ui` 10.2.0 💥
+[9.2.0 → 10.2.0](https://github.com/oarepo/oarepo-ui/compare/v9.2.0...v10.2.0)
+
+- [`e05d7c45`](https://github.com/oarepo/oarepo-ui/commit/e05d7c4547b6b399d3c2cb4f8e5b783a8e24d7b3) fix: fixes for manage menu on detail
+- [`6069999d`](https://github.com/oarepo/oarepo-ui/commit/6069999d50fb94d836f92efa189750d8ee0aa0af) feat: added metadata summary overridable below steps
+- [`63949431`](https://github.com/oarepo/oarepo-ui/commit/63949431f35897c6d8f2097005fa1120c1b08a19) [skip ci] Bump version to v10.1.0
+- [`918a413b`](https://github.com/oarepo/oarepo-ui/commit/918a413b2a4bad4e0f6f707f0af61fc2e3a67ce4) section fillness indicator (#438)
+- [`d0290937`](https://github.com/oarepo/oarepo-ui/commit/d0290937cbeaaffc4e6b86c3738fc1a6b900b8bf) moved uploads new to oarepo-rdm
+- [`9ebec6ca`](https://github.com/oarepo/oarepo-ui/commit/9ebec6ca8de0d5ecfd77e6a8bee171337998fa51) major bump
+- [`5d8457e9`](https://github.com/oarepo/oarepo-ui/commit/5d8457e92882cccdd7acfd11c89ef96237f53812) [skip ci] Bump version to v9.2.0
+
+#### `oarepo-vocabularies` 6.0.0 💥
+[5.0.0 → 6.0.0](https://github.com/oarepo/oarepo-vocabularies/compare/v5.0.0...v6.0.0)
+
+- [`a35b5a21`](https://github.com/oarepo/oarepo-vocabularies/commit/a35b5a21442d6f089944da2f1288f4555d902212) major bump due to oarepo-ui major bump (#257)
+
+#### `oarepo-workflows` 4.1.0
+[4.0.2 → 4.1.0](https://github.com/oarepo/oarepo-workflows/compare/v4.0.2...v4.1.0)
+
+- [`5925c481`](https://github.com/oarepo/oarepo-workflows/commit/5925c48112637a139bfef69f148c450875e3ea07) Feat datarepo workflows (#53)
+- [`843a73f5`](https://github.com/oarepo/oarepo-workflows/commit/843a73f504dbcf39311997f51f4d9010a70950fd) [skip ci] Bump version to v4.0.2
 
 ---
 
