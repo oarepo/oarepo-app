@@ -63,6 +63,17 @@ jobs:
       - name: Build package
         run: uv build
 
+      - name: Parse oarepo-app version from pyproject.toml
+        id: app-version
+        run: |
+          VERSION=$(python3 -c "
+          import tomllib
+          with open('pyproject.toml', 'rb') as f:
+              data = tomllib.load(f)
+          print(data['project']['version'])
+          ")
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Commit and push branch
         id: push
         run: |
@@ -99,7 +110,7 @@ jobs:
                 "- " + .value.github_url + (if .value.breaking then " ⚠️" else "" end))
             ' CHANGELOG.json >> pr_body.md
             PR_URL=$(gh pr create \
-              --title "Update to InvenioRDM ${{ steps.version.outputs.value }}" \
+              --title "[release] Update to InvenioRDM ${{ steps.version.outputs.value }}, oarepo-app ${{ steps.app-version.outputs.value }}" \
               --body-file pr_body.md \
               --base "$BASE" \
               --head "$BRANCH")
