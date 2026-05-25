@@ -29,9 +29,7 @@ from .base import BaseWorkflowSettings
 class CommunityWorkflow(BaseWorkflowSettings):
     """Workflow configuration for deposits inside communities."""
 
-    draft_creation_community_roles: list[str] = dataclasses.field(
-        default_factory=lambda: ["submitter"]
-    )
+    draft_creation_community_roles: list[str] = dataclasses.field(default_factory=lambda: ["submitter"])
     """Restrict draft creation to community members with at least one of these roles.
 
     If not specified (empty list), any member of the community can create a
@@ -74,31 +72,20 @@ class CommunityWorkflow(BaseWorkflowSettings):
         so that each workflow can have independent read/draft/manage permissions.
     """
 
-    community_curator_roles: list[str] = dataclasses.field(default_factory=list)
+    community_curator_roles: list[str] = dataclasses.field(default_factory=lambda: ["curator"])
     """Community roles that allow users to review and curate records."""
 
     # --- permission policy ----------------------------------------------------
 
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(
-            CompositePermissionPolicyMixin, self.base_permission_policy
-        ):
+        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
-            can_read = (
-                self.base_permission_policy.can_read
-                + self._build_record_view_permissions()
-            )
-            can_rdm_manage = self._build_record_rdm_manage_generators(
-                self.base_permission_policy.can_rdm_manage
-            )
-            can_rdm_view = self._build_record_rdm_view_permissions(
-                self.base_permission_policy.can_rdm_view
-            )
-            can_rdm_preview = self._build_record_rdm_preview_generators(
-                self.base_permission_policy.can_rdm_preview
-            )
+            can_read = self.base_permission_policy.can_read + self._build_record_view_permissions()
+            can_rdm_manage = self._build_record_rdm_manage_generators(self.base_permission_policy.can_rdm_manage)
+            can_rdm_view = self._build_record_rdm_view_permissions(self.base_permission_policy.can_rdm_view)
+            can_rdm_preview = self._build_record_rdm_preview_generators(self.base_permission_policy.can_rdm_preview)
             can_publish = [*self.base_permission_policy.can_publish, RequestActive()]
 
         return PermissionPolicy
@@ -147,18 +134,12 @@ class CommunityWorkflow(BaseWorkflowSettings):
         Returns:
             An updated generator list.
         """
-        result = [
-            gen
-            for gen in original_permissions
-            if not isinstance(gen, RecordCommunitiesAction)
-        ]
+        result = [gen for gen in original_permissions if not isinstance(gen, RecordCommunitiesAction)]
         for role in community_roles:
             result.append(CommunityRole(role))
         return result
 
-    def _build_record_rdm_view_permissions(
-        self, original_rdm_permissions: list[Generator]
-    ) -> list[Generator]:
+    def _build_record_rdm_view_permissions(self, original_rdm_permissions: list[Generator]) -> list[Generator]:
         """Build ``can_rdm_view`` generators for this workflow.
 
         Replaces :class:`RecordCommunitiesAction` with
@@ -177,9 +158,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
             original_rdm_permissions, self.read_restricted_community_roles
         )
 
-    def _build_record_rdm_preview_generators(
-        self, original_rdm_permissions: list[Generator]
-    ) -> list[Generator]:
+    def _build_record_rdm_preview_generators(self, original_rdm_permissions: list[Generator]) -> list[Generator]:
         """Build ``can_rdm_preview`` generators for this workflow.
 
         Replaces :class:`RecordCommunitiesAction` with
@@ -194,13 +173,9 @@ class CommunityWorkflow(BaseWorkflowSettings):
         Returns:
             Updated generator list.
         """
-        return self._replace_communities_action_with_roles(
-            original_rdm_permissions, self.read_draft_community_roles
-        )
+        return self._replace_communities_action_with_roles(original_rdm_permissions, self.read_draft_community_roles)
 
-    def _build_record_rdm_manage_generators(
-        self, original_rdm_permissions: list[Generator]
-    ) -> list[Generator]:
+    def _build_record_rdm_manage_generators(self, original_rdm_permissions: list[Generator]) -> list[Generator]:
         """Build ``can_rdm_manage`` generators for this workflow.
 
         Replaces :class:`RecordCommunitiesAction` with
@@ -215,9 +190,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
         Returns:
             Updated generator list.
         """
-        return self._replace_communities_action_with_roles(
-            original_rdm_permissions, self.record_manage_community_roles
-        )
+        return self._replace_communities_action_with_roles(original_rdm_permissions, self.record_manage_community_roles)
 
     # --- request policy -------------------------------------------------------
 

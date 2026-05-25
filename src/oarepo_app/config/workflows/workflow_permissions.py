@@ -90,11 +90,7 @@ class DefaultWorkflowPermissions(BaseWorkflowPermissionPolicy):
     )
 
     # from RDM
-    can_read_deleted = (
-        IfRecordDeleted(
-            then_=[UserManager, SystemProcess()], else_=[SameAs("can_read")]
-        ),
-    )
+    can_read_deleted = (IfRecordDeleted(then_=[UserManager, SystemProcess()], else_=[SameAs("can_read")]),)
     can_update = (IfInState(["draft", "revision_requested"], [RecordOwners()]),)
     can_delete = (IfInState(["draft", "revision_requested"], [RecordOwners()]),)
     can_create = (AuthenticatedUser(),)
@@ -185,7 +181,9 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
 
     Example::
 
-        class MyWorkflowPermissions(DefaultRDMWorkflowPermissions):
+        class MyWorkflowPermissions(
+            DefaultRDMWorkflowPermissions
+        ):
             can_read = [AnyUser()]
 
     in ``invenio.cfg``::
@@ -278,11 +276,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     )
     can_read_draft = (SameAs("can_read"),)
 
-    can_read_deleted = (
-        IfRecordDeleted(
-            then_=[UserManager, SystemProcess()], else_=[SameAs("can_read")]
-        ),
-    )
+    can_read_deleted = (IfRecordDeleted(then_=[UserManager, SystemProcess()], else_=[SameAs("can_read")]),)
     can_read_deleted_files = (SameAs("can_read_deleted"),)
 
     # draft: review hierarchy; revision_requested: curate hierarchy (no external reviewers);
@@ -342,9 +336,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
         IfInState(
             "published",
             [
-                IfRestricted(
-                    "files", then_=[SameAs("can_rdm_view")], else_=[AnyUser()]
-                ),
+                IfRestricted("files", then_=[SameAs("can_rdm_view")], else_=[AnyUser()]),
                 ResourceAccessToken("read"),
             ],
         ),
@@ -362,11 +354,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_manage_files = (
         IfConfig(
             "RDM_ALLOW_METADATA_ONLY_RECORDS",
-            then_=[
-                IfNewRecord(
-                    then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")]
-                )
-            ],
+            then_=[IfNewRecord(then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")])],
             else_=[],
         ),
     )
@@ -394,9 +382,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
         IfInState(
             "published",
             [
-                IfRestricted(
-                    "record", then_=[SameAs("can_rdm_view")], else_=[AnyUser()]
-                ),
+                IfRestricted("record", then_=[SameAs("can_rdm_view")], else_=[AnyUser()]),
                 ResourceAccessToken("read"),
             ],
         ),
@@ -433,11 +419,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_manage_record_access = (
         IfConfig(
             "RDM_ALLOW_RESTRICTED_RECORDS",
-            then_=[
-                IfNewRecord(
-                    then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")]
-                )
-            ],
+            then_=[IfNewRecord(then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")])],
             else_=[],
         ),
     )
@@ -450,21 +432,11 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     # ------------------------------------------------------------------
     # PIDs may only be managed while the record is actively being prepared;
     # they are frozen once submitted for review.
-    can_pid_create = (
-        IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),
-    )
-    can_pid_register = (
-        IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),
-    )
-    can_pid_update = (
-        IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),
-    )
-    can_pid_discard = (
-        IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),
-    )
-    can_pid_delete = (
-        IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),
-    )
+    can_pid_create = (IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),)
+    can_pid_register = (IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),)
+    can_pid_update = (IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),)
+    can_pid_discard = (IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),)
+    can_pid_delete = (IfInState(["draft", "revision_requested"], [SameAs("can_rdm_review")]),)
     can_pid_manage = (SystemProcess(),)
 
     # ------------------------------------------------------------------
