@@ -118,6 +118,7 @@ def remove_production_section(pyproject_path: Path) -> None:
         project = data.get("project", {})
     project.get("optional-dependencies", {}).pop("production", None)
     project.get("optional-dependencies", {}).pop("ccmm", None)
+    project.get("optional-dependencies", {}).pop("oaipmh-harvester", None)
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
@@ -145,6 +146,7 @@ def pin_pyproject_deps(
     for source_extra, target_extra in [
         ("development", "production"),
         ("ccmm-development", "ccmm"),
+        ("oaipmh-harvester-development", "oaipmh-harvester"),
     ]:
         development_dependencies = optional_dependencies.get(source_extra, [])
         production_dependencies = [_pin(dep) for dep in development_dependencies]
@@ -160,39 +162,33 @@ def unpin_development_major_versions(pyproject_path: Path) -> None:
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development"]:
+    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
             if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
                 # always suppose that the first specifier is the >= specifier
                 req = Requirement(dep)
                 first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
-                development_deps[idx] = _rebuild_requirement(
-                    req, f">={first_specifier.version}"
-                )
+                development_deps[idx] = _rebuild_requirement(req, f">={first_specifier.version}")
 
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
-def pin_development_major_versions(
-    pyproject_path: Path, resolved: dict[str, str]
-) -> None:
+def pin_development_major_versions(pyproject_path: Path, resolved: dict[str, str]) -> None:
     """Pin major versions of oarepo dependencies in *pyproject_path*."""
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development"]:
+    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
-            if dep.startswith("oarepo-"): # Apply only to oarepo packages, others use different versioning schemes
+            if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
                 req = Requirement(dep)
                 if req.name not in resolved:
                     raise ValueError(f"Dependency {dep} not found in resolved dependencies")
                 next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
-                development_deps[idx] = _rebuild_requirement(
-                    req, f">={resolved[req.name]},<{next_major_version}.0.0"
-                )
+                development_deps[idx] = _rebuild_requirement(req, f">={resolved[req.name]},<{next_major_version}.0.0")
 
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
@@ -234,11 +230,7 @@ def parse_uv_lock(lock_path: Path) -> dict[str, str]:
     with lock_path.open("rb") as fh:
         data = tomllib.load(fh)
 
-    return {
-        _normalise_package_name(pkg["name"]): pkg["version"]
-        for pkg in data.get("package", [])
-        if "version" in pkg
-    }
+    return {_normalise_package_name(pkg["name"]): pkg["version"] for pkg in data.get("package", []) if "version" in pkg}
 
 
 # ─── oarepo-app versioning ────────────────────────────────────────────────────
@@ -268,10 +260,7 @@ def get_oarepo_app_version(changelog_path: Path, pyproject_path: Path) -> str:
     current, previous = get_two_latest_log_entries(changelog_path)
     if not previous:
         major_needed = True
-        print(
-            "  [dim]↳[/dim] no previous changelog entry — "
-            "[bold red]major[/bold red] bump required"
-        )
+        print("  [dim]↳[/dim] no previous changelog entry — [bold red]major[/bold red] bump required")
     else:
         current_packages = set(current["packages"])
         previous_packages = set(previous["packages"])
@@ -329,19 +318,13 @@ def get_oarepo_app_version(changelog_path: Path, pyproject_path: Path) -> str:
 
     current_oarepo_app_version = Version(get_pyproject_version(pyproject_path))
     if major_needed:
-        print(
-            f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
-            "[bold red]major[/bold red] bump"
-        )
+        print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [bold red]major[/bold red] bump")
         new_version = replace(
             current_oarepo_app_version,
             release=(current_oarepo_app_version.major + 1, 0, 0),
         )
     elif minor_needed:
-        print(
-            f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
-            "[yellow]minor[/yellow] bump"
-        )
+        print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [yellow]minor[/yellow] bump")
         new_version = replace(
             current_oarepo_app_version,
             release=(
@@ -351,10 +334,7 @@ def get_oarepo_app_version(changelog_path: Path, pyproject_path: Path) -> str:
             ),
         )
     elif patch_needed:
-        print(
-            f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
-            "patch bump"
-        )
+        print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → patch bump")
         new_version = replace(
             current_oarepo_app_version,
             release=(
@@ -399,7 +379,7 @@ def extract_oarepo_packages(pyproject_path: Path) -> dict[str, tuple[str, str, s
     optional_dependencies = project.get("optional-dependencies", {})
     oarepo_github = data.get("tool", {}).get("oarepo", {}).get("github", {})
     packages = {}
-    for extra_name in ["development", "ccmm-development"]:
+    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for dep in development_deps:
             req = Requirement(dep)
@@ -497,9 +477,7 @@ def clone_oarepo_packages(
             cwd=package_path,
         )
         if org_with_repo in upgraded_packages_map:
-            set_original_package_version(
-                package_path / "pyproject.toml", current_package_version
-            )
+            set_original_package_version(package_path / "pyproject.toml", current_package_version)
     return cloned_packages
 
 
@@ -606,12 +584,8 @@ def pin_upper_bound_in_dependencies(
     """
     deps = []
     major_version_needed = False
-    dependencies_by_name: dict[str, Requirement] = {
-        r.name: r for r in map(Requirement, original_dependencies)
-    }
-    original_dependencies_by_name: dict[str, Requirement] = {
-        r.name: r for r in map(Requirement, original_dependencies)
-    }
+    dependencies_by_name: dict[str, Requirement] = {r.name: r for r in map(Requirement, original_dependencies)}
+    original_dependencies_by_name: dict[str, Requirement] = {r.name: r for r in map(Requirement, original_dependencies)}
     for dep_name, r in dependencies_by_name.items():
         if r.name not in versions:
             deps.append(str(r))
@@ -643,19 +617,13 @@ def unpin_upper_bound_in_dependencies(dependencies: list[str]) -> list[str]:
         deps.append(
             _rebuild_requirement(
                 r,
-                str(
-                    SpecifierSet(
-                        filtered_specifiers, prereleases=r.specifier.prereleases
-                    )
-                ),
+                str(SpecifierSet(filtered_specifiers, prereleases=r.specifier.prereleases)),
             )
         )
     return deps
 
 
-def update_pyproject_source_map(
-    pyproject_path: Path, oarepo_packages_to_path: dict[str, Path]
-):
+def update_pyproject_source_map(pyproject_path: Path, oarepo_packages_to_path: dict[str, Path]):
     """Update the source map in pyproject.toml for OARepo packages."""
     data = tomllib.loads(pyproject_path.read_text())
     # update the tool.uv.sources
@@ -669,9 +637,7 @@ def update_pyproject_source_map(
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
-def delete_pyproject_source_map(
-    pyproject_path, oarepo_packages_to_path: dict[str, Path]
-):
+def delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path: dict[str, Path]):
     """Delete the source map in pyproject.toml for OARepo packages."""
     data = tomllib.loads(pyproject_path.read_text())
     sources = data.setdefault("tool", {}).setdefault("uv", {}).setdefault("sources", {})
@@ -702,28 +668,23 @@ def propagate_resolved_versions(
         original_dependencies = oarepo_tool.setdefault("original-dependencies", {})
 
         need_major_bump = (
-            original_version is not None
-            and original_version.split(".")[0] != current_version.split(".")[0]
+            original_version is not None and original_version.split(".")[0] != current_version.split(".")[0]
         )
 
-        project["dependencies"], dependencies_need_major_bump = (
-            pin_upper_bound_in_dependencies(
-                package_name,
-                project.get("dependencies", {}),
-                original_dependencies["__main__"],
-                resolved,
-            )
+        project["dependencies"], dependencies_need_major_bump = pin_upper_bound_in_dependencies(
+            package_name,
+            project.get("dependencies", {}),
+            original_dependencies["__main__"],
+            resolved,
         )
         need_major_bump = need_major_bump or dependencies_need_major_bump
         optional_dependencies = project.get("optional-dependencies", {})
         for optional_name, optional_deps in optional_dependencies.items():
-            optional_dependencies[optional_name], optional_need_major_bump = (
-                pin_upper_bound_in_dependencies(
-                    package_name,
-                    optional_deps,
-                    original_dependencies.get(optional_name, None),
-                    resolved,
-                )
+            optional_dependencies[optional_name], optional_need_major_bump = pin_upper_bound_in_dependencies(
+                package_name,
+                optional_deps,
+                original_dependencies.get(optional_name, None),
+                resolved,
             )
             need_major_bump = need_major_bump or optional_need_major_bump
         pyproject_path.write_bytes(tomli_w.dumps(data).encode())
@@ -767,18 +728,14 @@ def update_versions(
     local_packages_dir = root / ".local-packages"
 
     # ── Step 1: remove production section ─────────────────────────────────────
-    print(
-        "[bold blue]Step 1/3[/bold blue] 🗑️  Removing production section from pyproject.toml …"
-    )
+    print("[bold blue]Step 1/3[/bold blue] 🗑️  Removing production section from pyproject.toml …")
     remove_production_section(pyproject_path)
 
     if upgrade_major_versions:
         unpin_development_major_versions(pyproject_path)
         # map from package name to (github_repo, github_branch)
         oarepo_packages_map = extract_oarepo_packages(pyproject_path)
-        oarepo_packages_to_path = clone_oarepo_packages(
-            local_packages_dir, oarepo_packages_map, upgraded_packages
-        )
+        oarepo_packages_to_path = clone_oarepo_packages(local_packages_dir, oarepo_packages_map, upgraded_packages)
         for name, path in oarepo_packages_to_path.items():
             unpin_versions_in_oarepo_packages(path)
         update_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
@@ -797,9 +754,7 @@ def update_versions(
     pin_development_major_versions(pyproject_path, resolved)
     upgraded_packages_with_versions: dict[str, tuple[str, bool]] = {}
     if upgrade_major_versions:
-        upgraded_packages_with_versions = propagate_resolved_versions(
-            oarepo_packages_to_path, resolved
-        )
+        upgraded_packages_with_versions = propagate_resolved_versions(oarepo_packages_to_path, resolved)
         # ── Cleanup: remove the temporary local-path source overrides ──────
         delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
     print("🎉 [bold green]Done.[/bold green]")
