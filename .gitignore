@@ -228,3 +228,5 @@ dist/
 
 coverage.json
 junit.xml
+
+.ruff.toml

@@ -5,7 +5,7 @@ from .workflows import (
 )
 
 __all__ = [
-    "configure_workflows",
     "CommunityWorkflow",
     "IndividualWorkflow",
+    "configure_workflows",
 ]

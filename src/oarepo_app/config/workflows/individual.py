@@ -10,13 +10,17 @@ from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_requests.types import PublishDraftRequestType
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
+from oarepo_workflows.requests.generators.record_owners import RecordOwnersForRecipients
 from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.composite import (
     CompositeAndGenerator,
     CompositePermissionPolicyMixin,
 )
-from oarepo_workflows.services.permissions.generators import HasActionNeed, UserWithRole
+from oarepo_workflows.services.permissions.generators import (
+    HasActionNeed,
+    UserWithRole,
+)
 
 from .base import BaseWorkflowSettings, add_if_in_state
 
@@ -61,9 +65,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
     :attr:`publish_without_review` is ignored.
     """
 
-    publish_without_review_states: list[str] = dataclasses.field(
-        default_factory=lambda: ["draft"]
-    )
+    publish_without_review_states: list[str] = dataclasses.field(default_factory=lambda: ["draft"])
     """Record workflow states in which publication without review is allowed."""
 
     review_required: bool = False
@@ -85,10 +87,24 @@ class IndividualWorkflow(BaseWorkflowSettings):
     Users with these needs are also granted read access to draft records.
     """
 
+    self_review_enabled: bool = False
+    """Allow the record owner to approve their own review request.
+
+    Normally, submitting a record for review prevents the owner from approving it
+    themselves. When set to ``True``, the review request is still created on
+    submission, but the owner is permitted to accept it.
+
+    This is primarily useful when ``invenio-checks`` is active: checks are tied
+    to an open request, so the request must exist even when no external reviewer
+    is needed. With this option the owner can see and act on the check results
+    without waiting for a curator.
+
+    Has no effect when :attr:`publish_without_review` is ``True``, because in
+    that case user can bypass the review request and publish the record directly.
+    """
+
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(
-            CompositePermissionPolicyMixin, self.base_permission_policy
-        ):
+        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
@@ -96,10 +112,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
                 self.publish_without_review_states,
                 self._build_record_publish_generators(),
             ) + [IfInState("submitted", then_=[RequestActive()])]
-            can_read = (
-                self.base_permission_policy.can_read
-                + self._build_record_view_permissions()
-            )
+            can_read = self.base_permission_policy.can_read + self._build_record_view_permissions()
 
         return PermissionPolicy
 
@@ -146,28 +159,31 @@ class IndividualWorkflow(BaseWorkflowSettings):
         if self.reviewer_roles:
             reviewer_generators = [UserWithRole(role) for role in self.reviewer_roles]
         if self.reviewer_needs:
-            reviewer_generators.extend(
-                [HasActionNeed(need) for need in self.reviewer_needs]
-            )
+            reviewer_generators.extend([HasActionNeed(need) for need in self.reviewer_needs])
+        if self.self_review_enabled:
+            reviewer_generators.append(RecordOwnersForRecipients())
         if not self.publish_after_review:
             raise NotImplementedError(
                 "Disabling publish_after_review is not supported in this version, "
                 "please ask the maintainers to enable it"
             )
+        requestors = [*reviewer_generators]
+        if not self.self_review_enabled:
+            requestors.append(RecordOwners())
 
         requests = {
             PublishDraftRequestType.type_id: WorkflowRequest(
                 requesters=[
                     IfInState(
-                        ["draft", "review_requested"],
-                        [RecordOwners(), *reviewer_generators],
+                        ["draft", "revision_requested"],
+                        requestors,
                     )
                 ],
                 recipients=reviewer_generators,
                 transitions=WorkflowTransitions(
                     submitted="submitted",
                     accepted="published",
-                    declined="review_requested",
+                    declined="revision_requested",
                 ),
             )
         }
