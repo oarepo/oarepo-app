@@ -2,9 +2,7 @@ import json
 from pathlib import Path
 
 import typer
-from packaging.version import Version
-from rich import print
-
+from oarepo_build_tools.diff_pyproject_to_pypi import diff_pyproject_to_pypi
 from oarepo_build_tools.git import switch_branch
 from oarepo_build_tools.logs import create_log_entry, render_changelog_md
 from oarepo_build_tools.python import (
@@ -14,6 +12,8 @@ from oarepo_build_tools.python import (
     update_versions,
 )
 from oarepo_build_tools.upload_old_packages import upload_old_packages
+from packaging.version import Version
+from rich import print
 
 from .dependency_tree import build_dependency_tree
 
@@ -49,13 +49,9 @@ def setup(
     """Set up the repository for the given oarepo major version."""
     if oarepo_version:
         latest_oarepo_version = oarepo_version
-        print(
-            f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]"
-        )
+        print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
     else:
-        print(
-            f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …"
-        )
+        print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
         latest_oarepo_version = get_latest_oarepo_version(major_version)
         print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
 
@@ -67,18 +63,14 @@ def setup(
     create_log_entry(root)
 
     print("🏷️  Computing [bold]oarepo-app[/bold] version …")
-    oarepo_app_version = get_oarepo_app_version(
-        root / "CHANGELOG.json", root / "pyproject.toml"
-    )
+    oarepo_app_version = get_oarepo_app_version(root / "CHANGELOG.json", root / "pyproject.toml")
     print(f"  [dim]↳[/dim] version: [bold green]{oarepo_app_version}[/bold green]")
     set_pyproject_version(root / "pyproject.toml", oarepo_app_version)
     print("  [dim]↳[/dim] ✅ updated [cyan]pyproject.toml[/cyan]")
 
     changelog = json.loads((root / "CHANGELOG.json").read_text(encoding="utf-8"))
     changelog[0]["version"] = oarepo_app_version
-    (root / "CHANGELOG.json").write_text(
-        json.dumps(changelog, indent=2), encoding="utf-8"
-    )
+    (root / "CHANGELOG.json").write_text(json.dumps(changelog, indent=2), encoding="utf-8")
 
     print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
     render_changelog_md(changelog, root)
@@ -87,6 +79,7 @@ def setup(
 
 app.command()(upload_old_packages)
 app.command()(build_dependency_tree)
+app.command()(diff_pyproject_to_pypi)
 
 
 def main() -> None:
