@@ -2,11 +2,424 @@
 
 ## Contents
 
+- [6.0.0](#600)
 - [5.0.0](#500)
 - [4.0.0](#400)
 - [3.0.0](#300)
 - [2.3.0](#230)
-- [2.2.0](#220)
+
+---
+
+## 6.0.0
+
+Released: **May 31, 2026 at 17:53 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.10
+[1.1.9 → 1.1.10](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.9...v1.1.10)
+
+- [`9fb29c16`](https://github.com/nrp-cz/ccmm-invenio/commit/9fb29c167c5b6add90277206c96222fdafcd7362) Chore: Major version bump due to invenio bump
+- [`3a9214f2`](https://github.com/nrp-cz/ccmm-invenio/commit/3a9214f201c575dd0b63d7627261b5baa8281f6e) [skip ci] Bump version to v1.1.9
+
+#### `invenio-access` 6.0.0 💥
+[5.1.0 → 6.0.0](https://github.com/inveniosoftware/invenio-access/compare/v5.1.0...v6.0.0)
+
+- [`953cb047`](https://github.com/inveniosoftware/invenio-access/commit/953cb047ef6c3f69a8268a594e85e0c744a1147f) fix: better dependencies after communities tests
+- [`de53a418`](https://github.com/inveniosoftware/invenio-access/commit/de53a418c81d4c24ab1c8d412188774abe098f3e) chore(setup): bump dependencies
+- [`2827ee1a`](https://github.com/inveniosoftware/invenio-access/commit/2827ee1a02691fb2b9a28a6e010483a5010bd525) release: v6.0.0
+
+#### `invenio-accounts` 8.0.0 💥
+[7.2.1 → 8.0.0](https://github.com/inveniosoftware/invenio-accounts/compare/v7.2.1...v8.0.0)
+
+- [`86d8f17f`](https://github.com/inveniosoftware/invenio-accounts/commit/86d8f17fadf404bbb62b95709b6805263ffebc00) release: v8.0.0
+- [`14acceae`](https://github.com/inveniosoftware/invenio-accounts/commit/14acceaedc9ee889ee15548b115acb3544cb3ab4) fix: update password generation and remove passlib dependency
+- [`df38c16d`](https://github.com/inveniosoftware/invenio-accounts/commit/df38c16da193bf02601c473fdac05b3e65940600) fix(ui): reorder menu in user settings
+- [`f6d93285`](https://github.com/inveniosoftware/invenio-accounts/commit/f6d93285646598d61987ffa01d9c0ec22794751b) feat(users): add username option to create user
+- [`d9c20b5a`](https://github.com/inveniosoftware/invenio-accounts/commit/d9c20b5a2df725976b5cc0bc3717209ce263f3a1) fix: handle Alembic dependency on invenio-access
+- [`eaece162`](https://github.com/inveniosoftware/invenio-accounts/commit/eaece16209bddc29115cd3dbab67798f3d5046ec) fix: unskipping alembic test
+- [`48646548`](https://github.com/inveniosoftware/invenio-accounts/commit/4864654855a321f6c74c152fbb4c09550cf633e1) fix: Added a comment to the alembic file
+- [`a6c735c7`](https://github.com/inveniosoftware/invenio-accounts/commit/a6c735c783049a87668e7bd9e40a674283e1a548) fix: conditional dependency to invenio-communities
+- [`53aa61a5`](https://github.com/inveniosoftware/invenio-accounts/commit/53aa61a574173b4a7abba3b8f9e84f173a708ca0) fix: better dependencies after communities tests
+- [`a2e98d0d`](https://github.com/inveniosoftware/invenio-accounts/commit/a2e98d0d14df598ffa18a00e5f01c07d10cf75d3) fix: not adding user_id if configuration prevents it
+
+#### `invenio-administration` 6.0.0+oarepo.1.vrkijc6bgf4hnbd6 💥
+[5.2.0+oarepo.2.zuwubmhg2iyj3cll → 6.0.0+oarepo.1.vrkijc6bgf4hnbd6](https://github.com/inveniosoftware/invenio-administration/compare/v5.2.0...v6.0.0)
+
+- [`aa0a09e6`](https://github.com/inveniosoftware/invenio-administration/commit/aa0a09e63effb06c595a12bf0b4b7f2a830c4412) chore(setup): bump dependencies
+- [`fef1337f`](https://github.com/inveniosoftware/invenio-administration/commit/fef1337f7fe26abb80896883c52f8034224d7a3f) release: v6.0.0
+
+#### `invenio-app-rdm` 14.0.0b11.dev1+oarepo.1.ktbsmr472rj2vn37
+[14.0.0b10.dev7+oarepo.4.ygkzv7ea34y6xlcc → 14.0.0b11.dev1+oarepo.1.ktbsmr472rj2vn37](https://github.com/inveniosoftware/invenio-app-rdm/compare/v14.0.0b10.dev7...v14.0.0b11.dev1)
+
+- [`ac985d3b`](https://github.com/inveniosoftware/invenio-app-rdm/commit/ac985d3b9cb31df1777bad5af9e17eb0d94b8ffe) chore(setup): bump dependencies
+- [`63fe8fc5`](https://github.com/inveniosoftware/invenio-app-rdm/commit/63fe8fc5805e3a37cce5c925fa5b159cfcaf9991) release: v14.0.0b11.dev1
+- [`fe020162`](https://github.com/inveniosoftware/invenio-app-rdm/commit/fe02016209b9ab95d697fd1f36bb30451c35f479) feat: UI support for zip content previewing
+- [`ce43f302`](https://github.com/inveniosoftware/invenio-app-rdm/commit/ce43f3021d17b1fb87ed2a575cc7527068c4997b) chore(setup): bump dependencies
+- [`55a60527`](https://github.com/inveniosoftware/invenio-app-rdm/commit/55a605279c4141643a13517119bde371c0e9eea7) release: v14.0.0b11.dev0
+- [`61003945`](https://github.com/inveniosoftware/invenio-app-rdm/commit/61003945050d8e1e97e47df7a5dcc2e52099ab10) fix(alembic): script for preparing migration from 13 -> 14
+- [`1a70d527`](https://github.com/inveniosoftware/invenio-app-rdm/commit/1a70d5273c590ed2b53acd643b46c1a8847c90c8) deposit: add default values for custom fields on deposit form
+- [`4b5c56dd`](https://github.com/inveniosoftware/invenio-app-rdm/commit/4b5c56dd1d1d63b7d8c6f1cf67731e34ff7d99fa) deposits: switch to standard get syntax
+- [`9f2f403e`](https://github.com/inveniosoftware/invenio-app-rdm/commit/9f2f403e2df0fe624744b1948f1b525ddac44a4c) feat(profiler): integrate Flask-MultiProfiler
+- [`d0137a74`](https://github.com/inveniosoftware/invenio-app-rdm/commit/d0137a74ef2c72f4b51f10b5a9f158dc83cf858c) fix(profiler): override the MultiProfiler base template
+- [`1069cd30`](https://github.com/inveniosoftware/invenio-app-rdm/commit/1069cd301e55cf8f9d608218448dca844f571622) fix(profiler): register menu item for the multi-profiler
+- [`e9abda02`](https://github.com/inveniosoftware/invenio-app-rdm/commit/e9abda02da1a06da46ba79491b95347afecaa2d1) fix(profiler): remove CSP headers for profiler result pages
+- [`8b158a38`](https://github.com/inveniosoftware/invenio-app-rdm/commit/8b158a387c6bcb3d111d540d123c584962c0ce61) feat(users): implement role management in user details
+- [`62aeb51c`](https://github.com/inveniosoftware/invenio-app-rdm/commit/62aeb51cb19c1987939e81e8fa0d2e6d8072442e) fix: linting warning
+- [`85290c99`](https://github.com/inveniosoftware/invenio-app-rdm/commit/85290c99be34064d7310c8714ce1160217622fd0) fix(records-ui): namespace url filter
+- [`419a8a45`](https://github.com/inveniosoftware/invenio-app-rdm/commit/419a8a45fcdc2cfe283f98fdc1f4c184b4a19f80) feat(mshp-req+inv): show invitation & mshp-req pages from user & community sides [+]
+- [`4691f1b0`](https://github.com/inveniosoftware/invenio-app-rdm/commit/4691f1b0074220f056d557d7db051e0bbb78a108) chore(url): use invenio_url_for for consistency in mshp-req and inv code
+- [`4cf1c437`](https://github.com/inveniosoftware/invenio-app-rdm/commit/4cf1c437ddf3b07d067c31107e33f906f285ba91) fix(urls): use `invenio_url_for()` instead of hard-coded URLs
+- [`effecfd4`](https://github.com/inveniosoftware/invenio-app-rdm/commit/effecfd438c4b42e9876b0030ac456a8982812c9) feat: make resouce type badge clickable
+- [`96f9d528`](https://github.com/inveniosoftware/invenio-app-rdm/commit/96f9d528742b172194899e09917a113d26ef0e0d) fix(tombstone): return not-found page + log exception for PIDDeletedError
+- [`ca469660`](https://github.com/inveniosoftware/invenio-app-rdm/commit/ca46966096475ce6d04775a97c4d60fa3d9d2051) config: remove hardcoded publisher and use THEME_SITENAME
+- [`bbe9c7ef`](https://github.com/inveniosoftware/invenio-app-rdm/commit/bbe9c7ef613b91c261f7c510b332003c0b691578) frontpage: Add aria-label to 'More' search button
+- [`dff032e0`](https://github.com/inveniosoftware/invenio-app-rdm/commit/dff032e0f53f24cc3d2249c1c915767a075e78a5) fix(upgrade_scripts): use correct indexer for drafts
+- [`4f02af2f`](https://github.com/inveniosoftware/invenio-app-rdm/commit/4f02af2f1a1387d35cbe94d90f756f5b5b4f7cd1) fix: wrap overflowing MathJax content in rich text
+- [`69d0b2c0`](https://github.com/inveniosoftware/invenio-app-rdm/commit/69d0b2c0f0fb9effdb762e17d5008639fa5e5947) users: fix hardcoded deposit URL in uploads dashboard
+- [`c930d928`](https://github.com/inveniosoftware/invenio-app-rdm/commit/c930d9280b4960b669edbad8184f780506025c2a) users: use invenio_url_for for deposit URL
+
+#### `invenio-audit-logs` 3.0.0 💥
+[2.0.0 → 3.0.0](https://github.com/inveniosoftware/invenio-audit-logs/compare/v2.0.0...v3.0.0)
+
+- [`12dc2478`](https://github.com/inveniosoftware/invenio-audit-logs/commit/12dc24783872fa4ed44d9b5923068f8476f42e97) chore(setup): bump dependencies
+- [`2147659d`](https://github.com/inveniosoftware/invenio-audit-logs/commit/2147659d3438cb2e0df4998c718fb2817baa8774) release: v3.0.0
+
+#### `invenio-banners` 7.0.0 💥
+[6.0.0 → 7.0.0](https://github.com/inveniosoftware/invenio-banners/compare/v6.0.0...v7.0.0)
+
+- [`1568a282`](https://github.com/inveniosoftware/invenio-banners/commit/1568a282d807de0c863f0dfd421bfc14106d485b) fix(tests): alembic migration test
+- [`a64a098b`](https://github.com/inveniosoftware/invenio-banners/commit/a64a098b002b7d3be5c0df82e45e8c880f9bf0a8) chore(setup): bump dependencies
+- [`f6e1e5b5`](https://github.com/inveniosoftware/invenio-banners/commit/f6e1e5b585efedf58dce9762c25493125d810273) release: v7.0.0
+- [`7c1726cf`](https://github.com/inveniosoftware/invenio-banners/commit/7c1726cf13e20965c3579c8c2478b2bb596a223e) ui(translations): mark string as translatable
+
+#### `invenio-checks` 9.0.0 💥
+[8.2.0 → 9.0.0](https://github.com/inveniosoftware/invenio-checks/compare/v8.2.0...v9.0.0)
+
+- [`04939500`](https://github.com/inveniosoftware/invenio-checks/commit/0493950028906a57d42f5d8110fb5dd03b4cbe76) fix: migrations for choices
+- [`1001c9c2`](https://github.com/inveniosoftware/invenio-checks/commit/1001c9c265e5e570d97e35b3900c7617f227c696) chore(setup): bump dependencies
+- [`e6da2259`](https://github.com/inveniosoftware/invenio-checks/commit/e6da225994c44db9e026f9b8f9983cd9e582cdeb) release: v9.0.0
+- [`b441cdb2`](https://github.com/inveniosoftware/invenio-checks/commit/b441cdb2a1bad938b11348906325ca4fbccd0048) feat: allow empty community_id for check config
+
+#### `invenio-collections` 9.0.0 💥
+[8.1.1 → 9.0.0](https://github.com/inveniosoftware/invenio-collections/compare/v8.1.1...v9.0.0)
+
+- [`7c96fe37`](https://github.com/inveniosoftware/invenio-collections/commit/7c96fe37548f52a2e83e59ac06f77cca2584345e) fix: alembic migrations
+- [`49dc86e1`](https://github.com/inveniosoftware/invenio-collections/commit/49dc86e1ce6b3a665e7a67fa8fa73a92ea2da7f7) chore(setup): bump dependencies
+- [`e136a014`](https://github.com/inveniosoftware/invenio-collections/commit/e136a014006fdd0f186157883c419627839354bc) release: v9.0.0
+
+#### `invenio-communities` 27.0.0+oarepo.1.qy2oeqcxp5b43swa 💥
+[26.1.1+oarepo.1.ju33cyh3ievitktv → 27.0.0+oarepo.1.qy2oeqcxp5b43swa](https://github.com/inveniosoftware/invenio-communities/compare/v26.1.1...v27.0.0)
+
+- [`5821035e`](https://github.com/inveniosoftware/invenio-communities/commit/5821035e13dc3613a6ecdf82e3fa689c658ab284) fix: tests in subcommunities
+- [`df6edab8`](https://github.com/inveniosoftware/invenio-communities/commit/df6edab897de797f09260738ebf691f6de47b1d2) feat: introduced SameAs to make the policy extendable
+- [`db4a1058`](https://github.com/inveniosoftware/invenio-communities/commit/db4a10580560b6497617aa62eec3cb9687b044d7) fix: moved dependency to depends_on
+- [`d5c6d688`](https://github.com/inveniosoftware/invenio-communities/commit/d5c6d68859f83de0bd4122219ef37c0b75d9b336) chore(setup): bump dependencies
+- [`0824825e`](https://github.com/inveniosoftware/invenio-communities/commit/0824825e4e67da7675689dad2f637f5cbd38fc36) release: v27.0.0
+- [`40473b20`](https://github.com/inveniosoftware/invenio-communities/commit/40473b205a663120e631f29017b46beca47f7802) feat(mshp-req): notify upon each membership request action
+- [`69add959`](https://github.com/inveniosoftware/invenio-communities/commit/69add959092acf641d70854cf5981629fd33357e) fix(inv): use appropriate link in invitation notification
+- [`f8032a44`](https://github.com/inveniosoftware/invenio-communities/commit/f8032a4441eac4c9bc37b3cec09f4d1f250c9323) fix(mshp-req): display discussion link on communiy header correctly [+]
+- [`62d30894`](https://github.com/inveniosoftware/invenio-communities/commit/62d3089423c1509fc090beafc0a813fada87a534) feat(mshp-req): display membership requests on community dashboard
+- [`b9308752`](https://github.com/inveniosoftware/invenio-communities/commit/b930875203e72566eb29e073cd83321a02a3b6cb) feat(inv): cancel invitations from community invitations search
+- [`fb1ea985`](https://github.com/inveniosoftware/invenio-communities/commit/fb1ea98503971344097b56d120522d014790efcb) feat: generalize error message for AlreadyMemberError
+- [`79d3f47d`](https://github.com/inveniosoftware/invenio-communities/commit/79d3f47dd009eadc6d67d870e097c32f17af4cf8) feat(inv): use backend self_html for frontend invitation link
+- [`e166aa29`](https://github.com/inveniosoftware/invenio-communities/commit/e166aa2949a36627f417aa69028edc09a95d90cb) build(deps-dev): bump minimatch
+- [`8dd6c907`](https://github.com/inveniosoftware/invenio-communities/commit/8dd6c9075bcb74ac2d7fe6fe2bfb18856cf99fbb) build(deps-dev): bump lodash
+- [`3acca976`](https://github.com/inveniosoftware/invenio-communities/commit/3acca976e8dd19357f5774eb82bccb81cf0a5638) feat(mshp-req): accept,decline,cancel,upate role of membership requests [+]
+- [`639b5c94`](https://github.com/inveniosoftware/invenio-communities/commit/639b5c9413fbeb30e45922ea8a23b31c25c8c4c8) fix(mshp-req): enforce action permissions
+- [`c7bdfb7d`](https://github.com/inveniosoftware/invenio-communities/commit/c7bdfb7d277b048eec2c243b72be85acb0bd6997) refactor: allow overriding members service components
+- [`1ee47ecc`](https://github.com/inveniosoftware/invenio-communities/commit/1ee47eccfc45daf0533fd4ffdb0e73979592d043) fix(community-themes): only request theme CSS for themed communities
+- [`52e2decc`](https://github.com/inveniosoftware/invenio-communities/commit/52e2decc7826bee58c7d6ab95d06d3ecb8e30b25) feat(mshp-req): don't show community membership request in community requests
+- [`9b23ec95`](https://github.com/inveniosoftware/invenio-communities/commit/9b23ec95011f4f650c1783cdb6a46eb7f4574c47) feat(mshp-req): add permission to search membership requests
+- [`f3669531`](https://github.com/inveniosoftware/invenio-communities/commit/f36695312b720dd9fc336cd747f2c27f277bc266) fix(deps): bump invenio-requests since tests assume v12.3.x at least
+- [`eb9b0164`](https://github.com/inveniosoftware/invenio-communities/commit/eb9b0164489e39f609b522e238080fd83faa2905) feat: add request.type to communitymembers indices + refactor for clarity
+- [`674084ba`](https://github.com/inveniosoftware/invenio-communities/commit/674084ba13cd194594607797321fb4a2da6c4846) feat(mshp-req)!: search membership requests - modifies mapping!
+- [`757f2fe3`](https://github.com/inveniosoftware/invenio-communities/commit/757f2fe308df7a2ebf87fdf67c59165bcd5080b7) fix(mshp-req): generate proper self_html link for requests JSON API
+
+#### `invenio-drafts-resources` 10.0.0+oarepo.1.aa7esyllsxmsu6a4 💥
+[9.0.2+oarepo.1.7ycffxo2j7hqwzgo → 10.0.0+oarepo.1.aa7esyllsxmsu6a4](https://github.com/inveniosoftware/invenio-drafts-resources/compare/v9.0.2...v10.0.0)
+
+- [`242f532f`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/242f532fb78b6ed7b6fbbd6854dad29147aac746) fix(tests): alembic tests
+- [`f684d22c`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/f684d22c3585590eada4e0ba4588b0376d60ee39) chore(setup): bump dependencies
+- [`67c65846`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/67c65846b04dd3cbbdd5dce7734b4c3a6d149bc2) release: v10.0.0
+
+#### `invenio-files-rest` 5.0.0+oarepo.1.rm6vkq5heonxnonk 💥
+[4.1.0+oarepo.2.a3g2ksmeqiqmhy66 → 5.0.0+oarepo.1.rm6vkq5heonxnonk](https://github.com/inveniosoftware/invenio-files-rest/compare/v4.1.0...v5.0.0)
+
+- [`c9d238c7`](https://github.com/inveniosoftware/invenio-files-rest/commit/c9d238c74ed3a81847e9d37f947acbf62b2dfe45) chore(setup): bump dependencies
+- [`5a077e60`](https://github.com/inveniosoftware/invenio-files-rest/commit/5a077e609f0bd4b52882a6c5fece00608f55a2b3) release: v5.0.0
+
+#### `invenio-indexer` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/inveniosoftware/invenio-indexer/compare/v4.0.0...v5.0.0)
+
+- [`68a0e760`](https://github.com/inveniosoftware/invenio-indexer/commit/68a0e760b1d53d660f598c46093e460749670c4e) chore(setup): bump dependencies
+- [`77657fc7`](https://github.com/inveniosoftware/invenio-indexer/commit/77657fc7c77eff41be5b996dc7fee22603c587d3) release: v5.0.0
+
+#### `invenio-jobs` 9.0.0 💥
+[8.0.1 → 9.0.0](https://github.com/inveniosoftware/invenio-jobs/compare/v8.0.1...v9.0.0)
+
+- [`c007827c`](https://github.com/inveniosoftware/invenio-jobs/commit/c007827c2bfa2aa51b9a113150073f78c2ea8b3f) fix: added missing alembic dependency on invenio-accounts
+- [`48e9f121`](https://github.com/inveniosoftware/invenio-jobs/commit/48e9f121f4f9cb3fb2853c6f355951c36d69887b) fix: Using server defaults in model
+- [`b9292e17`](https://github.com/inveniosoftware/invenio-jobs/commit/b9292e17bb04d2db1c24ed982e7bde3dd0b4d8a3) fix(tests): alembic bug workaround
+- [`7774e20c`](https://github.com/inveniosoftware/invenio-jobs/commit/7774e20cabc7c27eb5172064c3b154c601bad81e) chore: switch to opensearch2 in tests
+- [`609c863b`](https://github.com/inveniosoftware/invenio-jobs/commit/609c863b1d2f9525148728a4f8625dec6a42f5f2) chore(setup): bump dependencies
+- [`8de980b3`](https://github.com/inveniosoftware/invenio-jobs/commit/8de980b3ff17710101b436bb13b4eec6b7974162) release: v9.0.0
+
+#### `invenio-oaiserver` 5.0.0+oarepo.1.fe244nvk3gg6riuz 💥
+[4.1.0+oarepo.1.jeizhxspiugts6ow → 5.0.0+oarepo.1.fe244nvk3gg6riuz](https://github.com/inveniosoftware/invenio-oaiserver/compare/v4.1.0...v5.0.0)
+
+- [`c754e37e`](https://github.com/inveniosoftware/invenio-oaiserver/commit/c754e37ef0a0c2c28bacb1b73f20461dfa47fd5c) chore(setup): bump dependencies
+- [`e15a8494`](https://github.com/inveniosoftware/invenio-oaiserver/commit/e15a849442807a50fabbbf0aefaf7446ad0839e3) release: v5.0.0
+- [`2e25e602`](https://github.com/inveniosoftware/invenio-oaiserver/commit/2e25e6029fab46415ff55a5d6a9842cbf3b3a794) feat(tests): added test for alembic migration
+- [`d2faa0d7`](https://github.com/inveniosoftware/invenio-oaiserver/commit/d2faa0d780a6cbcdf1e9fea4375e75176a68863e) fix: adding server-side default for system_created
+
+#### `invenio-oauth2server` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/inveniosoftware/invenio-oauth2server/compare/v4.0.0...v5.0.0)
+
+- [`35ba6d9b`](https://github.com/inveniosoftware/invenio-oauth2server/commit/35ba6d9bf8c3ac5d37616a2556bd113989d3d1ad) fix: moved down_revision to depends_on
+- [`5e27ebe7`](https://github.com/inveniosoftware/invenio-oauth2server/commit/5e27ebe705f5b422ccb1df65f32e9615944b1dae) fix: Enabled alembix test
+- [`0379d9ed`](https://github.com/inveniosoftware/invenio-oauth2server/commit/0379d9ed4bfedab17f2740cb6aae56c89287637d) chore(setup): bump dependencies
+- [`14989338`](https://github.com/inveniosoftware/invenio-oauth2server/commit/149893389a45027f87fa0a6bdfa2bf18030cce61) release: v5.0.0
+- [`6f87101e`](https://github.com/inveniosoftware/invenio-oauth2server/commit/6f87101e82b409081ebed73a744af02d8ef6f287) UI: reorder menu in user settings
+
+#### `invenio-oauthclient` 8.0.0 💥
+[7.0.0 → 8.0.0](https://github.com/inveniosoftware/invenio-oauthclient/compare/v7.0.0...v8.0.0)
+
+- [`289531a2`](https://github.com/inveniosoftware/invenio-oauthclient/commit/289531a26e00ff64d0287bce56c1a999fd0f5d22) fix: bad downstream dependency in alembic
+- [`cadd53ab`](https://github.com/inveniosoftware/invenio-oauthclient/commit/cadd53aba5bf2334c66a829f61ffc5db2e55f175) chore(setup): bump dependencies
+- [`ddce5550`](https://github.com/inveniosoftware/invenio-oauthclient/commit/ddce55509f478fa23fe9a74600ccab8781ef3e5e) release: v8.0.0
+- [`e6b5074e`](https://github.com/inveniosoftware/invenio-oauthclient/commit/e6b5074e2c508769c5d4df58985f3de3bb0e2cab) fix(ui): reorder menu in user settings
+- [`c8162e64`](https://github.com/inveniosoftware/invenio-oauthclient/commit/c8162e645faaf0b59fe68e2456885835e3e2d570) release: v7.0.1
+- [`e3722104`](https://github.com/inveniosoftware/invenio-oauthclient/commit/e3722104977a52b01463d6ac2a56e00209d5fd17) fix(logout): remove unmanage_roles from session
+
+#### `invenio-pages` 9.0.0 💥
+[8.0.0 → 9.0.0](https://github.com/inveniosoftware/invenio-pages/compare/v8.0.0...v9.0.0)
+
+- [`163deb78`](https://github.com/inveniosoftware/invenio-pages/commit/163deb789d789c5d13f8cba627e93761c42bad0f) chore(setup): bump dependencies
+- [`d566c57a`](https://github.com/inveniosoftware/invenio-pages/commit/d566c57ae7907e93eb29b0dcb13c22016a280222) release: v9.0.0
+
+#### `invenio-previewer` 5.0.0 💥
+[4.1.1 → 5.0.0](https://github.com/inveniosoftware/invenio-previewer/compare/v4.1.1...v5.0.0)
+
+- [`190eb869`](https://github.com/inveniosoftware/invenio-previewer/commit/190eb869becafb0d351d115a9ef9a560b75d2299) chore(setup): bump dependencies
+- [`eec0d182`](https://github.com/inveniosoftware/invenio-previewer/commit/eec0d182a1e61ab8dfac73e4fe94ae363681fd88) release: v5.0.0
+- [`da5e0919`](https://github.com/inveniosoftware/invenio-previewer/commit/da5e0919d2a0a8e48dbf4e3b66c2f47c9b84b6d5) feat: Extend support for container item previewers.
+- [`304dee01`](https://github.com/inveniosoftware/invenio-previewer/commit/304dee019b41e7b5b735ca60508140f902e0eeef) i18n: correct format string in error message
+- [`88fb7e48`](https://github.com/inveniosoftware/invenio-previewer/commit/88fb7e48d8204f2d4a12a7ec0b9e080941cd6224) feat: GeoJSON support
+
+#### `invenio-rdm-records` 29.0.0+oarepo.1.nfqjwnb5odweitxq 💥
+[28.5.0+oarepo.1.7kmabv7jmwdd4bgu → 29.0.0+oarepo.1.nfqjwnb5odweitxq](https://github.com/inveniosoftware/invenio-rdm-records/compare/v28.5.0...v29.0.0)
+
+- [`34b629a7`](https://github.com/inveniosoftware/invenio-rdm-records/commit/34b629a7ccaeae48fedd0d9a033cf07a6ba3d6bf) feat: Support for ZIP extraction
+- [`7a653cb2`](https://github.com/inveniosoftware/invenio-rdm-records/commit/7a653cb26e05c60efed616b3eef89cd6bc9bd5e7) chore(tests): use db fixture from pytest-invenio
+- [`36200fa6`](https://github.com/inveniosoftware/invenio-rdm-records/commit/36200fa670137e4efee19799a52fa35b376d541d) feat: Using SameAs generator for dynamic binding of permissions
+- [`3487e2fb`](https://github.com/inveniosoftware/invenio-rdm-records/commit/3487e2fb6502e41d1cb6ac6f59d2b57270a271b2) refactor(policy): apply SameAs
+- [`28867d0d`](https://github.com/inveniosoftware/invenio-rdm-records/commit/28867d0ddacb4080dc43e93a99472c30ae21ca81) fix: alembic migrations
+- [`cc8e6991`](https://github.com/inveniosoftware/invenio-rdm-records/commit/cc8e6991dc6d4f07e43830c00861481392b4cfc3) feat: passing extra arguments to _get_record
+- [`3b82c29c`](https://github.com/inveniosoftware/invenio-rdm-records/commit/3b82c29cd045f43961bd383fbf85defda55ec463) chore(setup): bump dependencies
+- [`dbb001d8`](https://github.com/inveniosoftware/invenio-rdm-records/commit/dbb001d86ebf20d35b6be69b0dcb0825761ada65) release: v29.0.0
+- [`00d63a09`](https://github.com/inveniosoftware/invenio-rdm-records/commit/00d63a09d1b3f5041b54c00e3d4cd6f3cb2d3b19) UI: reorder menu in user settings
+- [`00ece822`](https://github.com/inveniosoftware/invenio-rdm-records/commit/00ece8229ff84f00d69f621106727bc6a04a8040) feat(stats): allow excluding file download stats from previewer
+- [`5eb09d81`](https://github.com/inveniosoftware/invenio-rdm-records/commit/5eb09d81440931f7f1e2ab5e41e2a1e1cf8e0c39) fix: make community modal on deposit form close
+- [`cc794aca`](https://github.com/inveniosoftware/invenio-rdm-records/commit/cc794acae393f252bec15045f407e01ae3b5c1bb) fix(vcs): extract license ID when returning
+- [`3b772d89`](https://github.com/inveniosoftware/invenio-rdm-records/commit/3b772d8910dff34ca30ac9e979eab296513ce64a) fix: add `policy_id` to request metadata of file modification (#2310)
+- [`e5e80895`](https://github.com/inveniosoftware/invenio-rdm-records/commit/e5e8089514f47b670854822da5025e40c7d31423) 📦 release: v28.6.1
+- [`a4fbd190`](https://github.com/inveniosoftware/invenio-rdm-records/commit/a4fbd1901c1e68f15a5f3cc257a43b2151a14314) fix(metadata): fix `CustomFieldsComponent` subclass overrides
+- [`c61c4d49`](https://github.com/inveniosoftware/invenio-rdm-records/commit/c61c4d49ba3e076e2363400ff6cb8a7ace64c0ca) fix(metadata): use UTC date instead of datetime for publication_date
+- [`7ce897f7`](https://github.com/inveniosoftware/invenio-rdm-records/commit/7ce897f7fb9e8e71c61b5151dbd1276e28fc6736) 📦 release: v28.6.0
+- [`1b68dc94`](https://github.com/inveniosoftware/invenio-rdm-records/commit/1b68dc947d826594d27463b7de69e022fe387167) fix(serializers): avoid request context in access status description
+- [`27cd4893`](https://github.com/inveniosoftware/invenio-rdm-records/commit/27cd48931c49ce409b80f93ca75e1900033c4463) vcs: have fallback publisher value be THEME_SITENAME
+- [`1b360893`](https://github.com/inveniosoftware/invenio-rdm-records/commit/1b360893dd6cee9eabe4ef2e432e03c257fa39eb) @tmorrell vcs: have fallback publisher value be THEME_SITENAME
+- [`690f09b5`](https://github.com/inveniosoftware/invenio-rdm-records/commit/690f09b5336e368e99243164a370617ae7cf4c63) metadata: auto-populate `publication_date` on new versions
+- [`f580e0b9`](https://github.com/inveniosoftware/invenio-rdm-records/commit/f580e0b94031943808dfa768133ce8e3323c04a9) fix: Add max lenght to version field to prevent mis-rendering
+- [`36b5431a`](https://github.com/inveniosoftware/invenio-rdm-records/commit/36b5431a2723f781158eccd42581d3b65c1ded6e) fix(doi link): show appropriate DOI link in test(any) environment
+- [`b7137697`](https://github.com/inveniosoftware/invenio-rdm-records/commit/b713769772b374798c8b5005795e863beb394c8d) fix: add funder ror to datacite serialization
+- [`acfe8d3d`](https://github.com/inveniosoftware/invenio-rdm-records/commit/acfe8d3dcb7c8746aab4c9f1c73949e668e18e10) tests: add test for name only funder
+- [`7abddfe3`](https://github.com/inveniosoftware/invenio-rdm-records/commit/7abddfe3bf2c40bf8d3a2402b0a5bebc352c6526) fix: add funder to marcxml
+
+#### `invenio-records` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/inveniosoftware/invenio-records/compare/v4.0.0...v5.0.0)
+
+- [`8c9d0b9b`](https://github.com/inveniosoftware/invenio-records/commit/8c9d0b9bf4bd9a4b853864c5b933282a2dbc46af) release: v5.0.0
+- [`eaadc778`](https://github.com/inveniosoftware/invenio-records/commit/eaadc7787c0cb2549b40b2f9a3172559ae37e59a) fix(tests): enabled alembic tests
+- [`72d1f595`](https://github.com/inveniosoftware/invenio-records/commit/72d1f595da6bfbd20583ac32427d9007733d083f) fix: added pre-undelete-post-undelete hooks
+
+#### `invenio-records-files` 3.0.0 💥
+[2.0.0 → 3.0.0](https://github.com/inveniosoftware/invenio-records-files/compare/v2.0.0...v3.0.0)
+
+- [`1f58d4ca`](https://github.com/inveniosoftware/invenio-records-files/commit/1f58d4ca5c067ac5d2554398e4174bcc7767bb41) fix: bad downstream dependency in alembic
+- [`8331cdb3`](https://github.com/inveniosoftware/invenio-records-files/commit/8331cdb39c711a24e59fdaf43adf6acfbffe928b) chore(setup): bump dependencies
+- [`82da4d79`](https://github.com/inveniosoftware/invenio-records-files/commit/82da4d79b31292578579c62dfa80da4547b426bf) release: v3.0.0
+
+#### `invenio-records-permissions` 3.0.0 💥
+[2.0.1 → 3.0.0](https://github.com/inveniosoftware/invenio-records-permissions/compare/v2.0.1...v3.0.0)
+
+- [`2687f82f`](https://github.com/inveniosoftware/invenio-records-permissions/commit/2687f82f7a977d23ca2264dcf78d52450878f975) chore(setup): bump dependencies
+- [`e3c7e691`](https://github.com/inveniosoftware/invenio-records-permissions/commit/e3c7e6914e4fd3e1e70df809fb0771e34e9ad89b) release: v3.0.0
+- [`77647921`](https://github.com/inveniosoftware/invenio-records-permissions/commit/77647921d32a0a19ff7bdc7c0c9d52db46308e03) feat(typing): Returning None instead of [] in Generator
+- [`4836682a`](https://github.com/inveniosoftware/invenio-records-permissions/commit/4836682a54f486e3ed25a0cd57940ee33533e226) feat: SameAs generator
+
+#### `invenio-records-resources` 10.0.0+oarepo.1.rfxn2zcltovd2ihy 💥
+[9.3.0+oarepo.1.zcunkj5manhukyog → 10.0.0+oarepo.1.rfxn2zcltovd2ihy](https://github.com/inveniosoftware/invenio-records-resources/compare/v9.3.0...v10.0.0)
+
+- [`d2396a9c`](https://github.com/inveniosoftware/invenio-records-resources/commit/d2396a9c446da6c112e17be0041041c26e094829) feat: add suport for listing and extracing items from containers
+- [`376ea683`](https://github.com/inveniosoftware/invenio-records-resources/commit/376ea683a2350cdb52a952e2670025a870a8f3ce) chore(setup): bump dependencies
+- [`a34216f9`](https://github.com/inveniosoftware/invenio-records-resources/commit/a34216f9ab3ba76a11a07f587d1d5799e1dbd5ab) release: v10.0.0
+- [`88930b55`](https://github.com/inveniosoftware/invenio-records-resources/commit/88930b5500e8997c2687c61989ca079f301e767f) fix(tests): Added alembic test
+- [`07d211e4`](https://github.com/inveniosoftware/invenio-records-resources/commit/07d211e457d93fd3642d2972b5497ca367a0e6ca) feat: Passing more context to permissions and components
+
+#### `invenio-records-rest` 5.0.0 💥
+[4.1.0 → 5.0.0](https://github.com/inveniosoftware/invenio-records-rest/compare/v4.1.0...v5.0.0)
+
+- [`0458efc0`](https://github.com/inveniosoftware/invenio-records-rest/commit/0458efc0058f9843d3c698b351ee353d7e22e920) chore(setup): bump dependencies
+- [`13ed9cec`](https://github.com/inveniosoftware/invenio-records-rest/commit/13ed9cec896708508445a049056c4d85a47e8c3c) release: v5.0.0
+
+#### `invenio-records-ui` 4.0.0 💥
+[3.0.0 → 4.0.0](https://github.com/inveniosoftware/invenio-records-ui/compare/v3.0.0...v4.0.0)
+
+- [`451fd6f2`](https://github.com/inveniosoftware/invenio-records-ui/commit/451fd6f2454b0715f631804852c5d01da4c0e965) chore(setup): bump dependencies
+- [`039e498e`](https://github.com/inveniosoftware/invenio-records-ui/commit/039e498ecc6123dec501708c97a69285fd61ccd8) release: v4.0.0
+
+#### `invenio-requests` 13.0.0+oarepo.1.s7hlgt7fdpiqngoq 💥
+[12.6.1+oarepo.1.e3mgu3w367pgarrw → 13.0.0+oarepo.1.s7hlgt7fdpiqngoq](https://github.com/inveniosoftware/invenio-requests/compare/v12.6.1...v13.0.0)
+
+- [`a945cf67`](https://github.com/inveniosoftware/invenio-requests/commit/a945cf676516c8ba5c9a1d8a0651a2de5452fd5a) feat: introduced SameAs to make the policy extendable
+- [`115e4d31`](https://github.com/inveniosoftware/invenio-requests/commit/115e4d31666a406c9fad9195b72bedbbe50f6a92) chore(setup): bump dependencies
+- [`f6b0c89c`](https://github.com/inveniosoftware/invenio-requests/commit/f6b0c89c04b4e04ec0cd758b2b31697ea8fea019) release: v13.0.0
+- [`f02baf1e`](https://github.com/inveniosoftware/invenio-requests/commit/f02baf1e01bebf025c1635a62d1c5fb4a2fb744f) feat: Extra context for permission checks
+- [`2813f668`](https://github.com/inveniosoftware/invenio-requests/commit/2813f6686e9cd15cf7b9372eae8d50284951efc3) fix(comments): null ref for deleted comments
+- [`3ceaf414`](https://github.com/inveniosoftware/invenio-requests/commit/3ceaf414be0f2310e0c21fe1cbddff9d4988b7fa) release: v12.6.2
+
+#### `invenio-s3` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/inveniosoftware/invenio-s3/compare/v4.0.0...v5.0.0)
+
+- [`0f9166a1`](https://github.com/inveniosoftware/invenio-s3/commit/0f9166a1aa48366273b34846bc1f23319cd752ce) chore(setup): bump dependencies
+- [`5541e23a`](https://github.com/inveniosoftware/invenio-s3/commit/5541e23ae6cc0ca7606d05046924d57c893deb3d) release: v5.0.0
+
+#### `invenio-userprofiles` 6.0.0 💥
+[5.1.0 → 6.0.0](https://github.com/inveniosoftware/invenio-userprofiles/compare/v5.1.0...v6.0.0)
+
+- [`1f46b4e1`](https://github.com/inveniosoftware/invenio-userprofiles/commit/1f46b4e1e9d62f733e6402c6f6c43ecd8a1917f0) chore(setup): bump dependencies
+- [`3637b0e7`](https://github.com/inveniosoftware/invenio-userprofiles/commit/3637b0e725b2d218a831326fdba7d382923e5796) release: v6.0.0
+
+#### `invenio-users-resources` 11.0.0 💥
+[10.5.0 → 11.0.0](https://github.com/inveniosoftware/invenio-users-resources/compare/v10.5.0...v11.0.0)
+
+- [`651d87d6`](https://github.com/inveniosoftware/invenio-users-resources/commit/651d87d6e724df40b3a8bed0c87f4b1f72d67ec1) chore(setup): bump dependencies
+- [`aabd8955`](https://github.com/inveniosoftware/invenio-users-resources/commit/aabd895570f4da267bcd906c4420ac5436d5e592) release: v11.0.0
+- [`0a0574a7`](https://github.com/inveniosoftware/invenio-users-resources/commit/0a0574a7bd8bb1b6e9ff1f6e35304bbc0c7525ed) feat(users)!: add admin role management backend
+
+#### `invenio-vocabularies` 12.0.0+oarepo.1.ibw3s6nmg4uy4kdr 💥
+[11.1.2+oarepo.1.26bhh64bjojb73mv → 12.0.0+oarepo.1.ibw3s6nmg4uy4kdr](https://github.com/inveniosoftware/invenio-vocabularies/compare/v11.1.2...v12.0.0)
+
+- [`61fb785a`](https://github.com/inveniosoftware/invenio-vocabularies/commit/61fb785a3f6e4250bbb8394a6f1cae0d6eafc273) chore(setup): bump dependencies
+- [`11dc7708`](https://github.com/inveniosoftware/invenio-vocabularies/commit/11dc7708daeeb9ca219418bedcb6b0b9e5de5750) release: v12.0.0
+
+#### `oarepo-app` 5.0.0 💥
+4.0.0 → 5.0.0
+
+
+#### `oarepo-communities` 9.0.0 💥
+[8.1.3 → 9.0.0](https://github.com/oarepo/oarepo-communities/compare/v8.1.3...v9.0.0)
+
+- [`194a51c1`](https://github.com/oarepo/oarepo-communities/commit/194a51c10e524a61dd03c3d995b6851a7794c66d) Major bump due to changes in invenio
+- [`ce108e8e`](https://github.com/oarepo/oarepo-communities/commit/ce108e8e8409e0ede4c950c651419c19cfc777e5) fixed communities cli
+- [`43f0a7aa`](https://github.com/oarepo/oarepo-communities/commit/43f0a7aab5598f45afbf3780377bd38bc58f850c) [skip ci] Bump version to v8.1.4
+- [`bd78a606`](https://github.com/oarepo/oarepo-communities/commit/bd78a606b7cd89180382475f9f8d92b3487e9ab7) _get_record_communities and _get_data_communities return empty list instead of raising errors
+- [`4bf429e7`](https://github.com/oarepo/oarepo-communities/commit/4bf429e70d509a3732e05e4a4287d91ec9a30689) errors are deprecated instead of removed directly
+- [`856f764c`](https://github.com/oarepo/oarepo-communities/commit/856f764cbdfc18b66d4622f8683ddcaf1eed9a77) [skip ci] Bump version to v8.1.3
+
+#### `oarepo-dashboard` 6.0.0 💥
+[5.0.0 → 6.0.0](https://github.com/oarepo/oarepo-dashboard/compare/v5.0.0...v6.0.0)
+
+- [`b29a56bd`](https://github.com/oarepo/oarepo-dashboard/commit/b29a56bd366411bb29ccb8d47f4e018abfdd5bf9) Chore: major bump due to changes in invenio
+- [`fe098cdb`](https://github.com/oarepo/oarepo-dashboard/commit/fe098cdb82d23861162c15e0791d93a0f0741473) chore: removed oarepo-tools from dev dependencies
+
+#### `oarepo-doi` 5.0.0 💥
+[4.0.1 → 5.0.0](https://github.com/oarepo/oarepo-doi/compare/v4.0.1...v5.0.0)
+
+- [`070efe81`](https://github.com/oarepo/oarepo-doi/commit/070efe81b85cb8e5d169398ab2bef4d0b7730173) Merge pull request #46 from oarepo/release-5.0.0
+- [`7b6b6da7`](https://github.com/oarepo/oarepo-doi/commit/7b6b6da7cb4d5f64bec603a97a768d09c4534f9c) Chore: Major version bump due to invenio bumps
+- [`42804ad7`](https://github.com/oarepo/oarepo-doi/commit/42804ad75f9322ab0c2d57dfcfc0eaf939dd9b99) Merge pull request #45 from oarepo/docs-default-cfg
+- [`28df0f71`](https://github.com/oarepo/oarepo-doi/commit/28df0f711aac6423fd2f075af8d47812fd5af16d) docs: add default config to the documentation
+
+#### `oarepo-model` 3.0.0 💥
+[2.4.0 → 3.0.0](https://github.com/oarepo/oarepo-model/compare/v2.4.0...v3.0.0)
+
+- [`77b4b3f7`](https://github.com/oarepo/oarepo-model/commit/77b4b3f7b9b02ce01f76d08d209e99fdc01a095e) Major version bump due to major bump in packages: invenio-rdm-records, oarepo-runtime (#123)
+- [`4a120fdd`](https://github.com/oarepo/oarepo-model/commit/4a120fdd28f0be7cf27616ef3d02de170dcc35dc) fix: added value labels (#120)
+- [`8d521212`](https://github.com/oarepo/oarepo-model/commit/8d521212490a797b80acb844f67a007c2cca491b) [skip ci] Bump version to v2.4.0
+
+#### `oarepo-oidc-einfra` 5.0.0 💥
+[4.1.0 → 5.0.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v4.1.0...v5.0.0)
+
+- [`0efd6a5d`](https://github.com/oarepo/oarepo-oidc-einfra/commit/0efd6a5d6be309713677953c3c947ab470819543) Major version bump due to changes in ivenio (#42)
+- [`e82c5aeb`](https://github.com/oarepo/oarepo-oidc-einfra/commit/e82c5aeb9cc708eed04d2bb7f3a9f414011b3c2a) [skip ci] Bump version to v4.2.0
+- [`5af94a4c`](https://github.com/oarepo/oarepo-oidc-einfra/commit/5af94a4c0f7e70ad79a4bf88cb2532c3c7166630) Upgrading invenio - request validation changed (#41)
+
+#### `oarepo-rdm` 6.0.0 💥
+[4.0.0 → 6.0.0](https://github.com/oarepo/oarepo-rdm/compare/v4.0.0...v6.0.0)
+
+- [`a6dae478`](https://github.com/oarepo/oarepo-rdm/commit/a6dae4781c448b0111992cdf5f460dae15a77741) Major version bump due to major bump in packages: invenio, oarepo-model, oarepo-runtime, pytest-oarepo, oarepo-ui (#94)
+- [`04354df6`](https://github.com/oarepo/oarepo-rdm/commit/04354df62c7dd5515e29dd65a0853ef7b2e42c4c) moved rdm related config to oarepo (#93)
+- [`b2eddd89`](https://github.com/oarepo/oarepo-rdm/commit/b2eddd896a420594623e6b0602f0fe83a94ebda8) Pytest oarepo (#64)
+- [`e33e9832`](https://github.com/oarepo/oarepo-rdm/commit/e33e983269d0c07c23804be928b3844be681ca6b) [skip ci] Bump version to v4.1.0
+- [`9a9561bb`](https://github.com/oarepo/oarepo-rdm/commit/9a9561bb14b882fde20068b985f1b5fd2102593d) added personororgschemas to config (#90)
+- [`cb7e6cec`](https://github.com/oarepo/oarepo-rdm/commit/cb7e6cec895311ee144b164e34f1222e8ae5e4b4) fix: added new route (#92)
+
+#### `oarepo-requests` 7.0.0 💥
+[5.4.0 → 7.0.0](https://github.com/oarepo/oarepo-requests/compare/v5.4.0...v7.0.0)
+
+- [`7519d276`](https://github.com/oarepo/oarepo-requests/commit/7519d276bc4ac2524c9c2b41aa7c704a9862054c) Major bump due to invenio bump (#188)
+- [`556d5d6b`](https://github.com/oarepo/oarepo-requests/commit/556d5d6be55787453f73bde798d50ba8564ee326) [breaking] using vnd serialization for dashboard requests (#186)
+- [`91e42d59`](https://github.com/oarepo/oarepo-requests/commit/91e42d59bc418756faf6a24bbb2b87fd1cecb5d8) [skip ci] Bump version to v5.5.0
+- [`02873240`](https://github.com/oarepo/oarepo-requests/commit/02873240e53e81a2c7a50ac7104c0c742d3ac7d4) Support per-type default request receiver (#187)
+- [`fb0667d6`](https://github.com/oarepo/oarepo-requests/commit/fb0667d6405a3e50cb24b3018c6802a85ab46e6e) [skip ci] Bump version to v5.4.0
+
+#### `oarepo-runtime` 5.0.0 💥
+[4.5.0 → 5.0.0](https://github.com/oarepo/oarepo-runtime/compare/v4.5.0...v5.0.0)
+
+- [`97bdb183`](https://github.com/oarepo/oarepo-runtime/commit/97bdb1837f41021912bf7f7ed77f9e1c6727083f) Release bump due to invenio major release bump
+- [`4958af69`](https://github.com/oarepo/oarepo-runtime/commit/4958af6902e2563eaffe33cea54f4d8b13b04345) major bumping pytest-oarepo
+- [`8701de7d`](https://github.com/oarepo/oarepo-runtime/commit/8701de7d3849b1bd03f64bb6f1c5bbbc9eede5d6) [skip ci] Bump version to v4.5.0
+
+#### `oarepo-theme` 4.0.0 💥
+[3.0.0 → 4.0.0](https://github.com/oarepo/oarepo-theme/compare/v3.0.0...v4.0.0)
+
+- [`a79b07c9`](https://github.com/oarepo/oarepo-theme/commit/a79b07c98355e83d56fdd191a355fab09251b0eb) Chore: major bump due to invenio bump
+
+#### `oarepo-ui` 11.0.0 💥
+[10.2.0 → 11.0.0](https://github.com/oarepo/oarepo-ui/compare/v10.2.0...v11.0.0)
+
+- [`2881d3dd`](https://github.com/oarepo/oarepo-ui/commit/2881d3ddc4a6ab4adadc99e5b1042370abe3f3e0) [breaking] fix: home page URLs, search layout, form feedback and input spacing`; invenio upgrade
+- [`a30092f3`](https://github.com/oarepo/oarepo-ui/commit/a30092f36c1c687edbcaf18788355b0b461e64a3) fix: unable to create urls for home page
+- [`05a1c8ed`](https://github.com/oarepo/oarepo-ui/commit/05a1c8ed8e6c433974fc60e97e6498a9569137cb) importing view handlers from app rdm
+- [`d5113009`](https://github.com/oarepo/oarepo-ui/commit/d5113009ff8905f067d29220bafe0f0551620b0d) Downgrade version from 11.0.0 to 10.2.0
+- [`1a699f77`](https://github.com/oarepo/oarepo-ui/commit/1a699f77ae506a21a12b6ba843b74e93571a303a) fixed default search app layout
+- [`ef09e9cf`](https://github.com/oarepo/oarepo-ui/commit/ef09e9cf054db9ebc429c851a63db7e19bff98c0) added translations
+- [`1830099f`](https://github.com/oarepo/oarepo-ui/commit/1830099fb1486135beebaab4172ed91fde7a3176) copilot suggestions
+- [`90e375b0`](https://github.com/oarepo/oarepo-ui/commit/90e375b0f53e15846cd808ce5f4ad6854415afc3) fixes per PR suggestions
+- [`3cc70bcb`](https://github.com/oarepo/oarepo-ui/commit/3cc70bcb24bf6fd225862b6a7d7eaf71f43c1dd2) [breaking] prototyping different form feedback (#448)
+- [`b8970c21`](https://github.com/oarepo/oarepo-ui/commit/b8970c215402a5d95865868e24c10bcdb23b0004) fix: spacing between inputs
+- [`a17f2460`](https://github.com/oarepo/oarepo-ui/commit/a17f2460658480379d81b6d6cccc3b198c952447) fix: nested errors fix
+- [`1bf4eacf`](https://github.com/oarepo/oarepo-ui/commit/1bf4eacfc267edde8a2be7132982ac7eda038a0d) [skip ci] Bump version to v10.2.0
+
+#### `oarepo-vocabularies` 7.0.0 💥
+[6.0.0 → 7.0.0](https://github.com/oarepo/oarepo-vocabularies/compare/v6.0.0...v7.0.0)
+
+- [`7dc59a41`](https://github.com/oarepo/oarepo-vocabularies/commit/7dc59a4125802f114264df50d97e5fd0acc07608) Major version bump due to major bump in packages: invenio-vocabularies, oarepo-runtime, oarepo-ui (#258)
+
+#### `oarepo-workflows` 5.0.0 💥
+[4.1.0 → 5.0.0](https://github.com/oarepo/oarepo-workflows/compare/v4.1.0...v5.0.0)
+
+- [`073461dc`](https://github.com/oarepo/oarepo-workflows/commit/073461dc9abdae447c2cc89a8fd0b4a05bbce75f) Chore: Major version bump due to changes in invenio (#56)
+- [`acd0a32b`](https://github.com/oarepo/oarepo-workflows/commit/acd0a32be75bc88ca5b455c880f182823b2f9993) [skip ci] Bump version to v4.2.1
+- [`16b03f33`](https://github.com/oarepo/oarepo-workflows/commit/16b03f33b40f2c4d498b5a2cb9e521105ca3f15c) fix(generators): do not raise exception when workflow not found (#55)
+- [`3fa4b839`](https://github.com/oarepo/oarepo-workflows/commit/3fa4b839c9e2f8b9d74a31c576012eb2f9337897) [skip ci] Bump version to v4.2.0
+- [`a21791d0`](https://github.com/oarepo/oarepo-workflows/commit/a21791d08f3af4091986478e03e44fd267958d41) RecordOwners can become recipients of a request (#54)
+- [`1f375f8a`](https://github.com/oarepo/oarepo-workflows/commit/1f375f8ab8a166de83269739664188fb1b0cc392) [skip ci] Bump version to v4.1.0
 
 ---
 
