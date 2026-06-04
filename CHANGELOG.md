@@ -2,11 +2,31 @@
 
 ## Contents
 
+- [6.1.0](#700)
 - [6.0.0](#600)
 - [5.0.0](#500)
 - [4.0.0](#400)
 - [3.0.0](#300)
-- [2.3.0](#230)
+
+---
+
+## 6.1.0
+
+Released: **June 4, 2026 at 06:30 UTC**
+
+
+### Updated packages
+
+#### `oarepo-app` 6.0.0 💥
+5.0.0 → 6.0.0
+
+
+#### `oarepo-oai-pmh-harvester` 8.0.0 💥
+[7.0.0 → 8.0.0](https://github.com/oarepo/oarepo-oai-pmh-harvester/compare/v7.0.0...v8.0.0)
+
+- [`795f5783`](https://github.com/oarepo/oarepo-oai-pmh-harvester/commit/795f57836cc92d76c795eb9ad802c838b2394be2) Version bump & pyproject cleanup (#119)
+- [`4ea3fed6`](https://github.com/oarepo/oarepo-oai-pmh-harvester/commit/4ea3fed6cd4184ba519c5bfd88b65526d6081104) Put version to pyproject.toml (#118)
+- [`de63d6b8`](https://github.com/oarepo/oarepo-oai-pmh-harvester/commit/de63d6b8c3b36c382493199d037b52f8254bd659) [skip ci] Bump version to v7.0.0
 
 ---
 
