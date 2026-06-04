@@ -336,6 +336,145 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
     ]
 
 
+def _populate_single_package_changes(name: str, pkg: dict, group: dict) -> None:
+    """Populate ``changes`` and ``github_url`` for one package entry in place.
+
+    Uses whatever ``version`` and ``previous_version`` are already stored in
+    *pkg*, so callers must ensure those fields are correct before calling this.
+    """
+    previous_version: str | None = pkg.get("previous_version")
+    if previous_version is not None:
+        version_tag = group["version_tag"]
+        github_organization: str = group["github_organization"]
+        github_repo: str = group["github_repo"](name)
+        previous_tag = version_tag(previous_version)
+        current_tag = version_tag(pkg["version"])
+        if previous_tag != current_tag:
+            pkg["github_url"] = (
+                f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
+            )
+
+    changes = _fetch_package_changes(name, pkg, group)
+    pkg["changes"] = changes
+    if changes:
+        print(f"  [dim]\u21b3[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
+
+
+def _get_head_sha(directory: Path) -> str | None:
+    """Return the current HEAD commit SHA, or None if unavailable."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            cwd=str(directory),
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except FileNotFoundError:
+        pass
+    return None
+
+
+def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
+    """Fetch commits and set ``github_url`` for the ``oarepo-app`` package in *entry*.
+
+    Must be called **after** ``packages["oarepo-app"]["version"]`` and
+    ``packages["oarepo-app"]["previous_version"]`` have been corrected to the
+    real release versions (i.e. after ``main.py`` has computed the new version).
+
+    The new version tag does not exist in the remote repository yet (this runs
+    before the release is published), so commits are fetched via the GitHub
+    compare API using ``<previous_tag>...<HEAD SHA>`` instead of the usual
+    ``<previous_tag>...<new_tag>`` form.
+    """
+    pkg = entry.get("packages", {}).get("oarepo-app")
+    if pkg is None:
+        return
+    previous_version: str | None = pkg.get("previous_version")
+    if not previous_version:
+        return
+    group = _matches_log_group("oarepo-app")
+    if group is None:
+        return
+
+    version_tag = group["version_tag"]
+    github_organization: str = group["github_organization"]
+    github_repo: str = group["github_repo"]("oarepo-app")
+    previous_tag = version_tag(previous_version)
+    current_tag = version_tag(pkg["version"])
+
+    if previous_tag != current_tag:
+        pkg["github_url"] = (
+            f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
+        )
+
+    # Resolve the canonical previous tag name (e.g. "v6.1.0" vs "6.1.0").
+    all_tags = read_tags(github_organization, github_repo)
+    actual_previous_tag = find_tag(previous_tag, all_tags) or previous_tag
+
+    # The new version tag does not exist yet.  Use the HEAD commit SHA as the
+    # second ref so the GitHub compare API can return the right set of commits.
+    head_sha = _get_head_sha(directory)
+    if head_sha is None:
+        print("  [dim]↳[/dim] ⚠️  cannot determine HEAD SHA – skipping oarepo-app commits")
+        pkg["changes"] = []
+        return
+
+    try:
+        result = call_with_retries(
+            [
+                "gh",
+                "api",
+                f"repos/{github_organization}/{github_repo}/compare/{actual_previous_tag}...{head_sha}",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except FileNotFoundError:
+        print("  [dim]↳[/dim] ⚠️  gh CLI not found – skipping oarepo-app commits")
+        pkg["changes"] = []
+        return
+    except subprocess.TimeoutExpired:
+        print("  [dim]↳[/dim] ⚠️  gh CLI timed out for oarepo-app")
+        pkg["changes"] = []
+        return
+
+    if result.returncode != 0:
+        print(
+            f"  [dim]↳[/dim] ⚠️  compare failed for oarepo-app "
+            f"({actual_previous_tag}…{head_sha[:8]}): {result.stderr.strip()}"
+        )
+        pkg["changes"] = []
+        return
+
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        print(f"  [dim]↳[/dim] ⚠️  JSON parse error for oarepo-app: {exc}")
+        pkg["changes"] = []
+        return
+
+    raw_commits = data.get("commits", [])
+    commits_with_dates = [
+        {
+            "sha": c.get("sha", ""),
+            "message": c.get("commit", {}).get("message", ""),
+            "date": c.get("commit", {}).get("committer", {}).get("date", ""),
+        }
+        for c in raw_commits
+    ]
+    commits_with_dates.sort(key=lambda c: c["date"], reverse=True)
+    changes = [
+        {"commit": c["sha"], "message": c["message"].split("\n")[0]}
+        for c in commits_with_dates
+    ]
+    pkg["changes"] = changes
+    if changes:
+        print(f"  [dim]↳[/dim] [cyan]oarepo-app[/cyan]: {len(changes)} commit(s)")
+
+
 def _populate_all_changes(entry: dict) -> None:
     """Populate the ``changes`` list and ``github_url`` for every package in *entry* in place.
 
@@ -348,26 +487,14 @@ def _populate_all_changes(entry: dict) -> None:
         if group is None:
             continue
 
-        # do not log changes for oarepo-app neither for oarepo-invenio-typing-stubs
+        # oarepo-app is skipped here because create_log_entry() runs before
+        # main.py has computed the new version; the package entry still holds
+        # the old pyproject.toml value at this point.  populate_single_package_changes()
+        # is called from main.py once the correct versions are in place.
         if name in ("oarepo-app", "oarepo-invenio-typing-stubs"):
             continue
 
-        previous_version: str | None = pkg.get("previous_version")
-        if previous_version is not None:
-            version_tag = group["version_tag"]
-            github_organization: str = group["github_organization"]
-            github_repo: str = group["github_repo"](name)
-            previous_tag = version_tag(previous_version)
-            current_tag = version_tag(pkg["version"])
-            if previous_tag != current_tag:
-                pkg["github_url"] = (
-                    f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
-                )
-
-        changes = _fetch_package_changes(name, pkg, group)
-        pkg["changes"] = changes
-        if changes:
-            print(f"  [dim]↳[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
+        _populate_single_package_changes(name, pkg, group)
 
 
 # ─── entry building ───────────────────────────────────────────────────────────
