@@ -336,6 +336,102 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
     ]
 
 
+def _populate_single_package_changes(name: str, pkg: dict, group: dict) -> None:
+    """Populate ``changes`` and ``github_url`` for one package entry in place.
+
+    Uses whatever ``version`` and ``previous_version`` are already stored in
+    *pkg*, so callers must ensure those fields are correct before calling this.
+    """
+    previous_version: str | None = pkg.get("previous_version")
+    if previous_version is not None:
+        version_tag = group["version_tag"]
+        github_organization: str = group["github_organization"]
+        github_repo: str = group["github_repo"](name)
+        previous_tag = version_tag(previous_version)
+        current_tag = version_tag(pkg["version"])
+        if previous_tag != current_tag:
+            pkg["github_url"] = (
+                f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
+            )
+
+    changes = _fetch_package_changes(name, pkg, group)
+    pkg["changes"] = changes
+    if changes:
+        print(f"  [dim]\u21b3[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
+
+
+def _fetch_local_git_log(directory: Path, previous_tag: str) -> list[dict]:
+    """Return commits reachable from HEAD but not from *previous_tag*.
+
+    Uses the local git repository, so it works even when the new version has
+    not yet been tagged on the remote (e.g. while preparing a release).
+    """
+    try:
+        result = subprocess.run(
+            ["git", "log", f"{previous_tag}..HEAD", "--format=%H\t%s"],
+            capture_output=True,
+            text=True,
+            cwd=str(directory),
+        )
+    except FileNotFoundError:
+        print("  [dim]\u21b3[/dim] \u26a0\ufe0f  git not found \u2013 skipping oarepo-app commits")
+        return []
+    if result.returncode != 0:
+        print(
+            f"  [dim]\u21b3[/dim] \u26a0\ufe0f  git log {previous_tag}..HEAD failed \u2013 skipping oarepo-app commits"
+        )
+        return []
+    commits = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        sha, _, message = line.partition("\t")
+        commits.append({"commit": sha.strip(), "message": message.strip()})
+    return commits
+
+
+def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
+    """Fetch commits and set ``github_url`` for the ``oarepo-app`` package in *entry*.
+
+    Must be called **after** ``packages["oarepo-app"]["version"]`` and
+    ``packages["oarepo-app"]["previous_version"]`` have been corrected to the
+    real release versions (i.e. after ``main.py`` has computed the new version).
+
+    Commits are read from the **local** git history (``git log previous..HEAD``)
+    rather than the GitHub compare API, because the new version tag does not
+    exist in the remote repository yet at the time this runs.
+    """
+    pkg = entry.get("packages", {}).get("oarepo-app")
+    if pkg is None:
+        return
+    previous_version: str | None = pkg.get("previous_version")
+    if not previous_version:
+        return
+    group = _matches_log_group("oarepo-app")
+    if group is None:
+        return
+
+    version_tag = group["version_tag"]
+    github_organization: str = group["github_organization"]
+    github_repo: str = group["github_repo"]("oarepo-app")
+    previous_tag = version_tag(previous_version)
+    current_tag = version_tag(pkg["version"])
+
+    if previous_tag != current_tag:
+        pkg["github_url"] = (
+            f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
+        )
+
+    # Resolve the canonical tag name used in the remote (e.g. "v6.1.0" vs "6.1.0").
+    all_tags = read_tags(github_organization, github_repo)
+    actual_previous_tag = find_tag(previous_tag, all_tags) or previous_tag
+
+    changes = _fetch_local_git_log(directory, actual_previous_tag)
+    pkg["changes"] = changes
+    if changes:
+        print(f"  [dim]\u21b3[/dim] [cyan]oarepo-app[/cyan]: {len(changes)} commit(s)")
+
+
 def _populate_all_changes(entry: dict) -> None:
     """Populate the ``changes`` list and ``github_url`` for every package in *entry* in place.
 
@@ -348,26 +444,14 @@ def _populate_all_changes(entry: dict) -> None:
         if group is None:
             continue
 
-        # do not log changes for oarepo-app neither for oarepo-invenio-typing-stubs
+        # oarepo-app is skipped here because create_log_entry() runs before
+        # main.py has computed the new version; the package entry still holds
+        # the old pyproject.toml value at this point.  populate_single_package_changes()
+        # is called from main.py once the correct versions are in place.
         if name in ("oarepo-app", "oarepo-invenio-typing-stubs"):
             continue
 
-        previous_version: str | None = pkg.get("previous_version")
-        if previous_version is not None:
-            version_tag = group["version_tag"]
-            github_organization: str = group["github_organization"]
-            github_repo: str = group["github_repo"](name)
-            previous_tag = version_tag(previous_version)
-            current_tag = version_tag(pkg["version"])
-            if previous_tag != current_tag:
-                pkg["github_url"] = (
-                    f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
-                )
-
-        changes = _fetch_package_changes(name, pkg, group)
-        pkg["changes"] = changes
-        if changes:
-            print(f"  [dim]↳[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
+        _populate_single_package_changes(name, pkg, group)
 
 
 # ─── entry building ───────────────────────────────────────────────────────────

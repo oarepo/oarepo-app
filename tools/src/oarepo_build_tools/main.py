@@ -4,7 +4,7 @@ from pathlib import Path
 import typer
 from oarepo_build_tools.diff_pyproject_to_pypi import diff_pyproject_to_pypi
 from oarepo_build_tools.git import switch_branch
-from oarepo_build_tools.logs import create_log_entry, render_changelog_md
+from oarepo_build_tools.logs import create_log_entry, populate_oarepo_app_changes, render_changelog_md
 from oarepo_build_tools.python import (
     get_latest_oarepo_version,
     get_oarepo_app_version,
@@ -97,6 +97,8 @@ def setup(
             pkg["previous_version"] = changelog[1]["version"]
         else:
             pkg.pop("previous_version", None)
+    print("  [dim]\u21b3[/dim] Fetching [bold]oarepo-app[/bold] commit log …")
+    populate_oarepo_app_changes(changelog[0], root)
     (root / "CHANGELOG.json").write_text(json.dumps(changelog, indent=2), encoding="utf-8")
 
     print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
