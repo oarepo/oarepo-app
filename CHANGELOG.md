@@ -2,18 +2,32 @@
 
 ## Contents
 
-- [6.1.0](#700)
+- [6.2.0rc1](#620rc1)
+- [6.1.0](#610)
 - [6.0.0](#600)
 - [5.0.0](#500)
 - [4.0.0](#400)
-- [3.0.0](#300)
+
+---
+
+## 6.2.0rc1
+
+Released: **June 4, 2026 at 19:08 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.2.0rc1
+[6.1.0 → 6.2.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.1.0...v6.2.0rc1)
+
+- [`1139af9d`](https://github.com/oarepo/oarepo-app/commit/1139af9d0307e0fd5027cb953952b4bd2241490a) fix: logging oarepo-app commits in changelog
+- [`09f55951`](https://github.com/oarepo/oarepo-app/commit/09f559516348a2a16f11a4777be9ddd5fcc7e64b) fix: changelog extra entries
+- [`993863bc`](https://github.com/oarepo/oarepo-app/commit/993863bc75ec91961f8bd8d893a5b3f13806d13c) feat: overwritable vocabularies, pipeline for release candidates
 
 ---
 
 ## 6.1.0
 
 Released: **June 4, 2026 at 06:30 UTC**
-
 
 ### Updated packages
 
