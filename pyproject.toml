@@ -35,6 +35,7 @@ development = [
     "oarepo-vocabularies>=7.0.0,<8.0.0",
     "oarepo-workflows>=5.0.0,<6.0.0",
     "oarepo-doi>=5.0.0,<6.0.0",
+    "oarepo-related-resources>=2.0.0,<3.0.0",
 ]
 oarepo14 = [
     "oarepo[rdm,tests]>=14.0.0,<15.0.0",
@@ -60,6 +61,7 @@ production = [
     "oarepo-vocabularies==7.0.0",
     "oarepo-workflows==5.0.0",
     "oarepo-doi==5.0.0",
+    "oarepo-related-resources==2.0.0",
 ]
 ccmm = [
     "ccmm-invenio==1.1.10",
