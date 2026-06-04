@@ -2,7 +2,7 @@
 
 ## Contents
 
-- [7.0.0](#700)
+- [6.1.0](#700)
 - [6.0.0](#600)
 - [5.0.0](#500)
 - [4.0.0](#400)
@@ -10,11 +10,10 @@
 
 ---
 
-## 7.0.0
+## 6.1.0
 
 Released: **June 4, 2026 at 06:30 UTC**
 
-> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
 
 ### Updated packages
 
