@@ -86,6 +86,17 @@ def setup(
 
     changelog = json.loads((root / "CHANGELOG.json").read_text(encoding="utf-8"))
     changelog[0]["version"] = oarepo_app_version
+    # create_log_entry() records the oarepo-app version that was in uv.lock at
+    # call time (i.e. the *old* pyproject.toml value).  Overwrite it with the
+    # version we just computed, and fix previous_version to point at the
+    # preceding entry's top-level version so the changelog renders correctly.
+    if "oarepo-app" in changelog[0].get("packages", {}):
+        pkg = changelog[0]["packages"]["oarepo-app"]
+        pkg["version"] = oarepo_app_version
+        if len(changelog) > 1:
+            pkg["previous_version"] = changelog[1]["version"]
+        else:
+            pkg.pop("previous_version", None)
     (root / "CHANGELOG.json").write_text(json.dumps(changelog, indent=2), encoding="utf-8")
 
     print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")

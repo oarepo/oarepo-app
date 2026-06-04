@@ -9,11 +9,10 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from packaging.version import InvalidVersion, Version
-from rich import print
-
 from oarepo_build_tools.constants import LOG_PACKAGES
 from oarepo_build_tools.python import parse_uv_lock
+from packaging.version import InvalidVersion, Version
+from rich import print
 
 _CHANGELOG_FILENAME = "CHANGELOG.json"
 
@@ -138,9 +137,7 @@ def call_with_retries(
         if result.returncode == 0:
             return result
 
-        print(
-            f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} failed (exit {result.returncode})"
-        )
+        print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} failed (exit {result.returncode})")
 
     if last_timeout is not None:
         raise last_timeout
@@ -199,24 +196,16 @@ def read_tags(github_organization: str, github_repo: str) -> dict[Version, str]:
             timeout=60,
         )
     except FileNotFoundError:
-        print(
-            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — "
-            f"cannot read tags for [cyan]{github_repo}[/cyan]"
-        )
+        print(f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — cannot read tags for [cyan]{github_repo}[/cyan]")
         _tag_cache[cache_key] = {}
         return {}
     except subprocess.TimeoutExpired:
-        print(
-            f"  [dim]↳[/dim] ⚠️  gh CLI timed out reading tags for [cyan]{github_repo}[/cyan]"
-        )
+        print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out reading tags for [cyan]{github_repo}[/cyan]")
         _tag_cache[cache_key] = {}
         return {}
 
     if result.returncode != 0:
-        print(
-            f"  [dim]↳[/dim] ⚠️  failed to read tags for [cyan]{github_repo}[/cyan]: "
-            f"{result.stderr.strip()}"
-        )
+        print(f"  [dim]↳[/dim] ⚠️  failed to read tags for [cyan]{github_repo}[/cyan]: {result.stderr.strip()}")
         _tag_cache[cache_key] = {}
         return {}
 
@@ -304,9 +293,7 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
             timeout=30,
         )
     except FileNotFoundError:
-        print(
-            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — skipping commits for [cyan]{name}[/cyan]"
-        )
+        print(f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — skipping commits for [cyan]{name}[/cyan]")
         return []
     except subprocess.TimeoutExpired:
         print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out for [cyan]{name}[/cyan]")
@@ -318,9 +305,7 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
             f"([dim]{previous_tag}…{current_tag}[/dim]): {result.stderr.strip()}\n"
             f"gh api repos/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}",
         )
-        raise subprocess.CalledProcessError(
-            result.returncode, result.args, result.stdout, result.stderr
-        )
+        raise subprocess.CalledProcessError(result.returncode, result.args, result.stdout, result.stderr)
 
     try:
         data = json.loads(result.stdout)
@@ -374,10 +359,10 @@ def _populate_all_changes(entry: dict) -> None:
             github_repo: str = group["github_repo"](name)
             previous_tag = version_tag(previous_version)
             current_tag = version_tag(pkg["version"])
-            pkg["github_url"] = (
-                f"https://github.com/{github_organization}/{github_repo}"
-                f"/compare/{previous_tag}...{current_tag}"
-            )
+            if previous_tag != current_tag:
+                pkg["github_url"] = (
+                    f"https://github.com/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}"
+                )
 
         changes = _fetch_package_changes(name, pkg, group)
         pkg["changes"] = changes
@@ -495,12 +480,8 @@ def create_log_entry(directory: Path) -> None:
 
     breaking_packages = [n for n, p in entry["packages"].items() if p.get("breaking")]
     if breaking_packages:
-        print(
-            f"  [dim]↳[/dim] 💥 [bold red]breaking[/bold red]: {', '.join(breaking_packages)}"
-        )
+        print(f"  [dim]↳[/dim] 💥 [bold red]breaking[/bold red]: {', '.join(breaking_packages)}")
 
     changelog.insert(0, entry)
     _write_changelog(changelog_path, changelog)
-    print(
-        f"  [dim]↳[/dim] ✅ written to [cyan]{changelog_path.relative_to(directory)}[/cyan]"
-    )
+    print(f"  [dim]↳[/dim] ✅ written to [cyan]{changelog_path.relative_to(directory)}[/cyan]")
