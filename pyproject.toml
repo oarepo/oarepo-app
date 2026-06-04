@@ -16,7 +16,7 @@ ccmm-development = [
     "ccmm-invenio>=1.1.0,<1.2.0",
 ]
 oaipmh-harvester-development = [
-    "oarepo-oai-pmh-harvester>=7.0.0,<8.0.0",
+    "oarepo-oai-pmh-harvester>=8.0.0,<9.0.0",
 ]
 development = [
     "oarepo[s3]>=14.2.1b10dev7,<15.0.0",
@@ -67,7 +67,7 @@ ccmm = [
     "ccmm-invenio==1.1.10",
 ]
 oaipmh-harvester = [
-    "oarepo-oai-pmh-harvester==7.0.0",
+    "oarepo-oai-pmh-harvester==8.0.0",
 ]
 
 [project.entry-points."invenio_config.module"]
