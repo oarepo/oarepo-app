@@ -12,6 +12,17 @@ on:
         required: false
         type: boolean
         default: false
+      release-candidate:
+        description: "Release-candidate mode: 'public' (normal release), 'patch-rc', 'minor-rc', 'major-rc', or 'inc-rc'"
+        required: false
+        type: choice
+        options:
+          - public
+          - patch-rc
+          - minor-rc
+          - major-rc
+          - inc-rc
+        default: public
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -57,6 +68,9 @@ jobs:
           fi
           if [ -n "$OAREPO_VERSION" ]; then
             ARGS+=(--oarepo-version "$OAREPO_VERSION")
+          fi
+          if [ "${{ inputs.release-candidate }}" != "public" ]; then
+            ARGS+=(--release-candidate "${{ inputs.release-candidate }}")
           fi
           oarepo-app-build setup "${ARGS[@]}"
 

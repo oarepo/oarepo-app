@@ -31,6 +31,7 @@ from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.records import RecordService
 from invenio_records_resources.services.uow import RecordCommitOp
 from invenio_vocabularies.records.api import Vocabulary
+from sqlalchemy.exc import NoResultFound
 
 
 def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork):
@@ -51,10 +52,22 @@ def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork
                 record = service.create(system_identity, data, uow=uow)
             return record._record.id
         else:
-            record = service.create(system_identity, data)
+            if "id" in data:
+                id = data["id"]
+                try:
+                    # If the entry hasn't been added, this will fail
+                    record = service.read(system_identity, id)
+                    record = service.update(system_identity, id, data=data, uow=uow)
+                except PersistentIdentifierError, NoResultFound:
+                    record = service.create(system_identity, data, uow=uow)
+            else:
+                record = service.create(system_identity, data, uow=uow)
             return record._record.id
     except Exception as e:
-        current_app.logger.error(f"failed to load vocabulary entry: {e}:\n{data}")
+        import traceback
+
+        traceback.print_exc()
+        current_app.logger.error(f"failed to load vocabulary entry: {type(e).__name__} {e}:\n{data}")
 
 
 def remove_record_index_operation(uow: UnitOfWork):
