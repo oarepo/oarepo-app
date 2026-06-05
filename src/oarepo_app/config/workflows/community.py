@@ -4,6 +4,7 @@ import dataclasses
 
 from invenio_rdm_records.requests.community_submission import CommunitySubmission
 from invenio_rdm_records.services.generators import (
+    IfNewRecord,
     RecordCommunitiesAction,
     RecordOwners,
 )
@@ -100,6 +101,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         Returns:
             A tuple of permission generators for the ``can_create`` policy action.
+
         """
         create_generators = list(super()._build_record_create_generators())
         for role in self.draft_creation_community_roles:
@@ -133,6 +135,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         Returns:
             An updated generator list.
+
         """
         result = [gen for gen in original_permissions if not isinstance(gen, RecordCommunitiesAction)]
         for role in community_roles:
@@ -153,6 +156,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         Returns:
             Updated generator list.
+
         """
         return self._replace_communities_action_with_roles(
             original_rdm_permissions, self.read_restricted_community_roles
@@ -172,6 +176,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         Returns:
             Updated generator list.
+
         """
         return self._replace_communities_action_with_roles(original_rdm_permissions, self.read_draft_community_roles)
 
@@ -189,6 +194,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         Returns:
             Updated generator list.
+
         """
         return self._replace_communities_action_with_roles(original_rdm_permissions, self.record_manage_community_roles)
 
@@ -202,9 +208,14 @@ class CommunityWorkflow(BaseWorkflowSettings):
         requests = {
             CommunitySubmission.type_id: WorkflowRequest(
                 requesters=[
-                    IfInState(
-                        ["draft", "review_requested"],
-                        [RecordOwners(), *curator_generators],
+                    IfNewRecord(
+                        then_=self._build_record_create_generators(),
+                        else_=[
+                            IfInState(
+                                ["draft", "review_requested"],
+                                [RecordOwners(), *curator_generators],
+                            )
+                        ],
                     )
                 ],
                 recipients=curator_generators,
