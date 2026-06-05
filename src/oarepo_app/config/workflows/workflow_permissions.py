@@ -354,7 +354,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_manage_files = (
         IfConfig(
             "RDM_ALLOW_METADATA_ONLY_RECORDS",
-            then_=[IfNewRecord(then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")])],
+            then_=[IfNewRecord(then_=[SameAs("can_create")], else_=[SameAs("can_rdm_review")])],
             else_=[],
         ),
     )
@@ -419,7 +419,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_manage_record_access = (
         IfConfig(
             "RDM_ALLOW_RESTRICTED_RECORDS",
-            then_=[IfNewRecord(then_=[AuthenticatedUser()], else_=[SameAs("can_rdm_review")])],
+            then_=[IfNewRecord(then_=[SameAs("can_create")], else_=[SameAs("can_rdm_review")])],
             else_=[],
         ),
     )
