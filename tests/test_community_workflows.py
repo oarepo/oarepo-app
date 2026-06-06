@@ -172,6 +172,7 @@ def test_curator_roles_are_included_as_requesters_when_configured(app):
     service (which requires the record to already have a community association).
     """
     from invenio_rdm_records.requests.community_submission import CommunitySubmission
+    from invenio_rdm_records.services.generators import IfNewRecord
     from oarepo_communities.services.permissions.generators import PrimaryCommunityRole
     from oarepo_workflows.services.permissions import IfInState
 
@@ -186,12 +187,21 @@ def test_curator_roles_are_included_as_requesters_when_configured(app):
     policy = workflow.request_policy_cls(workflow)
     submission = policy.requests_by_id[CommunitySubmission.type_id]
 
-    # Flatten: IfInState wraps the actual generators; unwrap one level.
-    flat_generators = [
-        gen
-        for requester in submission.requesters
-        for gen in (requester.then_ if isinstance(requester, IfInState) else [requester])
-    ]
+    # Recursively flatten conditional wrappers (IfNewRecord, IfInState) to
+    # reach the leaf generators regardless of nesting depth.
+    def _flatten(gens: list) -> list:
+        result = []
+        for g in gens:
+            if isinstance(g, IfInState):
+                result.extend(_flatten(g.then_))
+            elif isinstance(g, IfNewRecord):
+                result.extend(_flatten(g.then_))
+                result.extend(_flatten(g.else_))
+            else:
+                result.append(g)
+        return result
+
+    flat_generators = _flatten(submission.requesters)
     primary_roles = [g for g in flat_generators if isinstance(g, PrimaryCommunityRole)]
     present_roles = {g._role for g in primary_roles}  # noqa: SLF001
     assert "curator" in present_roles, "'curator' should appear in requesters"
