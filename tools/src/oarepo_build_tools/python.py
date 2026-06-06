@@ -193,8 +193,9 @@ def pin_development_major_versions(pyproject_path: Path, resolved: dict[str, str
             ):  # Apply only to oarepo packages, others use different versioning schemes
                 if req.name not in resolved:
                     raise ValueError(f"Dependency {dep} not found in resolved dependencies")
-                next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
-                development_deps[idx] = _rebuild_requirement(req, f">={resolved[req.name]},<{next_major_version}.0.0")
+                resolved_version = resolved[req.name].split("+")[0]  # strip local version label (not valid with >=)
+                next_major_version = str(int(resolved_version.split(".")[0]) + 1)
+                development_deps[idx] = _rebuild_requirement(req, f">={resolved_version},<{next_major_version}.0.0")
 
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
