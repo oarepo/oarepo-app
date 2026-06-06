@@ -2,11 +2,65 @@
 
 ## Contents
 
+- [6.3.0rc1](#630rc1)
 - [6.2.0rc1](#620rc1)
 - [6.1.0](#610)
 - [6.0.0](#600)
 - [5.0.0](#500)
-- [4.0.0](#400)
+
+---
+
+## 6.3.0rc1
+
+Released: **June 6, 2026 at 17:55 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.11
+[1.1.10 → 1.1.11](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.10...v1.1.11)
+
+- [`e31bf7da`](https://github.com/nrp-cz/ccmm-invenio/commit/e31bf7dad88b8407742637382fa30cb593b050ca) feat: related resources ui serializer
+- [`97535019`](https://github.com/nrp-cz/ccmm-invenio/commit/97535019ed4eb50c4015895598dcf212a6c0191a) fix: wrong file name
+- [`ba428b26`](https://github.com/nrp-cz/ccmm-invenio/commit/ba428b26c36532cafc0ee218ee7f3614b91a9dc8) feat: add schema validation for related resources identifiers
+- [`aef2dc70`](https://github.com/nrp-cz/ccmm-invenio/commit/aef2dc7051e4f6de77db0a1cbbdf6052491347a8) fix: change identifiers to related identifiers
+- [`88fd5515`](https://github.com/nrp-cz/ccmm-invenio/commit/88fd55159ff30e706900dd6ea6f295b53022894c) fix: lint
+
+#### `oarepo-app` 6.3.0rc1
+[6.2.0rc1 → 6.3.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc1...v6.3.0rc1)
+
+- [`cb86ebf9`](https://github.com/oarepo/oarepo-app/commit/cb86ebf970ed4e035530729d3505ec9fcaddd9b1) Adding a debug message
+- [`3546a401`](https://github.com/oarepo/oarepo-app/commit/3546a4018c2e82ce3feb8147d837bdb6e08fe158) Merge pull request #48 from oarepo/miroslavsimek/be-1111-communities-permissions
+- [`87391ed6`](https://github.com/oarepo/oarepo-app/commit/87391ed6f56d0e675379b3440dbdacf409294ee5) fix: test
+- [`fc00b69d`](https://github.com/oarepo/oarepo-app/commit/fc00b69dc22b12085f2364b8a85d5ebc5d0fd4b0) lint
+- [`f559d91e`](https://github.com/oarepo/oarepo-app/commit/f559d91e101d9480bdef00acf8e84da869c47b26) linting
+- [`84ca124f`](https://github.com/oarepo/oarepo-app/commit/84ca124f42a83bd220626a6426bad4fdb591344b) Merge pull request #46 from oarepo/miroslavsimek/be-1111-communities-permissions
+- [`205f432e`](https://github.com/oarepo/oarepo-app/commit/205f432e39a4f93efc0f19f4be3e401280deef12) fix: Added check for a new record for submission into a community
+
+#### `oarepo-communities` 9.0.2
+[9.0.0 → 9.0.2](https://github.com/oarepo/oarepo-communities/compare/v9.0.0...v9.0.2)
+
+- [`78909dad`](https://github.com/oarepo/oarepo-communities/commit/78909dad9e17d9adad485534750571f673cb98d4) passing explicit community instead of record to the permission policy
+- [`c39128ad`](https://github.com/oarepo/oarepo-communities/commit/c39128ad12fe57d6f6aeb87a3a0b5035e56fa166) [skip ci] Bump version to v9.0.1
+- [`01d885c6`](https://github.com/oarepo/oarepo-communities/commit/01d885c613669bff3f06ca60cf17bd70c9712dfa) fix: add/remove user from community requires string id
+
+#### `oarepo-invenio-typing-stubs` 0.1.32
+0.1.31 → 0.1.32
+
+
+#### `oarepo-runtime` 5.1.1
+[5.0.0 → 5.1.1](https://github.com/oarepo/oarepo-runtime/compare/v5.0.0...v5.1.1)
+
+- [`dac08dc0`](https://github.com/oarepo/oarepo-runtime/commit/dac08dc0326b5c2751fbae49bd3fdf62d233e40c) chore: deprecating our Generator class (used for typing purposes) in favour of invenio typing stubs.
+- [`af79f5ad`](https://github.com/oarepo/oarepo-runtime/commit/af79f5ada2f06f69d7938fc961310b9557bded0a) fix: better mechanism of deprecation
+- [`2a725606`](https://github.com/oarepo/oarepo-runtime/commit/2a72560698c0e7b1d676cfd94fcb4c9d1675014e) [skip ci] Bump version to v5.1.0
+- [`f2a6056e`](https://github.com/oarepo/oarepo-runtime/commit/f2a6056edec1715e91d9e07da4de955455583126) feat: using invenio CompositeGenerator, deprecating AggregateGenerator
+- [`d3463dde`](https://github.com/oarepo/oarepo-runtime/commit/d3463dde4689667f18874e20adeb1f962758bffa) chore: lint
+- [`1892de90`](https://github.com/oarepo/oarepo-runtime/commit/1892de9049c8c118ce8a2ca6cd747a1624675c50) fix: test for deprecation warning
+
+#### `oarepo-workflows` 5.0.1
+[5.0.0 → 5.0.1](https://github.com/oarepo/oarepo-workflows/compare/v5.0.0...v5.0.1)
+
+- [`a3e49264`](https://github.com/oarepo/oarepo-workflows/commit/a3e49264b8ffbc014991e065c96a9619661fbb40) Fix: user quota management permissions (#57)
 
 ---
 
