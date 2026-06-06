@@ -164,12 +164,14 @@ def unpin_development_major_versions(pyproject_path: Path) -> None:
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
+    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development", "tests"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
-            if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
+            req = Requirement(dep)
+            if "oarepo" in _normalise_package_name(
+                req.name
+            ):  # Apply only to oarepo packages, others use different versioning schemes
                 # always suppose that the first specifier is the >= specifier
-                req = Requirement(dep)
                 first_specifier = next(rs for rs in req.specifier if rs.operator == ">=")
                 development_deps[idx] = _rebuild_requirement(req, f">={first_specifier.version}")
 
@@ -182,11 +184,13 @@ def pin_development_major_versions(pyproject_path: Path, resolved: dict[str, str
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
+    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development", "tests"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
-            if dep.startswith("oarepo-"):  # Apply only to oarepo packages, others use different versioning schemes
-                req = Requirement(dep)
+            req = Requirement(dep)
+            if "oarepo" in _normalise_package_name(
+                req.name
+            ):  # Apply only to oarepo packages, others use different versioning schemes
                 if req.name not in resolved:
                     raise ValueError(f"Dependency {dep} not found in resolved dependencies")
                 next_major_version = str(int(resolved[req.name].split(".")[0]) + 1)
