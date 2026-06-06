@@ -4,14 +4,12 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
 import subprocess
 import tomllib
 import urllib.error
 import urllib.request
 from copy import replace
 from pathlib import Path
-from struct import pack
 
 import tomli_w
 from oarepo_build_tools.constants import CESNET_PYPI_URL
@@ -255,11 +253,11 @@ def get_oarepo_app_version(
 
     The *release_candidate* parameter controls whether and how an RC suffix is applied:
 
-    - ``"public"``   – no RC; current behaviour (default).
-    - ``"patch-rc"`` – ensure at least a patch bump, then append ``rc1``.
-    - ``"minor-rc"`` – ensure at least a minor bump, then append ``rc1``.
-    - ``"major-rc"`` – ensure at least a major bump, then append ``rc1``.
-    - ``"inc-rc"``   – keep the current base release, increment the existing RC
+    - ``"public"``   - no RC; current behaviour (default).
+    - ``"patch-rc"`` - ensure at least a patch bump, then append ``rc1``.
+    - ``"minor-rc"`` - ensure at least a minor bump, then append ``rc1``.
+    - ``"major-rc"`` - ensure at least a major bump, then append ``rc1``.
+    - ``"inc-rc"``   - keep the current base release, increment the existing RC
                        number (or start at ``rc1`` if there is none).
 
     For the ``*-rc`` modes the "current versioning mechanism" is applied first to
@@ -335,7 +333,7 @@ def get_oarepo_app_version(
                     patch_needed = True
 
     current_oarepo_app_version = Version(get_pyproject_version(pyproject_path))
-    # Base release tuple – strips any RC/pre-release suffix.
+    # Base release tuple - strips any RC/pre-release suffix.
     base_major, base_minor, base_micro = current_oarepo_app_version.release
 
     if release_candidate == "public":
@@ -467,6 +465,7 @@ def find_package_on_github(oarepo_github: dict, name: str) -> tuple[str, str, st
 
     Returns:
         A tuple of (org, repo, branch) if found, otherwise raises KeyError.
+
     """
     for _key in sorted(oarepo_github):
         section = oarepo_github[_key]
@@ -498,6 +497,7 @@ def clone_oarepo_packages(
 
     Returns:
         A dictionary mapping package names to the local path of the cloned package.
+
     """
     upgraded_packages = upgraded_packages or []
     upgraded_packages_map: dict[str, str] = {}
@@ -695,7 +695,7 @@ def delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path: dict[st
     """Delete the source map in pyproject.toml for OARepo packages."""
     data = tomllib.loads(pyproject_path.read_text())
     sources = data.setdefault("tool", {}).setdefault("uv", {}).setdefault("sources", {})
-    for oarepo_name in oarepo_packages_to_path.keys():
+    for oarepo_name in oarepo_packages_to_path:
         sources.pop(oarepo_name, None)
     data["tool"]["uv"]["sources"] = sources
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())

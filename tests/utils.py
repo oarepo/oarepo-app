@@ -19,9 +19,7 @@ def restrict_workflows(*workflow_codes, individual=None):
     orig_workflows = current_app.config["WORKFLOWS"]
     orig_default_workflow = current_app.config["WORKFLOWS_DEFAULT_WORKFLOW"]
     current_app.config["WORKFLOWS"] = [
-        wf
-        for wf in orig_workflows
-        if wf.code in workflow_codes or wf.code == individual
+        wf for wf in orig_workflows if wf.code in workflow_codes or wf.code == individual
     ]
     current_app.config["WORKFLOWS_DEFAULT_WORKFLOW"] = individual
     try:

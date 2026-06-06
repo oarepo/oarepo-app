@@ -12,7 +12,6 @@ from oarepo_build_tools.python import (
     update_versions,
 )
 from oarepo_build_tools.upload_old_packages import upload_old_packages
-from packaging.version import Version
 from rich import print
 
 from .dependency_tree import build_dependency_tree
@@ -50,11 +49,11 @@ def setup(
         "--release-candidate",
         help=(
             "Release-candidate mode. "
-            "'public' – normal release (default). "
-            "'patch-rc' – bump at least patch, append rc1. "
-            "'minor-rc' – bump at least minor, append rc1. "
-            "'major-rc' – bump at least major, append rc1. "
-            "'inc-rc' – keep current base version, increment existing RC number."
+            "'public' - normal release (default). "
+            "'patch-rc' - bump at least patch, append rc1. "
+            "'minor-rc' - bump at least minor, append rc1. "
+            "'major-rc' - bump at least major, append rc1. "
+            "'inc-rc' - keep current base version, increment existing RC number."
         ),
     ),
 ) -> None:

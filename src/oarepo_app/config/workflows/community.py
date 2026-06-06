@@ -105,7 +105,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
         """
         create_generators = list(super()._build_record_create_generators())
         for role in self.draft_creation_community_roles:
-            # TODO: this needs optimisation – cost grows with the number of communities
+            # TODO: this needs optimisation - cost grows with the number of communities
             create_generators += [InAnyCommunity(PrimaryCommunityRole(role))]
         return tuple(create_generators)
 

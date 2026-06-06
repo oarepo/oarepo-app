@@ -22,21 +22,15 @@ def _create_non_member_user(app, db, email="non_member@community_test.example.co
     return u
 
 
-def test_submit_record_default_workflow(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_submit_record_default_workflow(app, communities, users, location, vocabularies, simple_record):
     with restrict_workflows("default-community", individual="noone"):
         owner, curator, submitter, member = users[:4]
         community = communities["default-community"]
 
         with pytest.raises(PermissionDeniedError):
-            datasets_model.proxies.current_service.create(
-                member.identity, data=simple_record
-            )
+            datasets_model.proxies.current_service.create(member.identity, data=simple_record)
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=simple_record
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=simple_record)
 
         print("Community ID:", community.id)
         submission_request_data = {
@@ -87,17 +81,13 @@ def test_submit_record_default_workflow(
 # --- Group A: Draft creation ---
 
 
-def test_member_cannot_create_by_default(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_member_cannot_create_by_default(app, communities, users, location, vocabularies, simple_record):
     """Assert that a community member without submitter role cannot create a draft in the default workflow."""
     with restrict_workflows("default-community", individual="noone"):
         _, _, _, member = users[:4]
 
         with pytest.raises(PermissionDeniedError):
-            datasets_model.proxies.current_service.create(
-                member.identity, data=copy.deepcopy(simple_record)
-            )
+            datasets_model.proxies.current_service.create(member.identity, data=copy.deepcopy(simple_record))
 
 
 def test_member_can_create_when_community_role_allows(
@@ -107,16 +97,12 @@ def test_member_can_create_when_community_role_allows(
     with restrict_workflows("community-member-creates", individual="noone"):
         _, _, _, member = users[:4]
 
-        record = datasets_model.proxies.current_service.create(
-            member.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(member.identity, data=copy.deepcopy(simple_record))
         assert record is not None
 
         non_member = _create_non_member_user(app, db)
         with pytest.raises(PermissionDeniedError):
-            datasets_model.proxies.current_service.create(
-                non_member.identity, data=copy.deepcopy(simple_record)
-            )
+            datasets_model.proxies.current_service.create(non_member.identity, data=copy.deepcopy(simple_record))
 
 
 def test_any_authenticated_user_can_create_in_open_community(
@@ -126,9 +112,7 @@ def test_any_authenticated_user_can_create_in_open_community(
     with restrict_workflows("community-open", individual="noone"):
         non_member = _create_non_member_user(app, db)
 
-        record = datasets_model.proxies.current_service.create(
-            non_member.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(non_member.identity, data=copy.deepcopy(simple_record))
         assert record is not None
 
 
@@ -139,14 +123,13 @@ def test_only_record_owner_can_request_review_by_default(
     app, communities, users, location, vocabularies, simple_record
 ):
     """Assert that only the record owner may initiate a community-submission request
-    in the default workflow (community_curator_roles is empty)."""
+    in the default workflow (community_curator_roles is empty).
+    """
     with restrict_workflows("default-community", individual="noone"):
         _, curator, submitter, _ = users[:4]
         community = communities["default-community"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -196,9 +179,7 @@ def test_curator_roles_are_included_as_requesters_when_configured(app):
     flat_generators = [
         gen
         for requester in submission.requesters
-        for gen in (
-            requester.then_ if isinstance(requester, IfInState) else [requester]
-        )
+        for gen in (requester.then_ if isinstance(requester, IfInState) else [requester])
     ]
     primary_roles = [g for g in flat_generators if isinstance(g, PrimaryCommunityRole)]
     present_roles = {g._role for g in primary_roles}
@@ -221,9 +202,7 @@ def test_no_community_roles_in_requesters_by_default(app):
     flat_generators = [
         gen
         for requester in submission.requesters
-        for gen in (
-            requester.then_ if isinstance(requester, IfInState) else [requester]
-        )
+        for gen in (requester.then_ if isinstance(requester, IfInState) else [requester])
     ]
     assert not any(isinstance(g, PrimaryCommunityRole) for g in flat_generators), (
         "No PrimaryCommunityRole should appear in requesters with empty community_curator_roles"
@@ -233,17 +212,13 @@ def test_no_community_roles_in_requesters_by_default(app):
 # --- Group C: Decline & resubmit flow ---
 
 
-def test_curator_can_decline_community_submission(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_curator_can_decline_community_submission(app, communities, users, location, vocabularies, simple_record):
     """Assert that a curator can decline a community submission and a plain member cannot."""
     with restrict_workflows("default-community", individual="noone"):
         _, curator, submitter, member = users[:4]
         community = communities["default-community"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -281,17 +256,13 @@ def test_curator_can_decline_community_submission(
 # --- Group D: Draft / submitted record read permissions ---
 
 
-def test_member_cannot_read_submitted_record_by_default(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_member_cannot_read_submitted_record_by_default(app, communities, users, location, vocabularies, simple_record):
     """Assert that a community member cannot preview a submitted draft when read_draft_community_roles is empty (default)."""
     with restrict_workflows("default-community", individual="noone"):
         _, _, submitter, member = users[:4]
         community = communities["default-community"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -309,14 +280,10 @@ def test_member_cannot_read_submitted_record_by_default(
             "submit",
         )
 
-        submitted_draft = datasets_model.proxies.current_service.read_draft(
-            submitter.identity, record.id
-        )
+        submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions(
-            "preview", record=submitted_draft._record
-        ).allows(member.identity)
+        assert not workflow.permissions("preview", record=submitted_draft._record).allows(member.identity)
 
 
 def test_member_can_read_submitted_record_with_draft_read_permission(
@@ -327,9 +294,7 @@ def test_member_can_read_submitted_record_with_draft_read_permission(
         _, _, submitter, member = users[:4]
         community = communities["community-member-reads"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -347,14 +312,10 @@ def test_member_can_read_submitted_record_with_draft_read_permission(
             "submit",
         )
 
-        submitted_draft = datasets_model.proxies.current_service.read_draft(
-            submitter.identity, record.id
-        )
+        submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["community-member-reads"]
-        assert workflow.permissions("preview", record=submitted_draft._record).allows(
-            member.identity
-        )
+        assert workflow.permissions("preview", record=submitted_draft._record).allows(member.identity)
 
 
 # --- Group E: Restricted published record read permissions ---
@@ -395,13 +356,9 @@ def test_member_cannot_read_restricted_published_record_by_default(
 
         # The record is published and restricted; read the published version as submitter
         # to get the correct record object for the permission check.
-        published = datasets_model.proxies.current_service.read(
-            submitter.identity, record.id
-        )
+        published = datasets_model.proxies.current_service.read(submitter.identity, record.id)
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions("view", record=published._record).allows(
-            member.identity
-        )
+        assert not workflow.permissions("view", record=published._record).allows(member.identity)
 
 
 def test_member_can_read_restricted_published_record_with_permission(
@@ -438,29 +395,21 @@ def test_member_can_read_restricted_published_record_with_permission(
         )
 
         # The record is published and the member role grants restricted read access.
-        published = datasets_model.proxies.current_service.read(
-            submitter.identity, record.id
-        )
+        published = datasets_model.proxies.current_service.read(submitter.identity, record.id)
         workflow = current_oarepo_workflows.workflow_by_code["community-member-reads"]
-        assert workflow.permissions("view", record=published._record).allows(
-            member.identity
-        )
+        assert workflow.permissions("view", record=published._record).allows(member.identity)
 
 
 # --- Group F: Record management permissions ---
 
 
-def test_member_cannot_manage_record_by_default(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_member_cannot_manage_record_by_default(app, communities, users, location, vocabularies, simple_record):
     """Assert that a community member cannot manage a draft record when record_manage_community_roles is empty (default)."""
     with restrict_workflows("default-community", individual="noone"):
         _, _, submitter, member = users[:4]
         community = communities["default-community"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -475,27 +424,19 @@ def test_member_cannot_manage_record_by_default(
             record=record._record,
         )
 
-        submitted_draft = datasets_model.proxies.current_service.read_draft(
-            submitter.identity, record.id
-        )
+        submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions(
-            "manage", record=submitted_draft._record
-        ).allows(member.identity)
+        assert not workflow.permissions("manage", record=submitted_draft._record).allows(member.identity)
 
 
-def test_member_can_manage_record_with_permission(
-    app, communities, users, location, vocabularies, simple_record
-):
+def test_member_can_manage_record_with_permission(app, communities, users, location, vocabularies, simple_record):
     """Assert that a community member CAN manage a draft record when record_manage_community_roles=['member']."""
     with restrict_workflows("community-member-manages", individual="noone"):
         _, _, submitter, member = users[:4]
         community = communities["community-member-manages"]
 
-        record = datasets_model.proxies.current_service.create(
-            submitter.identity, data=copy.deepcopy(simple_record)
-        )
+        record = datasets_model.proxies.current_service.create(submitter.identity, data=copy.deepcopy(simple_record))
 
         submission_request_data = {
             "receiver": {"community": community.id},
@@ -510,11 +451,7 @@ def test_member_can_manage_record_with_permission(
             record=record._record,
         )
 
-        submitted_draft = datasets_model.proxies.current_service.read_draft(
-            submitter.identity, record.id
-        )
+        submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["community-member-manages"]
-        assert workflow.permissions("manage", record=submitted_draft._record).allows(
-            member.identity
-        )
+        assert workflow.permissions("manage", record=submitted_draft._record).allows(member.identity)

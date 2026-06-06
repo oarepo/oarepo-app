@@ -6,8 +6,8 @@ from .workflows.individual import IndividualWorkflow
 
 __all__ = [
     "BaseWorkflowSettings",
-    "IndividualWorkflow",
     "CommunityWorkflow",
+    "IndividualWorkflow",
     "configure_workflows",
 ]
 
@@ -17,4 +17,3 @@ def configure_workflows(
     **other_workflows: IndividualWorkflow | CommunityWorkflow,
 ):
     """Configure named workflow policies for individual and community deposits."""
-    pass

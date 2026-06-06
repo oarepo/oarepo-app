@@ -5,8 +5,8 @@ Compares the versions available on PyPI against those already present on the
 CESNET registry and uploads any that are missing.
 
 Required environment variables:
-    TWINE_USERNAME  – GitLab deploy-token username (or "__token__" for PATs)
-    TWINE_PASSWORD  – GitLab deploy-token value / personal access token
+    TWINE_USERNAME  - GitLab deploy-token username (or "__token__" for PATs)
+    TWINE_PASSWORD  - GitLab deploy-token value / personal access token
 
 Usage:
     TWINE_USERNAME=... TWINE_PASSWORD=... oarepo-app-build upload-old-packages
@@ -24,11 +24,10 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
-from packaging.version import InvalidVersion, Version
-from rich import print
-
 from oarepo_build_tools.constants import CESNET_PYPI_UPLOAD_URL as CESNET_UPLOAD_URL
 from oarepo_build_tools.python import get_available_versions
+from packaging.version import InvalidVersion, Version
+from rich import print
 
 # ---------------------------------------------------------------------------
 # Version discovery
@@ -131,10 +130,7 @@ def upload_old_packages(
     username = os.environ.get("TWINE_USERNAME")
     password = os.environ.get("TWINE_PASSWORD")
     if not username or not password:
-        print(
-            "[bold red]✗[/bold red] TWINE_USERNAME and TWINE_PASSWORD "
-            "environment variables must be set."
-        )
+        print("[bold red]✗[/bold red] TWINE_USERNAME and TWINE_PASSWORD environment variables must be set.")
         raise typer.Exit(1)
 
     # Pass credentials to twine via the environment so they never appear in
@@ -173,17 +169,12 @@ def upload_old_packages(
 
         # ── Compare version sets ───────────────────────────────────────────
         pypi_versions = get_pypi_versions(package_name)  # dict: normalized → original
-        print(
-            f"🔍 Fetching [bold]{package_name}[/bold] versions from CESNET registry …"
-        )
+        print(f"🔍 Fetching [bold]{package_name}[/bold] versions from CESNET registry …")
         cesnet_versions = {str(v) for v in get_available_versions(package_name)}
         missing = pypi_versions.keys() - cesnet_versions
 
         if not missing:
-            print(
-                f"✅ Nothing to do – all [bold]{package_name}[/bold] versions "
-                "are already on the CESNET registry."
-            )
+            print(f"✅ Nothing to do - all [bold]{package_name}[/bold] versions are already on the CESNET registry.")
             return
 
         print(f"\n🚀 [bold]{len(missing)}[/bold] version(s) to upload:\n")
@@ -203,7 +194,7 @@ def upload_old_packages(
             files = download_distributions(package_name, original_version, dist_dir)
 
             if not files:
-                msg = f"[{version}] no distribution files found on PyPI – skipping."
+                msg = f"[{version}] no distribution files found on PyPI - skipping."
                 print("[yellow]no files found, skipping.[/yellow]")
                 errors.append(msg)
                 continue

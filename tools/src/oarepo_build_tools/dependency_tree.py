@@ -22,12 +22,11 @@ from pathlib import Path
 
 import typer
 from jinja2 import Environment, FileSystemLoader
+from oarepo_build_tools.python import get_latest_oarepo_version, update_versions
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 from rich import print
-
-from oarepo_build_tools.python import get_latest_oarepo_version, update_versions
 
 # Constants for dependency graph generation
 DEPGRAPH_INITIAL_NODES_REGEXP = r"^oarepo-.*"
@@ -56,6 +55,7 @@ def perturb_color(base_color_hex: str, package_name: str) -> str:
 
     Returns:
         Perturbed color in hex format
+
     """
     # Parse base color
     # Remove '#' if present
@@ -93,6 +93,7 @@ def get_node_color(node_name: str, compiled_styles: list[tuple]) -> str:
 
     Returns:
         Color in hex format (perturbed if match found, white otherwise)
+
     """
     # Find matching style
     for pattern, base_color in compiled_styles:
@@ -113,6 +114,7 @@ def find_cycles(nodes: set, edges: list[tuple]) -> tuple[set[str], list[list[str
     Returns:
         Tuple of (nodes_in_cycles, list_of_cycles)
         where each cycle is a list of node names forming the cycle
+
     """
     # Build adjacency map
     graph = {}
@@ -181,9 +183,7 @@ def find_cycles(nodes: set, edges: list[tuple]) -> tuple[set[str], list[list[str
     return nodes_in_cycles, all_cycles
 
 
-def get_all_package_dependencies(
-    packages: dict[str, str], python_path: str
-) -> dict[str, dict]:
+def get_all_package_dependencies(packages: dict[str, str], python_path: str) -> dict[str, dict]:
     """Get all dependencies for all packages in a single call.
 
     Args:
@@ -193,6 +193,7 @@ def get_all_package_dependencies(
     Returns:
         Dict mapping package names to their version and dependencies
         Example: {"package": {"version": "1.2.3", "dependencies": ["oarepo-app>=1.0.0,<2.0.0"]}}
+
     """
     try:
         # Get the path to the helper script
@@ -227,6 +228,7 @@ def parse_version(version_str: str) -> tuple[int, int, int]:
 
     Returns:
         Tuple of (major, minor, patch)
+
     """
     try:
         # Use packaging library to properly parse PEP 440 versions
@@ -255,6 +257,7 @@ def bump_major_version(version_str: str) -> str:
 
     Returns:
         Bumped version like "2.0.0" or "2.0.0+local"
+
     """
     try:
         # Use packaging library to properly handle PEP 440 versions
@@ -283,6 +286,7 @@ def version_satisfies_spec(version_str: str, spec_str: str) -> bool:
 
     Returns:
         True if version satisfies the specifier, False otherwise
+
     """
     try:
         if not spec_str or spec_str.strip() == "":
@@ -312,6 +316,7 @@ def apply_version_adjustments(
 
     Returns:
         Updated packages dict with "bumped" field where applicable
+
     """
     # First pass: adjust all upgraded packages
     for pkg_name, (original_version, needs_upgrade) in upgraded_packages.items():
@@ -319,13 +324,9 @@ def apply_version_adjustments(
             # original version is already bumped, no need to bump again
             packages[pkg_name]["bumped"] = original_version
             if needs_upgrade:
-                print(
-                    f"  ⬆️  {pkg_name}: {original_version} (depends on invenio, version bumped)"
-                )
+                print(f"  ⬆️  {pkg_name}: {original_version} (depends on invenio, version bumped)")
             else:
-                print(
-                    f"  ⬆️  {pkg_name}: {original_version} (from PR/branch, version kept)"
-                )
+                print(f"  ⬆️  {pkg_name}: {original_version} (from PR/branch, version kept)")
 
     # Iteratively adjust packages whose dependencies don't match
     changed = True
@@ -360,9 +361,7 @@ def apply_version_adjustments(
                 original_version = pkg_info["version"]
                 bumped_version = bump_major_version(original_version)
                 packages[pkg_name]["bumped"] = bumped_version
-                print(
-                    f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (dependency conflict)"
-                )
+                print(f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (dependency conflict)")
                 changed = True
 
     return packages
@@ -412,12 +411,15 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
         >>> packages = {
         ...     "oarepo-model": {
         ...         "version": "1.5.0",
-        ...         "dependencies": ["oarepo-runtime>=1.0.0"],
-        ...         "bumped": "2.0.0"
+        ...         "dependencies": [
+        ...             "oarepo-runtime>=1.0.0"
+        ...         ],
+        ...         "bumped": "2.0.0",
         ...     }
         ... }
         >>> render_graph("output", packages)
         ✅ Interactive HTML report saved to: output/index.html
+
     """
     output_dir = Path(output_directory)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -429,10 +431,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
         (re.compile(pkg_pattern, re.IGNORECASE), re.compile(dep_pattern, re.IGNORECASE))
         for pkg_pattern, dep_pattern in DEPGRAPH_FILTER_REGEXP
     ]
-    compiled_styles = [
-        (re.compile(pattern, re.IGNORECASE), style)
-        for pattern, style in DEPGRAPH_STYLE.items()
-    ]
+    compiled_styles = [(re.compile(pattern, re.IGNORECASE), style) for pattern, style in DEPGRAPH_STYLE.items()]
 
     # Find initial nodes (oarepo-* packages), excluding specified patterns
     initial_nodes = set()
@@ -569,19 +568,13 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
     # Prepare bumped-only filtered data
     bumped_node_ids = set(n["id"] for n in nodes_data if n["is_bumped"])
     nodes_data_bumped = [n for n in nodes_data if n["is_bumped"]]
-    edges_data_bumped = [
-        e
-        for e in edges_data
-        if e["source"] in bumped_node_ids and e["target"] in bumped_node_ids
-    ]
+    edges_data_bumped = [e for e in edges_data if e["source"] in bumped_node_ids and e["target"] in bumped_node_ids]
 
     # Step 1: Copy html template directory to output directory
     template_html_dir = Path(__file__).parent / "templates" / "html"
 
     if not template_html_dir.exists():
-        raise FileNotFoundError(
-            f"HTML template directory not found: {template_html_dir}"
-        )
+        raise FileNotFoundError(f"HTML template directory not found: {template_html_dir}")
 
     print("📁 Copying HTML template to output directory...")
 
@@ -706,13 +699,9 @@ def build_dependency_tree(
     """Set up the repository for the given oarepo major version."""
     if oarepo_version:
         latest_oarepo_version = oarepo_version
-        print(
-            f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]"
-        )
+        print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
     else:
-        print(
-            f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …"
-        )
+        print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
         latest_oarepo_version = get_latest_oarepo_version(major_version)
         print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
 
@@ -725,9 +714,7 @@ def build_dependency_tree(
             upgraded_packages_list = None
     else:
         upgraded_packages_list = None
-    upgraded_packages_with_original_versions = update_versions(
-        root, True, upgraded_packages_list
-    )
+    upgraded_packages_with_original_versions = update_versions(root, True, upgraded_packages_list)
 
     # now we have a lockfile with pinned versions, including upgraded packages
     # we now sync the lockfile with the local environment
@@ -771,9 +758,7 @@ def build_dependency_tree(
         print(
             f"\n📦 Applying version adjustments for upgraded packages: {', '.join(f'{k}=={v}' for k, v in upgraded_packages_with_original_versions.items())}"
         )
-        packages = apply_version_adjustments(
-            packages, upgraded_packages_with_original_versions
-        )
+        packages = apply_version_adjustments(packages, upgraded_packages_with_original_versions)
 
     if print_json:
         print("\n📋 Final package information:")

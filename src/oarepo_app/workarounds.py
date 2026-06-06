@@ -7,12 +7,9 @@ config loading, so reasonably early in the process.
 # workaround: loading vocabularies
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from decimal import MAX_EMAX
-from pathlib import Path
 from typing import Any, cast
 
 import tqdm
-import yaml
 from flask import current_app
 from invenio_access.permissions import (
     system_identity,
@@ -22,10 +19,8 @@ from invenio_db import db
 from invenio_db.uow import UnitOfWork
 from invenio_pidstore.errors import PersistentIdentifierError
 from invenio_rdm_records.fixtures.vocabularies import (
-    GenericVocabularyEntry,
     VocabulariesFixture,
     VocabularyEntry,
-    VocabularyEntryWithSchemes,
 )
 from invenio_records_resources.proxies import current_service_registry
 from invenio_records_resources.services.records import RecordService
@@ -51,18 +46,17 @@ def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork
             except PersistentIdentifierError:
                 record = service.create(system_identity, data, uow=uow)
             return record._record.id
-        else:
-            if "id" in data:
-                id = data["id"]
-                try:
-                    # If the entry hasn't been added, this will fail
-                    record = service.read(system_identity, id)
-                    record = service.update(system_identity, id, data=data, uow=uow)
-                except PersistentIdentifierError, NoResultFound:
-                    record = service.create(system_identity, data, uow=uow)
-            else:
+        if "id" in data:
+            id = data["id"]
+            try:
+                # If the entry hasn't been added, this will fail
+                record = service.read(system_identity, id)
+                record = service.update(system_identity, id, data=data, uow=uow)
+            except PersistentIdentifierError, NoResultFound:
                 record = service.create(system_identity, data, uow=uow)
-            return record._record.id
+        else:
+            record = service.create(system_identity, data, uow=uow)
+        return record._record.id
     except Exception as e:
         import traceback
 

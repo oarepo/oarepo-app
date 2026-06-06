@@ -1,4 +1,3 @@
-import re
 
 import pytest
 from flask_principal import ActionNeed
@@ -44,9 +43,7 @@ def test_create_record(app, db, roles, workflow_type, user_roles, user_needs, ou
         ("curated_with_access", [], [], False),
     ],
 )
-def test_publish_record(
-    app, db, roles, location, workflow_type, user_roles, user_needs, outcome
-):
+def test_publish_record(app, db, roles, location, workflow_type, user_roles, user_needs, outcome):
     u = create_user(app, db, user_roles, user_needs)
 
     record_result = datasets_model.proxies.current_service.create(
@@ -92,9 +89,7 @@ def test_publish_with_review(
 ):
     u = create_user(app, db, user_roles, user_needs, email="submitter@test.com")
 
-    reviewer = create_user(
-        app, db, ["reviewer-role"], [review_access], email="reviewer@test.com"
-    )
+    reviewer = create_user(app, db, ["reviewer-role"], [review_access], email="reviewer@test.com")
 
     record_result = datasets_model.proxies.current_service.create(
         u.identity,
@@ -102,10 +97,7 @@ def test_publish_with_review(
     )
 
     available_requests = {
-        x["type_id"]: x
-        for x in current_requests_service.applicable_request_types(
-            u.identity, record_result._record
-        )
+        x["type_id"]: x for x in current_requests_service.applicable_request_types(u.identity, record_result._record)
     }
     assert ("publish_draft" in available_requests) == outcome
 
@@ -120,9 +112,7 @@ def test_publish_with_review(
         data={"payload": {"version": "1.0"}},
     )
     if reviewer_role:
-        assert request.data["receiver"] == {
-            "group": db.session.query(Role).filter_by(name=reviewer_role[0]).first().id
-        }
+        assert request.data["receiver"] == {"group": db.session.query(Role).filter_by(name=reviewer_role[0]).first().id}
     elif reviewer_needs:
         assert request.data["receiver"] == {"action_need": reviewer_needs[0]}
 
@@ -139,9 +129,7 @@ def test_publish_with_review(
 
     # when the request is accepted, a notification should be sent to the submitter
     with mail.record_messages() as outbox:
-        current_requests_service.execute_action(
-            reviewer.identity, request.id, action="accept"
-        )
+        current_requests_service.execute_action(reviewer.identity, request.id, action="accept")
         assert len(outbox) == 1
         sent_mail = outbox[0]
         assert "submitter@test.com" in sent_mail.recipients

@@ -21,6 +21,7 @@ def should_exclude_extra(extra_name):
 
     Returns:
         True if the extra should be excluded
+
     """
     excluded_prefixes = ("elasticsearch", "sqlite", "mysql")
     return any(extra_name.lower().startswith(prefix) for prefix in excluded_prefixes)
@@ -35,6 +36,7 @@ def parse_requirement(requirement):
     Returns:
         Tuple of (package_name, version_specifiers)
         Example: ("oarepo-app", ">=1.0,<2.0")
+
     """
     try:
         req = Requirement(requirement)
@@ -91,22 +93,17 @@ def main():
                         existing = dependencies_dict[pkg_name_parsed]
                         if version_spec not in existing:
                             dependencies_dict[pkg_name_parsed] = (
-                                existing + "," + version_spec
-                                if existing
-                                else version_spec
+                                existing + "," + version_spec if existing else version_spec
                             )
 
             # Format as list of "package>=1.0,<2.0" strings
-            dependencies = [
-                f"{pkg}{spec}" if spec else pkg
-                for pkg, spec in sorted(dependencies_dict.items())
-            ]
+            dependencies = [f"{pkg}{spec}" if spec else pkg for pkg, spec in sorted(dependencies_dict.items())]
 
             result[pkg_name] = {
                 "version": pkg_version,
                 "dependencies": dependencies,
             }
-        except Exception as e:
+        except Exception:
             result[pkg_name] = {"version": pkg_version, "dependencies": []}
 
     print(json.dumps(result))

@@ -6,7 +6,7 @@ import json
 import re
 import subprocess
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from oarepo_build_tools.constants import LOG_PACKAGES
@@ -108,8 +108,8 @@ def call_with_retries(
     attempt a warning is printed.  Only after the final attempt is an error
     surfaced:
 
-    * :class:`subprocess.TimeoutExpired` – re-raised after the last timed-out attempt.
-    * A :class:`subprocess.CompletedProcess` with a non-zero ``returncode`` –
+    * :class:`subprocess.TimeoutExpired` - re-raised after the last timed-out attempt.
+    * A :class:`subprocess.CompletedProcess` with a non-zero ``returncode`` -
       returned to the caller so it can raise or handle as appropriate.
 
     :exc:`FileNotFoundError` (binary not found) is **not** retried and
@@ -417,7 +417,7 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
     # second ref so the GitHub compare API can return the right set of commits.
     head_sha = _get_head_sha(directory)
     if head_sha is None:
-        print("  [dim]↳[/dim] ⚠️  cannot determine HEAD SHA – skipping oarepo-app commits")
+        print("  [dim]↳[/dim] ⚠️  cannot determine HEAD SHA - skipping oarepo-app commits")
         pkg["changes"] = []
         return
 
@@ -433,7 +433,7 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
             timeout=30,
         )
     except FileNotFoundError:
-        print("  [dim]↳[/dim] ⚠️  gh CLI not found – skipping oarepo-app commits")
+        print("  [dim]↳[/dim] ⚠️  gh CLI not found - skipping oarepo-app commits")
         pkg["changes"] = []
         return
     except subprocess.TimeoutExpired:
@@ -466,10 +466,7 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
         for c in raw_commits
     ]
     commits_with_dates.sort(key=lambda c: c["date"], reverse=True)
-    changes = [
-        {"commit": c["sha"], "message": c["message"].split("\n")[0]}
-        for c in commits_with_dates
-    ]
+    changes = [{"commit": c["sha"], "message": c["message"].split("\n")[0]} for c in commits_with_dates]
     pkg["changes"] = changes
     if changes:
         print(f"  [dim]↳[/dim] [cyan]oarepo-app[/cyan]: {len(changes)} commit(s)")
@@ -567,8 +564,7 @@ def render_changelog_md(changelog: list, directory: Path) -> None:
 
 
 def get_two_latest_log_entries(changelog_path: Path) -> tuple[dict, dict | None]:
-    """
-    Returns the latest and the second latest entries from the changelog.
+    """Returns the latest and the second latest entries from the changelog.
     The first entry is the latest, the second is the second latest.
     """
     changelog = _read_changelog(changelog_path)
@@ -596,7 +592,7 @@ def create_log_entry(directory: Path) -> None:
     print(f"  [dim]↳[/dim] {len(packages)} packages matched LOG_PACKAGES")
 
     entry = _build_entry(oarepo_version, packages)
-    entry["created"] = datetime.now(timezone.utc).isoformat()
+    entry["created"] = datetime.now(UTC).isoformat()
 
     changelog = _read_changelog(changelog_path)
     previous_entry = changelog[0] if changelog else None

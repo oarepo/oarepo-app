@@ -76,13 +76,9 @@ def app_config(app_config):
             draft_creation_community_roles=["member", "submitter"],
         ).build_workflow(),
         # any authenticated user can create (community-open)
-        CommunityWorkflow(
-            code="community-open", authenticated_draft_creation=True
-        ).build_workflow(),
+        CommunityWorkflow(code="community-open", authenticated_draft_creation=True).build_workflow(),
         # curators are added as review requesters
-        CommunityWorkflow(
-            code="community-curator-requests", community_curator_roles=["curator"]
-        ).build_workflow(),
+        CommunityWorkflow(code="community-curator-requests", community_curator_roles=["curator"]).build_workflow(),
         # members can read drafts/submitted + restricted published records
         CommunityWorkflow(
             code="community-member-reads",
@@ -90,9 +86,7 @@ def app_config(app_config):
             read_restricted_community_roles=["member"],
         ).build_workflow(),
         # members can manage records
-        CommunityWorkflow(
-            code="community-member-manages", record_manage_community_roles=["member"]
-        ).build_workflow(),
+        CommunityWorkflow(code="community-member-manages", record_manage_community_roles=["member"]).build_workflow(),
     ]
 
     app_config["COMMUNITIES_ROLES"] = [
@@ -158,9 +152,7 @@ def app(app):
     def record_latest(pid_value: str) -> str:
         return "latest ok"
 
-    @bp.route(
-        "/test-requests/records/<pid_value>/export/<export_format>", methods=["GET"]
-    )
+    @bp.route("/test-requests/records/<pid_value>/export/<export_format>", methods=["GET"])
     def export(pid_value, export_format: str) -> str:
         return "export ok"
 
@@ -197,14 +189,10 @@ def vocabularies(app, database):
 
 
 @pytest.fixture
-def communities(
-    app, db, community_get_or_create, users, location, init_communities_cf, invite
-):
+def communities(app, db, community_get_or_create, users, location, init_communities_cf, invite):
 
     def create_community(code):
-        community = community_get_or_create(
-            users[0], code, {}, workflow=code, allowed_workflows=[code]
-        )
+        community = community_get_or_create(users[0], code, {}, workflow=code, allowed_workflows=[code])
         invite(users[1], community.id, "curator")
         invite(users[2], community.id, "submitter")
         invite(users[3], community.id, "member")

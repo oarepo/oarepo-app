@@ -121,11 +121,11 @@ class IndividualWorkflow(BaseWorkflowSettings):
 
         Applies the following priority order:
 
-        1. **Role-based** – :attr:`publish_without_review_roles`: owners who also
+        1. **Role-based** - :attr:`publish_without_review_roles`: owners who also
            hold any of these roles may publish directly.
-        2. **Need-based** – :attr:`publish_without_review_needs`: owners who also
+        2. **Need-based** - :attr:`publish_without_review_needs`: owners who also
            possess any of these permission needs may publish directly.
-        3. **Owner fallback** – when neither (1) nor (2) are set and
+        3. **Owner fallback** - when neither (1) nor (2) are set and
            :attr:`publish_without_review` is ``True``, the draft owner may publish
            directly.
 
@@ -135,6 +135,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
 
         Returns:
             A tuple of permission generators for the ``can_publish`` policy action.
+
         """
         publish_generators: list[Generator] = []
         if self.publish_without_review_roles:

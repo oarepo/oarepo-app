@@ -11,8 +11,7 @@ def configure_workflows(
     default_individual_workflow: str = "individual",
     context=None,
 ) -> list[Workflow]:
-    """
-    This function sets up workflows based on the provided workflow definitions.
+    """This function sets up workflows based on the provided workflow definitions.
     It is intended to be called from within invenio.cfg and will create a "WORKFLOWS"
     entry in the invenio.cfg context (in the caller's globals).
 
@@ -21,7 +20,11 @@ def configure_workflows(
         .. code-block:: python
 
             # invenio.cfg
-            from oarepo_app.config import configure_workflows, IndividualWorkflow, CommunityWorkflow
+            from oarepo_app.config import (
+                configure_workflows,
+                IndividualWorkflow,
+                CommunityWorkflow,
+            )
 
             configure_workflows(
                 IndividualWorkflow(
@@ -46,6 +49,7 @@ def configure_workflows(
 
     If the context is provided, the "WORKFLOWS" entry will be added to it instead of
     the caller's globals.
+
     """
     if not workflow_definitions:
         workflow_definitions = (
@@ -56,9 +60,7 @@ def configure_workflows(
                 publish_without_review=True,
             ),
         )
-    elif not any(
-        isinstance(workflow, IndividualWorkflow) for workflow in workflow_definitions
-    ):
+    elif not any(isinstance(workflow, IndividualWorkflow) for workflow in workflow_definitions):
         workflow_definitions = (
             *workflow_definitions,
             IndividualWorkflow(
@@ -69,17 +71,10 @@ def configure_workflows(
             ),
         )
     built_workflows = [workflow.build_workflow() for workflow in workflow_definitions]
-    if not any(
-        workflow.code == default_individual_workflow
-        for workflow in workflow_definitions
-    ):
-        raise ValueError(
-            f"No workflow with code '{default_individual_workflow}' found in workflow definitions"
-        )
+    if not any(workflow.code == default_individual_workflow for workflow in workflow_definitions):
+        raise ValueError(f"No workflow with code '{default_individual_workflow}' found in workflow definitions")
     # check for duplicated codes
-    if len(workflow_definitions) != len(
-        set(workflow.code for workflow in workflow_definitions)
-    ):
+    if len(workflow_definitions) != len(set(workflow.code for workflow in workflow_definitions)):
         raise ValueError("Duplicate workflow codes found in workflow definitions")
 
     if context:
@@ -96,9 +91,9 @@ def configure_workflows(
 
 
 __all__ = [
-    "add_if_in_state",
     "BaseWorkflowSettings",
     "CommunityWorkflow",
     "IndividualWorkflow",
+    "add_if_in_state",
     "configure_workflows",
 ]
