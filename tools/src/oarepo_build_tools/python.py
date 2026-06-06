@@ -803,6 +803,10 @@ def update_versions(
             unpin_versions_in_oarepo_packages(path)
         update_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
 
+    # Print the updated pyproject.toml
+    rich_print("  [dim]↳[/dim] ✅ updated [cyan]pyproject.toml[/cyan]")
+    rich_print(pyproject_path.read_text())
+
     # ── Step 2: uv lock ──────────────────────────────────────────────────────
     rich_print("[bold blue]Step 2/3[/bold blue] 🔒 Running [cyan]uv lock[/cyan] …")
     run_uv_lock(root)
