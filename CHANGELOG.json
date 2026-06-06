@@ -1,6 +1,6 @@
 [
   {
-    "version": "7.0.0rc1",
+    "version": "6.2.0rc2",
     "breaking": true,
     "packages": {
       "ccmm-invenio": {
@@ -682,7 +682,7 @@
         "github_url": "https://github.com/inveniosoftware/invenio-vocabularies/compare/v12.0.0...v13.0.0"
       },
       "oarepo-app": {
-        "version": "7.0.0rc1",
+        "version": "6.2.0rc2",
         "breaking": false,
         "changes": [
           {
@@ -723,7 +723,7 @@
           }
         ],
         "previous_version": "6.2.0rc1",
-        "github_url": "https://github.com/oarepo/oarepo-app/compare/v6.2.0rc1...v7.0.0rc1"
+        "github_url": "https://github.com/oarepo/oarepo-app/compare/v6.2.0rc1...v6.2.0rc2"
       },
       "oarepo-communities": {
         "version": "10.0.0",

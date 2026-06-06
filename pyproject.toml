@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "7.0.0rc1"
+version = "6.2.0rc2"
 description = "Add your description here"
 readme = "README.md"
 authors = [
