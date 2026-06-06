@@ -1,15 +1,29 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+"""Base workflow settings and helpers for OARepo workflow configuration."""
+
 from __future__ import annotations
 
 import abc
 import dataclasses
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_records_permissions.generators import AuthenticatedUser, Generator
-from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_workflows.base import Workflow
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from invenio_records_permissions.policies.base import BasePermissionPolicy
+
 from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.generators import HasActionNeed, UserWithRole
@@ -50,7 +64,7 @@ class BaseWorkflowSettings:
     code: str = "undefined"
     """The code of the workflow type."""
 
-    label: LazyString = _("Undefined policy")
+    label: LazyString = _("Undefined policy")  # noqa: RUF009
     """The label of the workflow type."""
 
     base_permission_policy: type[BasePermissionPolicy] = DefaultRDMWorkflowPermissions

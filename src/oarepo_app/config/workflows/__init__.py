@@ -1,7 +1,24 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+"""OARepo application workflow configuration package."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from oarepo.config.base import set_constants_in_caller
-from oarepo_workflows import Workflow
 
 from .base import BaseWorkflowSettings, add_if_in_state
+
+if TYPE_CHECKING:
+    from oarepo_workflows import Workflow
+
 from .community import CommunityWorkflow
 from .individual import IndividualWorkflow
 
@@ -9,11 +26,12 @@ from .individual import IndividualWorkflow
 def configure_workflows(
     *workflow_definitions: BaseWorkflowSettings,
     default_individual_workflow: str = "individual",
-    context=None,
+    context: dict | None = None,
 ) -> list[Workflow]:
-    """This function sets up workflows based on the provided workflow definitions.
-    It is intended to be called from within invenio.cfg and will create a "WORKFLOWS"
-    entry in the invenio.cfg context (in the caller's globals).
+    """Set up workflows based on the provided workflow definitions.
+
+    This function is intended to be called from within invenio.cfg and will create
+    a "WORKFLOWS" entry in the invenio.cfg context (in the caller's globals).
 
     Example:
 
@@ -74,7 +92,7 @@ def configure_workflows(
     if not any(workflow.code == default_individual_workflow for workflow in workflow_definitions):
         raise ValueError(f"No workflow with code '{default_individual_workflow}' found in workflow definitions")
     # check for duplicated codes
-    if len(workflow_definitions) != len(set(workflow.code for workflow in workflow_definitions)):
+    if len(workflow_definitions) != len({workflow.code for workflow in workflow_definitions}):
         raise ValueError("Duplicate workflow codes found in workflow definitions")
 
     if context:

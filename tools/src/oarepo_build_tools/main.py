@@ -12,7 +12,7 @@ from oarepo_build_tools.python import (
     update_versions,
 )
 from oarepo_build_tools.upload_old_packages import upload_old_packages
-from rich import print
+from rich import print as rich_print
 
 from .dependency_tree import build_dependency_tree
 
@@ -40,7 +40,7 @@ def setup(
         help="Repository directory to operate in.",
     ),
     upgrade_major_versions: bool = typer.Option(
-        False,
+        False,  # noqa: FBT003
         "--upgrade-major-versions",
         help="Upgrade major versions of oarepo dependencies.",
     ),
@@ -60,28 +60,28 @@ def setup(
     """Set up the repository for the given oarepo major version."""
     if oarepo_version:
         latest_oarepo_version = oarepo_version
-        print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
+        rich_print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
     else:
-        print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
+        rich_print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
         latest_oarepo_version = get_latest_oarepo_version(major_version)
-        print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
+        rich_print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
 
     root = Path(directory).resolve()
-    print(f"🌿 Switching to branch [cyan]temporary-{latest_oarepo_version}[/cyan] …")
+    rich_print(f"🌿 Switching to branch [cyan]temporary-{latest_oarepo_version}[/cyan] …")
     switch_branch(root, f"temporary-{latest_oarepo_version}")
-    print("🔄 Updating dependency versions …")
+    rich_print("🔄 Updating dependency versions …")
     update_versions(root, upgrade_major_versions)
     create_log_entry(root)
 
-    print("🏷️  Computing [bold]oarepo-app[/bold] version …")
+    rich_print("🏷️  Computing [bold]oarepo-app[/bold] version …")
     oarepo_app_version = get_oarepo_app_version(
         root / "CHANGELOG.json",
         root / "pyproject.toml",
         release_candidate=release_candidate,
     )
-    print(f"  [dim]↳[/dim] version: [bold green]{oarepo_app_version}[/bold green]")
+    rich_print(f"  [dim]↳[/dim] version: [bold green]{oarepo_app_version}[/bold green]")
     set_pyproject_version(root / "pyproject.toml", oarepo_app_version)
-    print("  [dim]↳[/dim] ✅ updated [cyan]pyproject.toml[/cyan]")
+    rich_print("  [dim]↳[/dim] ✅ updated [cyan]pyproject.toml[/cyan]")
 
     changelog = json.loads((root / "CHANGELOG.json").read_text(encoding="utf-8"))
     changelog[0]["version"] = oarepo_app_version
@@ -96,13 +96,13 @@ def setup(
             pkg["previous_version"] = changelog[1]["version"]
         else:
             pkg.pop("previous_version", None)
-    print("  [dim]\u21b3[/dim] Fetching [bold]oarepo-app[/bold] commit log …")
+    rich_print("  [dim]\u21b3[/dim] Fetching [bold]oarepo-app[/bold] commit log …")
     populate_oarepo_app_changes(changelog[0], root)
     (root / "CHANGELOG.json").write_text(json.dumps(changelog, indent=2), encoding="utf-8")
 
-    print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
+    rich_print("[bold blue]📝[/bold blue] Rendering CHANGELOG.md …")
     render_changelog_md(changelog, root)
-    print("  [dim]↳[/dim] ✅ written to [cyan]CHANGELOG.md[/cyan]")
+    rich_print("  [dim]↳[/dim] ✅ written to [cyan]CHANGELOG.md[/cyan]")
 
 
 app.command()(upload_old_packages)

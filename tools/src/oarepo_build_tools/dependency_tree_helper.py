@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Helper script for extracting package dependencies.
 
 This script is called by dependency_tree.py to analyze package dependencies
@@ -11,6 +10,7 @@ import sys
 from importlib.metadata import metadata
 
 from packaging.requirements import Requirement
+from rich import print as rich_print
 
 
 def should_exclude_extra(extra_name):
@@ -42,13 +42,14 @@ def parse_requirement(requirement):
         req = Requirement(requirement)
         pkg_name = req.name.lower()
         version_spec = str(req.specifier) if req.specifier else ""
-        return pkg_name, version_spec
-    except Exception:
+    except Exception:  # noqa: BLE001
         return "", ""
+    else:
+        return pkg_name, version_spec
 
 
-def main():
-    """Main function to process package dependencies."""
+def main():  # noqa: C901 TODO: refactor into smaller helpers
+    """Process package dependencies as the main entry point."""
     # Read package info from stdin (dict of package name -> version)
     packages_input = json.load(sys.stdin)
     result = {}
@@ -79,7 +80,7 @@ def main():
                                     break
                             if req_obj is None:
                                 continue
-                except Exception:
+                except Exception:  # noqa: BLE001, S112
                     # If we can't parse, skip this requirement
                     continue
 
@@ -103,10 +104,10 @@ def main():
                 "version": pkg_version,
                 "dependencies": dependencies,
             }
-        except Exception:
+        except Exception:  # noqa: BLE001
             result[pkg_name] = {"version": pkg_version, "dependencies": []}
 
-    print(json.dumps(result))
+    rich_print(json.dumps(result))
 
 
 if __name__ == "__main__":

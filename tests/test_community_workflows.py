@@ -1,9 +1,20 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+from __future__ import annotations
+
 import copy
 
 import pytest
 from invenio_accounts.models import User
 from invenio_records_resources.services.errors import PermissionDeniedError
 from invenio_requests.proxies import current_requests_service
+from oarepo_runtime.typing import record_from_result
 from oarepo_workflows.proxies import current_oarepo_workflows
 from pytest_invenio.user import UserFixtureBase
 
@@ -11,7 +22,7 @@ from tests.model import datasets_model
 from tests.utils import restrict_workflows
 
 
-def _create_non_member_user(app, db, email="non_member@community_test.example.com"):
+def _create_non_member_user(app, db, email="non_member@community_test.example.com") -> UserFixtureBase:
     """Create an ad-hoc authenticated user who is not a member of any community."""
     existing = db.session.query(User).filter_by(email=email).first()
     if existing:
@@ -24,7 +35,7 @@ def _create_non_member_user(app, db, email="non_member@community_test.example.co
 
 def test_submit_record_default_workflow(app, communities, users, location, vocabularies, simple_record):
     with restrict_workflows("default-community", individual="noone"):
-        owner, curator, submitter, member = users[:4]
+        _owner, curator, submitter, member = users[:4]
         community = communities["default-community"]
 
         with pytest.raises(PermissionDeniedError):
@@ -32,7 +43,6 @@ def test_submit_record_default_workflow(app, communities, users, location, vocab
 
         record = datasets_model.proxies.current_service.create(submitter.identity, data=simple_record)
 
-        print("Community ID:", community.id)
         submission_request_data = {
             "receiver": {"community": community.id},
             "type": "community-submission",
@@ -42,13 +52,12 @@ def test_submit_record_default_workflow(app, communities, users, location, vocab
             datasets_model.proxies.current_service.review.create(
                 member.identity,
                 data=copy.deepcopy(submission_request_data),
-                record=record._record,
+                record=record_from_result(record),
             )
-
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
 
         with pytest.raises(PermissionDeniedError):
@@ -108,7 +117,10 @@ def test_member_can_create_when_community_role_allows(
 def test_any_authenticated_user_can_create_in_open_community(
     app, db, communities, users, location, vocabularies, simple_record
 ):
-    """Assert that any authenticated user (even a non-community-member) can create a draft when authenticated_draft_creation=True."""
+    """Assert that any authenticated user (even a non-community-member) can create a draft.
+
+    Tests the case when authenticated_draft_creation=True.
+    """
     with restrict_workflows("community-open", individual="noone"):
         non_member = _create_non_member_user(app, db)
 
@@ -122,8 +134,9 @@ def test_any_authenticated_user_can_create_in_open_community(
 def test_only_record_owner_can_request_review_by_default(
     app, communities, users, location, vocabularies, simple_record
 ):
-    """Assert that only the record owner may initiate a community-submission request
-    in the default workflow (community_curator_roles is empty).
+    """Assert that only the record owner may initiate a community-submission request.
+
+    Tests the default workflow where community_curator_roles is empty.
     """
     with restrict_workflows("default-community", individual="noone"):
         _, curator, submitter, _ = users[:4]
@@ -141,14 +154,12 @@ def test_only_record_owner_can_request_review_by_default(
             datasets_model.proxies.current_service.review.create(
                 curator.identity,
                 data=copy.deepcopy(submission_request_data),
-                record=record._record,
+                record=record_from_result(record),
             )
-
-        # Submitter is the record owner and should succeed.
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
         assert review_request is not None
 
@@ -182,7 +193,7 @@ def test_curator_roles_are_included_as_requesters_when_configured(app):
         for gen in (requester.then_ if isinstance(requester, IfInState) else [requester])
     ]
     primary_roles = [g for g in flat_generators if isinstance(g, PrimaryCommunityRole)]
-    present_roles = {g._role for g in primary_roles}
+    present_roles = {g._role for g in primary_roles}  # noqa: SLF001
     assert "curator" in present_roles, "'curator' should appear in requesters"
     assert "manager" in present_roles, "'manager' should appear in requesters"
 
@@ -228,7 +239,7 @@ def test_curator_can_decline_community_submission(app, communities, users, locat
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
 
         current_requests_service.execute_action(
@@ -257,7 +268,10 @@ def test_curator_can_decline_community_submission(app, communities, users, locat
 
 
 def test_member_cannot_read_submitted_record_by_default(app, communities, users, location, vocabularies, simple_record):
-    """Assert that a community member cannot preview a submitted draft when read_draft_community_roles is empty (default)."""
+    """Assert that a community member cannot preview a submitted draft.
+
+    Tests the case when read_draft_community_roles is empty (default).
+    """
     with restrict_workflows("default-community", individual="noone"):
         _, _, submitter, member = users[:4]
         community = communities["default-community"]
@@ -272,7 +286,7 @@ def test_member_cannot_read_submitted_record_by_default(app, communities, users,
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
         current_requests_service.execute_action(
             submitter.identity,
@@ -283,7 +297,7 @@ def test_member_cannot_read_submitted_record_by_default(app, communities, users,
         submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions("preview", record=submitted_draft._record).allows(member.identity)
+        assert not workflow.permissions("preview", record=record_from_result(submitted_draft)).allows(member.identity)
 
 
 def test_member_can_read_submitted_record_with_draft_read_permission(
@@ -304,7 +318,7 @@ def test_member_can_read_submitted_record_with_draft_read_permission(
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
         current_requests_service.execute_action(
             submitter.identity,
@@ -315,7 +329,7 @@ def test_member_can_read_submitted_record_with_draft_read_permission(
         submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["community-member-reads"]
-        assert workflow.permissions("preview", record=submitted_draft._record).allows(member.identity)
+        assert workflow.permissions("preview", record=record_from_result(submitted_draft)).allows(member.identity)
 
 
 # --- Group E: Restricted published record read permissions ---
@@ -324,7 +338,10 @@ def test_member_can_read_submitted_record_with_draft_read_permission(
 def test_member_cannot_read_restricted_published_record_by_default(
     app, communities, users, location, vocabularies, restricted_record
 ):
-    """Assert that a community member cannot read a restricted published record when read_restricted_community_roles is empty (default)."""
+    """Assert that a community member cannot read a restricted published record.
+
+    Tests the case when read_restricted_community_roles is empty (default).
+    """
     with restrict_workflows("default-community", individual="noone"):
         _, curator, submitter, member = users[:4]
         community = communities["default-community"]
@@ -341,7 +358,7 @@ def test_member_cannot_read_restricted_published_record_by_default(
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
         current_requests_service.execute_action(
             submitter.identity,
@@ -358,13 +375,16 @@ def test_member_cannot_read_restricted_published_record_by_default(
         # to get the correct record object for the permission check.
         published = datasets_model.proxies.current_service.read(submitter.identity, record.id)
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions("view", record=published._record).allows(member.identity)
+        assert not workflow.permissions("view", record=record_from_result(published)).allows(member.identity)
 
 
 def test_member_can_read_restricted_published_record_with_permission(
     app, communities, users, location, vocabularies, restricted_record
 ):
-    """Assert that a community member CAN read a restricted published record when read_restricted_community_roles=['member']."""
+    """Assert that a community member CAN read a restricted published record.
+
+    Tests the case when read_restricted_community_roles=['member'].
+    """
     with restrict_workflows("community-member-reads", individual="noone"):
         _, curator, submitter, member = users[:4]
         community = communities["community-member-reads"]
@@ -381,7 +401,7 @@ def test_member_can_read_restricted_published_record_with_permission(
         review_request = datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
         current_requests_service.execute_action(
             submitter.identity,
@@ -397,14 +417,17 @@ def test_member_can_read_restricted_published_record_with_permission(
         # The record is published and the member role grants restricted read access.
         published = datasets_model.proxies.current_service.read(submitter.identity, record.id)
         workflow = current_oarepo_workflows.workflow_by_code["community-member-reads"]
-        assert workflow.permissions("view", record=published._record).allows(member.identity)
+        assert workflow.permissions("view", record=record_from_result(published)).allows(member.identity)
 
 
 # --- Group F: Record management permissions ---
 
 
 def test_member_cannot_manage_record_by_default(app, communities, users, location, vocabularies, simple_record):
-    """Assert that a community member cannot manage a draft record when record_manage_community_roles is empty (default)."""
+    """Assert that a community member cannot manage a draft record.
+
+    Tests the case when record_manage_community_roles is empty (default).
+    """
     with restrict_workflows("default-community", individual="noone"):
         _, _, submitter, member = users[:4]
         community = communities["default-community"]
@@ -421,13 +444,13 @@ def test_member_cannot_manage_record_by_default(app, communities, users, locatio
         datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
 
         submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["default-community"]
-        assert not workflow.permissions("manage", record=submitted_draft._record).allows(member.identity)
+        assert not workflow.permissions("manage", record=record_from_result(submitted_draft)).allows(member.identity)
 
 
 def test_member_can_manage_record_with_permission(app, communities, users, location, vocabularies, simple_record):
@@ -448,10 +471,10 @@ def test_member_can_manage_record_with_permission(app, communities, users, locat
         datasets_model.proxies.current_service.review.create(
             submitter.identity,
             data=copy.deepcopy(submission_request_data),
-            record=record._record,
+            record=record_from_result(record),
         )
 
         submitted_draft = datasets_model.proxies.current_service.read_draft(submitter.identity, record.id)
 
         workflow = current_oarepo_workflows.workflow_by_code["community-member-manages"]
-        assert workflow.permissions("manage", record=submitted_draft._record).allows(member.identity)
+        assert workflow.permissions("manage", record=record_from_result(submitted_draft)).allows(member.identity)

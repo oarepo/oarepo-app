@@ -1,17 +1,25 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+"""Individual (non-community) workflow configuration for OARepo."""
+
 from __future__ import annotations
 
 import dataclasses
+from typing import TYPE_CHECKING
 
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.generators import RecordOwners
-from invenio_records_permissions.generators import Generator
-from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_requests.types import PublishDraftRequestType
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.requests.generators.record_owners import RecordOwnersForRecipients
-from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.composite import (
     CompositeAndGenerator,
@@ -21,6 +29,11 @@ from oarepo_workflows.services.permissions.generators import (
     HasActionNeed,
     UserWithRole,
 )
+
+if TYPE_CHECKING:
+    from invenio_records_permissions.generators import Generator
+    from invenio_records_permissions.policies.base import BasePermissionPolicy
+    from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 
 from .base import BaseWorkflowSettings, add_if_in_state
 
@@ -32,7 +45,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
     code: str = "individual"
     """Unique code identifier for this workflow."""
 
-    label: LazyString = _("Individual Submission Workflow")
+    label: LazyString = _("Individual Submission Workflow")  # noqa: RUF009
     """Human-readable label for this workflow."""
 
     authenticated_draft_creation: bool = True
@@ -104,14 +117,17 @@ class IndividualWorkflow(BaseWorkflowSettings):
     """
 
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):
+        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
-            can_publish = add_if_in_state(
-                self.publish_without_review_states,
-                self._build_record_publish_generators(),
-            ) + [IfInState("submitted", then_=[RequestActive()])]
+            can_publish = (
+                *add_if_in_state(
+                    self.publish_without_review_states,
+                    self._build_record_publish_generators(),
+                ),
+                IfInState("submitted", then_=[RequestActive()]),
+            )
             can_read = self.base_permission_policy.can_read + self._build_record_view_permissions()
 
         return PermissionPolicy
@@ -162,7 +178,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
         if self.reviewer_needs:
             reviewer_generators.extend([HasActionNeed(need) for need in self.reviewer_needs])
         if self.self_review_enabled:
-            reviewer_generators.append(RecordOwnersForRecipients())
+            reviewer_generators.append(RecordOwnersForRecipients())  # type: ignore[arg-type]
         if not self.publish_after_review:
             raise NotImplementedError(
                 "Disabling publish_after_review is not supported in this version, "
@@ -170,7 +186,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
             )
         requestors = [*reviewer_generators]
         if not self.self_review_enabled:
-            requestors.append(RecordOwners())
+            requestors.append(RecordOwners())  # type: ignore[arg-type]
 
         requests = {
             PublishDraftRequestType.type_id: WorkflowRequest(

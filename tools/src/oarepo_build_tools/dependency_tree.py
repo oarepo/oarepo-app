@@ -26,7 +26,7 @@ from oarepo_build_tools.python import get_latest_oarepo_version, update_versions
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
-from rich import print
+from rich import print as rich_print
 
 # Constants for dependency graph generation
 DEPGRAPH_INITIAL_NODES_REGEXP = r"^oarepo-.*"
@@ -67,7 +67,7 @@ def perturb_color(base_color_hex: str, package_name: str) -> str:
     b = int(base_color[4:6], 16)
 
     # Get MD5 hash of package name
-    hash_bytes = hashlib.md5(package_name.encode()).digest()
+    hash_bytes = hashlib.md5(package_name.encode()).digest()  # noqa: S324
 
     # Use first 3 bytes to perturb RGB values
     # Each byte / 4 - 32 gives range of approximately -32 to +31
@@ -104,7 +104,7 @@ def get_node_color(node_name: str, compiled_styles: list[tuple]) -> str:
     return "#FFFFFF"
 
 
-def find_cycles(nodes: set, edges: list[tuple]) -> tuple[set[str], list[list[str]]]:
+def find_cycles(nodes: set, edges: list[tuple]) -> tuple[set[str], list[list[str]]]:  # noqa: C901 TODO: refactor into smaller helpers
     """Find all cycles in the dependency graph using standard library.
 
     Args:
@@ -131,19 +131,19 @@ def find_cycles(nodes: set, edges: list[tuple]) -> tuple[set[str], list[list[str
         ts = TopologicalSorter(graph)
         ts.prepare()
         # No cycles if this succeeds
-        return set(), []
-    except Exception:
+        return set(), []  # noqa: TRY300
+    except Exception:  # noqa: BLE001, S110
         # Cycles exist, find them using DFS
         pass
 
     # DFS to find cycles
-    def find_all_cycles_dfs():
+    def find_all_cycles_dfs() -> list[list[str]]:
         cycles = []
         visited = set()
         rec_stack = []
         rec_stack_set = set()
 
-        def dfs(node):
+        def dfs(node) -> None:
             if node in rec_stack_set:
                 # Found a cycle
                 cycle_start = rec_stack.index(node)
@@ -201,22 +201,23 @@ def get_all_package_dependencies(packages: dict[str, str], python_path: str) -> 
 
         # Pass package dict via stdin
         packages_json = json.dumps(packages)
-        result = subprocess.run(
+        result = subprocess.run(  # noqa: S603
             [python_path, str(helper_script)],
             input=packages_json,
             text=True,
             capture_output=True,
+            check=False,
         )
 
         if result.returncode != 0:
-            print("Error analyzing dependencies:")
-            print(f"STDERR: {result.stderr}")
-            print(f"STDOUT: {result.stdout}")
+            rich_print("Error analyzing dependencies:")
+            rich_print(f"STDERR: {result.stderr}")
+            rich_print(f"STDOUT: {result.stdout}")
             return {}
 
         return json.loads(result.stdout) if result.stdout.strip() else {}
-    except Exception as e:
-        print(f"Exception analyzing dependencies: {e}")
+    except Exception as e:  # noqa: BLE001
+        rich_print(f"Exception analyzing dependencies: {e}")
         return {}
 
 
@@ -233,13 +234,13 @@ def parse_version(version_str: str) -> tuple[int, int, int]:
     try:
         # Use packaging library to properly parse PEP 440 versions
         v = Version(version_str)
-        return (v.major, v.minor, v.micro)
-    except Exception:
+        return (v.major, v.minor, v.micro)  # noqa: TRY300
+    except Exception:  # noqa: BLE001
         # Fallback to simple parsing if packaging fails
         # Strip local version identifier (anything after +)
         base_version = version_str.split("+")[0]
         # Strip pre-release/dev identifiers
-        base_version = re.split(r"[a-z]", base_version, 1, re.IGNORECASE)[0]
+        base_version = re.split(r"[a-z]", base_version, maxsplit=1, flags=re.IGNORECASE)[0]
         parts = base_version.rstrip(".").split(".")
         major = int(parts[0]) if len(parts) > 0 else 0
         minor = int(parts[1]) if len(parts) > 1 else 0
@@ -248,7 +249,7 @@ def parse_version(version_str: str) -> tuple[int, int, int]:
 
 
 def bump_major_version(version_str: str) -> str:
-    """Bump the major version: X.Y.Z -> (X+1).0.0
+    """Bump the major version from X.Y.Z to (X+1).0.0.
 
     Preserves local version identifiers if present (e.g., 1.2.3+local -> 2.0.0+local)
 
@@ -266,8 +267,8 @@ def bump_major_version(version_str: str) -> str:
         # Preserve local version identifier if present
         if v.local:
             new_version += f"+{v.local}"
-        return new_version
-    except Exception:
+        return new_version  # noqa: TRY300
+    except Exception:  # noqa: BLE001
         # Fallback to simple parsing
         major, _, _ = parse_version(version_str)
         # Preserve local version if present
@@ -293,15 +294,16 @@ def version_satisfies_spec(version_str: str, spec_str: str) -> bool:
             return True
         spec_set = SpecifierSet(spec_str)
         return Version(version_str) in spec_set
-    except Exception:
+    except Exception:  # noqa: BLE001
         # If we can't parse, assume it's satisfied
         return True
 
 
-def apply_version_adjustments(
+def apply_version_adjustments(  # noqa: C901 TODO: refactor into smaller helpers
     packages: dict[str, dict], upgraded_packages: dict[str, tuple[str, bool]]
 ) -> dict[str, dict]:
     """Apply version adjustments based on upgraded packages.
+
     The upgraded packages is a dict of package_name -> (bumped_version, needs_upgrade).
     if needs_upgrade is True, the package needs to be bumped and the bumped_version is the new version.
     if needs_upgrade is False, the package was already bumped and the bumped_version is the version
@@ -324,9 +326,9 @@ def apply_version_adjustments(
             # original version is already bumped, no need to bump again
             packages[pkg_name]["bumped"] = original_version
             if needs_upgrade:
-                print(f"  ⬆️  {pkg_name}: {original_version} (depends on invenio, version bumped)")
+                rich_print(f"  ⬆️  {pkg_name}: {original_version} (depends on invenio, version bumped)")
             else:
-                print(f"  ⬆️  {pkg_name}: {original_version} (from PR/branch, version kept)")
+                rich_print(f"  ⬆️  {pkg_name}: {original_version} (from PR/branch, version kept)")
 
     # Iteratively adjust packages whose dependencies don't match
     changed = True
@@ -334,7 +336,7 @@ def apply_version_adjustments(
     while changed:
         changed = False
         iteration += 1
-        print(f"\n🔄 Adjustment iteration {iteration}...")
+        rich_print(f"\n🔄 Adjustment iteration {iteration}...")
 
         for pkg_name, pkg_info in packages.items():
             # Skip if already bumped
@@ -349,7 +351,7 @@ def apply_version_adjustments(
                 try:
                     req = Requirement(dep_str)
                     dep_name = req.name.lower()
-                except Exception:
+                except Exception:  # noqa: BLE001, S112
                     continue
 
                 # Only check dependencies on packages that were bumped
@@ -361,13 +363,13 @@ def apply_version_adjustments(
                 original_version = pkg_info["version"]
                 bumped_version = bump_major_version(original_version)
                 packages[pkg_name]["bumped"] = bumped_version
-                print(f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (dependency conflict)")
+                rich_print(f"  ⬆️  {pkg_name}: {original_version} -> {bumped_version} (dependency conflict)")
                 changed = True
 
     return packages
 
 
-def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> None:
+def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> None:  # noqa: C901 TODO: refactor into smaller helpers
     """Generate an interactive HTML report with dependency graph visualization.
 
     Creates a self-contained HTML file (index.html) with an interactive dependency
@@ -458,7 +460,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
                 try:
                     req = Requirement(dep_str)
                     dep_name = req.name.lower()
-                except Exception:
+                except Exception:  # noqa: BLE001, S112
                     continue
 
                 if exclude_pattern.match(dep_name):
@@ -478,7 +480,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
                         nodes_to_process.add(dep_name)
 
     # Detect cycles
-    nodes_in_cycles, cycles = find_cycles(all_nodes, list(edges))
+    nodes_in_cycles, _cycles = find_cycles(all_nodes, list(edges))
 
     # Prepare data for bumped packages table
     bumped_packages = [
@@ -502,7 +504,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
                     if req.name.lower() == dst:
                         version_spec = str(req.specifier) if req.specifier else "-"
                         break
-                except Exception:
+                except Exception:  # noqa: BLE001, S110
                     pass
         src_info = packages.get(src, {})
         dst_info = packages.get(dst, {})
@@ -566,7 +568,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
         )
 
     # Prepare bumped-only filtered data
-    bumped_node_ids = set(n["id"] for n in nodes_data if n["is_bumped"])
+    bumped_node_ids = {n["id"] for n in nodes_data if n["is_bumped"]}
     nodes_data_bumped = [n for n in nodes_data if n["is_bumped"]]
     edges_data_bumped = [e for e in edges_data if e["source"] in bumped_node_ids and e["target"] in bumped_node_ids]
 
@@ -576,7 +578,7 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
     if not template_html_dir.exists():
         raise FileNotFoundError(f"HTML template directory not found: {template_html_dir}")
 
-    print("📁 Copying HTML template to output directory...")
+    rich_print("📁 Copying HTML template to output directory...")
 
     # Copy all files from html directory to output directory
     for item in template_html_dir.iterdir():
@@ -591,13 +593,13 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
             # Don't copy node_modules or dist if they exist
             shutil.copytree(item, dest_path, dirs_exist_ok=True)
 
-    print("   ✓ HTML template copied")
+    rich_print("   ✓ HTML template copied")
 
     # Step 2: Generate index.html in output directory
-    print("📝 Generating index.html...")
+    rich_print("📝 Generating index.html...")
 
     template_dir = Path(__file__).parent / "templates"
-    env = Environment(loader=FileSystemLoader(template_dir))
+    env = Environment(loader=FileSystemLoader(template_dir))  # noqa: S701
     template = env.get_template("dependency_graph.html.j2")
     html_content = template.render(
         nodes_all=nodes_data,
@@ -610,21 +612,21 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
 
     index_path = output_dir / "index.html"
     index_path.write_text(html_content)
-    print("   ✓ index.html created")
+    rich_print("   ✓ index.html created")
 
     # Step 3: Run build.sh in output directory to bundle JavaScript
     build_script = output_dir / "build.sh"
 
     if not build_script.exists():
-        print(f"⚠️  Warning: build.sh not found at {build_script}")
-        print("   Skipping JavaScript build")
+        rich_print(f"⚠️  Warning: build.sh not found at {build_script}")
+        rich_print("   Skipping JavaScript build")
         return
 
-    print("🔨 Building JavaScript libraries...")
+    rich_print("🔨 Building JavaScript libraries...")
 
     try:
         result = subprocess.run(
-            ["bash", "build.sh"],
+            ["bash", "build.sh"],  # noqa: S607
             cwd=output_dir,
             check=True,
             capture_output=True,
@@ -634,17 +636,17 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
             # Print build output with indentation
             for line in result.stdout.strip().split("\n"):
                 if line.strip():
-                    print(f"   {line}")
+                    rich_print(f"   {line}")
     except subprocess.CalledProcessError as e:
-        print("❌ Build failed!")
+        rich_print("❌ Build failed!")
         if e.stdout:
-            print(f"   STDOUT: {e.stdout}")
+            rich_print(f"   STDOUT: {e.stdout}")
         if e.stderr:
-            print(f"   STDERR: {e.stderr}")
+            rich_print(f"   STDERR: {e.stderr}")
         raise
 
     # Step 4: Clean up build artifacts
-    print("🧹 Cleaning up build artifacts...")
+    rich_print("🧹 Cleaning up build artifacts...")
 
     artifacts_to_remove = [
         "package.json",
@@ -665,10 +667,10 @@ def render_graph(output_directory: str | Path, packages: dict[str, dict]) -> Non
             elif artifact_path.is_dir():
                 shutil.rmtree(artifact_path)
 
-    print("   ✓ Build artifacts removed")
-    print("\n✅ Interactive HTML report completed!")
-    print(f"   Location: {index_path}")
-    print(f"   Assets: {output_dir / 'dist'}")
+    rich_print("   ✓ Build artifacts removed")
+    rich_print("\n✅ Interactive HTML report completed!")
+    rich_print(f"   Location: {index_path}")
+    rich_print(f"   Assets: {output_dir / 'dist'}")
 
 
 def build_dependency_tree(
@@ -691,7 +693,7 @@ def build_dependency_tree(
         help="Comma-separated list of pr urls or org/repo@branch",
     ),
     print_json: bool = typer.Option(
-        False,
+        False,  # noqa: FBT003
         "--print-json/--no-print-json",
         help="Whether to print JSON output to console.",
     ),
@@ -699,14 +701,14 @@ def build_dependency_tree(
     """Set up the repository for the given oarepo major version."""
     if oarepo_version:
         latest_oarepo_version = oarepo_version
-        print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
+        rich_print(f"📦 Using supplied version: [bold green]{latest_oarepo_version}[/bold green]")
     else:
-        print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
+        rich_print(f"🔍 Searching for latest [bold]oarepo[/bold] [cyan]{major_version}.x[/cyan] release …")
         latest_oarepo_version = get_latest_oarepo_version(major_version)
-        print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
+        rich_print(f"📦 Latest version: [bold green]{latest_oarepo_version}[/bold green]")
 
     root = Path(directory).resolve()
-    print("🔄 Updating dependency versions …")
+    rich_print("🔄 Updating dependency versions …")
     if upgraded_packages:
         upgraded_packages_list = [p.strip() for p in upgraded_packages.split(",")]
         upgraded_packages_list = [p for p in upgraded_packages_list if p]
@@ -714,26 +716,30 @@ def build_dependency_tree(
             upgraded_packages_list = None
     else:
         upgraded_packages_list = None
-    upgraded_packages_with_original_versions = update_versions(root, True, upgraded_packages_list)
+    upgraded_packages_with_original_versions = update_versions(
+        directory=root,
+        upgrade_major_versions=True,
+        upgraded_packages=upgraded_packages_list,
+    )
 
     # now we have a lockfile with pinned versions, including upgraded packages
     # we now sync the lockfile with the local environment
-    print("📦 Installing dependencies …")
+    rich_print("📦 Installing dependencies …")
     subprocess.run(
-        ["uv", "sync", "--extra", "production", "--prerelease", "allow", "-U"],
+        ["uv", "sync", "--extra", "production", "--prerelease", "allow", "-U"],  # noqa: S607
         check=True,
         cwd=directory,
     )
     # Now we extract the dependency graph using the uv pip tree. We care only about
     # direct dependencies, not transitive ones.
-    print("📊 Extracting dependency graph …")
+    rich_print("📊 Extracting dependency graph …")
 
     # list all installed packages
     installed_packages = {
         x["name"]: x["version"]
         for x in json.loads(
-            subprocess.check_output(
-                [
+            subprocess.check_output(  # noqa: S603
+                [  # noqa: S607
                     "uv",
                     "pip",
                     "list",
@@ -750,21 +756,22 @@ def build_dependency_tree(
 
     python_path = f"{directory}/.venv/bin/python"
 
-    print("🔍 Analyzing package dependencies (including extras)...")
+    rich_print("🔍 Analyzing package dependencies (including extras)...")
     packages = get_all_package_dependencies(installed_packages, python_path)
 
     # Apply version adjustments if upgraded_packages is specified
     if upgraded_packages_with_original_versions:
-        print(
-            f"\n📦 Applying version adjustments for upgraded packages: {', '.join(f'{k}=={v}' for k, v in upgraded_packages_with_original_versions.items())}"
+        rich_print(
+            f"\n\U0001f4e6 Applying version adjustments for upgraded packages: "
+            f"{', '.join(f'{k}=={v}' for k, v in upgraded_packages_with_original_versions.items())}"
         )
         packages = apply_version_adjustments(packages, upgraded_packages_with_original_versions)
 
     if print_json:
-        print("\n📋 Final package information:")
-        print(json.dumps(packages, indent=2))
+        rich_print("\n📋 Final package information:")
+        rich_print(json.dumps(packages, indent=2))
 
     # Generate interactive HTML report
-    print("\n🌐 Generating interactive HTML report...")
+    rich_print("\n🌐 Generating interactive HTML report...")
     output_dir = Path("output")
     render_graph(output_dir, packages)

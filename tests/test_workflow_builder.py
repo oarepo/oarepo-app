@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
 """Tests for workflow builder utilities.
 
 Covers low-hanging-fruit gaps highlighted by the coverage report:
@@ -10,6 +18,8 @@ Covers low-hanging-fruit gaps highlighted by the coverage report:
 * publish_without_review_needs (individual.py line 132)
 * publish_after_review=False raises NotImplementedError (individual.py line 152)
 """
+
+from __future__ import annotations
 
 import pytest
 from invenio_records_permissions.generators import AnyUser, AuthenticatedUser
@@ -114,7 +124,7 @@ def test_extra_permissions_as_callable(app, db):
     """extra_permissions given as a callable is invoked with the generated policy class."""
     received = []
 
-    def patch_perms(cls):
+    def patch_perms(cls) -> type:
         received.append(cls)
         return cls
 
@@ -149,7 +159,7 @@ def test_extra_requests_as_callable(app, db):
     """extra_requests given as a callable is invoked with the generated request policy class."""
     received = []
 
-    def patch_reqs(cls):
+    def patch_reqs(cls) -> type:
         received.append(cls)
         return cls
 
@@ -173,7 +183,7 @@ def test_record_view_permissions_non_empty_builds_if_in_state(app, db):
         code="view-perms",
         record_view_permissions={"submitted": [gen]},
     )
-    result = settings._build_record_view_permissions()
+    result = settings._build_record_view_permissions()  # noqa: SLF001
     assert len(result) == 1
     assert isinstance(result[0], IfInState)
 
@@ -189,7 +199,7 @@ def test_publish_without_review_needs_produces_composite_generators(app, db):
         code="pub-needs",
         publish_without_review_needs=["publish-access"],
     )
-    generators = settings._build_record_publish_generators()
+    generators = settings._build_record_publish_generators()  # noqa: SLF001
     assert len(generators) == 1
     assert isinstance(generators[0], CompositeAndGenerator)
 

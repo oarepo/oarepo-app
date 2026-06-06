@@ -26,8 +26,8 @@ def switch_branch(directory: str | Path, branch_name: str) -> str:
     safe_name = sanitize_branch_name(branch_name)
 
     # Check whether the branch already exists locally.
-    result = subprocess.run(
-        ["git", "branch", "--list", safe_name],
+    result = subprocess.run(  # noqa: S603
+        ["git", "branch", "--list", safe_name],  # noqa: S607
         cwd=directory,
         capture_output=True,
         text=True,
@@ -36,15 +36,15 @@ def switch_branch(directory: str | Path, branch_name: str) -> str:
 
     if result.stdout.strip():
         # Branch exists - just check it out.
-        subprocess.run(
-            ["git", "checkout", safe_name],
+        subprocess.run(  # noqa: S603
+            ["git", "checkout", safe_name],  # noqa: S607
             cwd=directory,
             check=True,
         )
     else:
         # Create the branch and switch to it.
-        subprocess.run(
-            ["git", "checkout", "-b", safe_name],
+        subprocess.run(  # noqa: S603
+            ["git", "checkout", "-b", safe_name],  # noqa: S607
             cwd=directory,
             check=True,
         )

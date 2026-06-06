@@ -230,3 +230,4 @@ coverage.json
 junit.xml
 
 .ruff.toml
+.mypy.ini
