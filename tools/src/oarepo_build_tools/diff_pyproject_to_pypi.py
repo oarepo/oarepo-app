@@ -13,6 +13,7 @@ import tomli
 import typer
 from packaging.requirements import Requirement
 from packaging.version import InvalidVersion, Version
+from rich import print as rich_print
 
 # ---------------------------------------------------------------------------
 # pyproject.toml parsing
@@ -39,8 +40,8 @@ def collect_pinned_dependencies(pyproject_path: Path) -> dict[str, tuple[str, st
                 continue
             try:
                 req = Requirement(dep)
-            except Exception as exc:
-                print(
+            except Exception as exc:  # noqa: BLE001
+                rich_print(
                     f"Warning: could not parse dependency {dep!r} in {group_label}: {exc}",
                     file=sys.stderr,
                 )
@@ -51,10 +52,10 @@ def collect_pinned_dependencies(pyproject_path: Path) -> dict[str, tuple[str, st
 
     project = data.get("project", {})
 
-    # [project.dependencies]
+    # project.dependencies
     _process("[project.dependencies]", project.get("dependencies", []))
 
-    # [project.optional-dependencies.<group>]
+    # project.optional-dependencies.<group>
     for group, deps in project.get("optional-dependencies", {}).items():
         _process(f"[project.optional-dependencies.{group}]", deps)
 
@@ -78,24 +79,24 @@ def get_latest_pypi_version(package_name: str) -> Version | None:
     """
     url = f"https://pypi.org/pypi/{package_name}/json"
     try:
-        with urllib.request.urlopen(url, timeout=10) as resp:
+        with urllib.request.urlopen(url, timeout=10) as resp:  # noqa: S310
             data = json.loads(resp.read())
         return Version(data["info"]["version"])
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
-            print(f"error: {package_name!r} not found on PyPI.", file=sys.stderr)
+            rich_print(f"error: {package_name!r} not found on PyPI.", file=sys.stderr)
         else:
-            print(
+            rich_print(
                 f"error: HTTP {exc.code} while fetching {package_name!r} from PyPI.",
                 file=sys.stderr,
             )
     except InvalidVersion as exc:
-        print(
+        rich_print(
             f"error: could not parse PyPI version for {package_name!r}: {exc}",
             file=sys.stderr,
         )
-    except Exception as exc:
-        print(
+    except Exception as exc:  # noqa: BLE001
+        rich_print(
             f"error: unexpected error fetching {package_name!r}: {exc}",
             file=sys.stderr,
         )
@@ -122,12 +123,12 @@ def diff_pyproject_to_pypi(
     Outdated packages are printed to stdout; errors go to stderr.
     """
     if not pyproject.exists():
-        print(f"error: {pyproject} not found.", file=sys.stderr)
+        rich_print(f"error: {pyproject} not found.", file=sys.stderr)
         raise typer.Exit(1)
 
     pinned = collect_pinned_dependencies(pyproject)
     if not pinned:
-        print("No completely-pinned dependencies found.", file=sys.stderr)
+        rich_print("No completely-pinned dependencies found.", file=sys.stderr)
         return
 
     outdated: list[tuple[str, str, str, str]] = []  # (name, group, pinned, latest)
@@ -136,7 +137,7 @@ def diff_pyproject_to_pypi(
         try:
             pinned_version = Version(pinned_str)
         except InvalidVersion:
-            print(
+            rich_print(
                 f"error: cannot parse pinned version {pinned_str!r} for {package_name!r}.",
                 file=sys.stderr,
             )
@@ -157,4 +158,4 @@ def diff_pyproject_to_pypi(
     ver_w = max(len(row[2]) for row in outdated)
 
     for name, group, pinned_ver, latest_ver in outdated:
-        print(f"{name:<{name_w}}  {pinned_ver:>{ver_w}}  →  {latest_ver}  ({group})")
+        rich_print(f"{name:<{name_w}}  {pinned_ver:>{ver_w}}  →  {latest_ver}  ({group})")

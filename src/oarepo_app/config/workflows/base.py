@@ -1,14 +1,29 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+"""Base workflow settings and helpers for OARepo workflow configuration."""
+
 from __future__ import annotations
 
 import abc
 import dataclasses
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any
 
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_records_permissions.generators import AuthenticatedUser, Generator
-from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_workflows.base import Workflow
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from invenio_records_permissions.policies.base import BasePermissionPolicy
+
 from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.generators import HasActionNeed, UserWithRole
@@ -35,6 +50,7 @@ def add_if_in_state(
     Returns:
         A list of generators, optionally wrapped in an :class:`IfInState`
         constraint.
+
     """
     if not states:
         return list(generators)
@@ -48,7 +64,7 @@ class BaseWorkflowSettings:
     code: str = "undefined"
     """The code of the workflow type."""
 
-    label: LazyString = _("Undefined policy")
+    label: LazyString = _("Undefined policy")  # noqa: RUF009
     """The label of the workflow type."""
 
     base_permission_policy: type[BasePermissionPolicy] = DefaultRDMWorkflowPermissions
@@ -57,14 +73,10 @@ class BaseWorkflowSettings:
     base_request_policy: type[WorkflowRequestPolicy] = WorkflowRequestPolicy
     """The base requests policy class for this workflow that will be configured."""
 
-    review_request_states: list[str] = dataclasses.field(
-        default_factory=lambda: ["draft"]
-    )
+    review_request_states: list[str] = dataclasses.field(default_factory=lambda: ["draft"])
     """Record workflow states in which a review request may be submitted."""
 
-    record_view_permissions: dict[str, list[Generator]] = dataclasses.field(
-        default_factory=dict
-    )
+    record_view_permissions: dict[str, list[Generator]] = dataclasses.field(default_factory=dict)
     """View permissions for records in this workflow.
 
     It is a dictionary, the key is record state and the value is a list of generators.
@@ -74,9 +86,7 @@ class BaseWorkflowSettings:
     """Publish immediately after reviewer approves the review request."""
 
     extra_permissions: (
-        type[BasePermissionPolicy]
-        | Callable[[type[BasePermissionPolicy]], type[BasePermissionPolicy]]
-        | None
+        type[BasePermissionPolicy] | Callable[[type[BasePermissionPolicy]], type[BasePermissionPolicy]] | None
     ) = None
     """Extra permissions to apply to the record permission policy.
 
@@ -86,9 +96,7 @@ class BaseWorkflowSettings:
     """
 
     extra_requests: (
-        type[WorkflowRequestPolicy]
-        | Callable[[type[WorkflowRequestPolicy]], type[WorkflowRequestPolicy]]
-        | None
+        type[WorkflowRequestPolicy] | Callable[[type[WorkflowRequestPolicy]], type[WorkflowRequestPolicy]] | None
     ) = None
     """Extra requests to apply to the workflow request policy.
 
@@ -125,16 +133,12 @@ class BaseWorkflowSettings:
         request_policy: type[WorkflowRequestPolicy] = self._build_request_policy()
         if self.extra_permissions:
             if isinstance(self.extra_permissions, type):
-                permissions = type(
-                    permissions.__name__, (self.extra_permissions, permissions), {}
-                )
+                permissions = type(permissions.__name__, (self.extra_permissions, permissions), {})
             elif callable(self.extra_permissions):
                 permissions = self.extra_permissions(permissions)
         if self.extra_requests:
             if isinstance(self.extra_requests, type):
-                request_policy = type(
-                    request_policy.__name__, (self.extra_requests, request_policy), {}
-                )
+                request_policy = type(request_policy.__name__, (self.extra_requests, request_policy), {})
             elif callable(self.extra_requests):
                 request_policy = self.extra_requests(request_policy)
 
@@ -152,26 +156,24 @@ class BaseWorkflowSettings:
 
         Returns:
             A tuple of :class:`~oarepo_workflows.services.permissions.IfInState`
-            generators – one per entry in :attr:`record_view_permissions` – or
+            generators - one per entry in :attr:`record_view_permissions` - or
             an empty tuple when no overrides are configured.
+
         """
         if not self.record_view_permissions:
             return ()
-        return tuple(
-            IfInState(state, then_=generators)
-            for state, generators in self.record_view_permissions.items()
-        )
+        return tuple(IfInState(state, then_=generators) for state, generators in self.record_view_permissions.items())
 
     def _build_record_create_generators(self) -> tuple[Generator, ...]:
         """Build generators that control who may create a new draft record.
 
         Applies the following priority order:
 
-        1. **Role-based** – :attr:`draft_creation_roles`: users holding any of
+        1. **Role-based** - :attr:`draft_creation_roles`: users holding any of
            these site-wide roles are allowed.
-        2. **Need-based** – :attr:`draft_creation_needs`: users possessing any
+        2. **Need-based** - :attr:`draft_creation_needs`: users possessing any
            of these permission needs are allowed.
-        3. **Authenticated fallback** – when neither (1) nor (2) are set and
+        3. **Authenticated fallback** - when neither (1) nor (2) are set and
            :attr:`authenticated_draft_creation` is ``True``, any authenticated
            user is allowed.
 
@@ -180,16 +182,13 @@ class BaseWorkflowSettings:
 
         Returns:
             A tuple of permission generators for the ``can_create`` policy action.
+
         """
         create_generators: list[Generator] = []
         if self.draft_creation_roles:
-            create_generators += [
-                UserWithRole(role) for role in self.draft_creation_roles
-            ]
+            create_generators += [UserWithRole(role) for role in self.draft_creation_roles]
         if self.draft_creation_needs:
-            create_generators += [
-                HasActionNeed(action) for action in self.draft_creation_needs
-            ]
+            create_generators += [HasActionNeed(action) for action in self.draft_creation_needs]
         if not create_generators and self.authenticated_draft_creation:
             create_generators = [AuthenticatedUser()]
         return tuple(create_generators)
@@ -214,6 +213,7 @@ class BaseWorkflowSettings:
         Returns:
             A freshly created subclass of :attr:`base_request_policy` with
             *requests* merged in as class attributes.
+
         """
         return type(class_name, (self.base_request_policy,), requests)
 

@@ -1,10 +1,19 @@
-import re
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+from __future__ import annotations
 
 import pytest
 from flask_principal import ActionNeed
 from invenio_access.models import ActionUsers
 from invenio_accounts.models import Role, User
 from oarepo_requests.proxies import current_requests_service
+from oarepo_runtime.typing import record_from_result
 from oarepo_workflows.proxies import current_oarepo_workflows
 from pytest_invenio.user import UserFixtureBase
 
@@ -15,7 +24,7 @@ review_access = ActionNeed("review-access")
 
 
 @pytest.mark.parametrize(
-    "workflow_type,user_roles,user_needs,outcome",
+    ("workflow_type", "user_roles", "user_needs", "outcome"),
     [
         ("individual", [], [], True),
         ("noone", [], [], False),
@@ -34,7 +43,7 @@ def test_create_record(app, db, roles, workflow_type, user_roles, user_needs, ou
 
 
 @pytest.mark.parametrize(
-    "workflow_type,user_roles,user_needs,outcome",
+    ("workflow_type", "user_roles", "user_needs", "outcome"),
     [
         ("individual", [], [], True),
         ("individual_creator_role", ["creator-role"], [], True),
@@ -44,9 +53,7 @@ def test_create_record(app, db, roles, workflow_type, user_roles, user_needs, ou
         ("curated_with_access", [], [], False),
     ],
 )
-def test_publish_record(
-    app, db, roles, location, workflow_type, user_roles, user_needs, outcome
-):
+def test_publish_record(app, db, roles, location, workflow_type, user_roles, user_needs, outcome):
     u = create_user(app, db, user_roles, user_needs)
 
     record_result = datasets_model.proxies.current_service.create(
@@ -54,12 +61,12 @@ def test_publish_record(
     )
 
     workflow = current_oarepo_workflows.workflow_by_code[workflow_type]
-    permissions = workflow.permissions("publish", record=record_result._record)
+    permissions = workflow.permissions("publish", record=record_from_result(record_result))
     assert permissions.allows(u.identity) == outcome
 
 
 @pytest.mark.parametrize(
-    "workflow_type,user_roles,user_needs,reviewer_role, reviewer_needs, outcome",
+    ("workflow_type", "user_roles", "user_needs", "reviewer_role", "reviewer_needs", "outcome"),
     [
         ("individual", [], [], [], [], False),
         ("individual_creator_role", ["creator-role"], [], [], [], False),
@@ -92,9 +99,7 @@ def test_publish_with_review(
 ):
     u = create_user(app, db, user_roles, user_needs, email="submitter@test.com")
 
-    reviewer = create_user(
-        app, db, ["reviewer-role"], [review_access], email="reviewer@test.com"
-    )
+    reviewer = create_user(app, db, ["reviewer-role"], [review_access], email="reviewer@test.com")
 
     record_result = datasets_model.proxies.current_service.create(
         u.identity,
@@ -103,9 +108,7 @@ def test_publish_with_review(
 
     available_requests = {
         x["type_id"]: x
-        for x in current_requests_service.applicable_request_types(
-            u.identity, record_result._record
-        )
+        for x in current_requests_service.applicable_request_types(u.identity, record_from_result(record_result))
     }
     assert ("publish_draft" in available_requests) == outcome
 
@@ -116,13 +119,11 @@ def test_publish_with_review(
     request = current_requests_service.create(
         u.identity,
         request_type="publish_draft",
-        topic=record_result._record,
+        topic=record_from_result(record_result),
         data={"payload": {"version": "1.0"}},
     )
     if reviewer_role:
-        assert request.data["receiver"] == {
-            "group": db.session.query(Role).filter_by(name=reviewer_role[0]).first().id
-        }
+        assert request.data["receiver"] == {"group": db.session.query(Role).filter_by(name=reviewer_role[0]).first().id}
     elif reviewer_needs:
         assert request.data["receiver"] == {"action_need": reviewer_needs[0]}
 
@@ -139,9 +140,7 @@ def test_publish_with_review(
 
     # when the request is accepted, a notification should be sent to the submitter
     with mail.record_messages() as outbox:
-        current_requests_service.execute_action(
-            reviewer.identity, request.id, action="accept"
-        )
+        current_requests_service.execute_action(reviewer.identity, request.id, action="accept")
         assert len(outbox) == 1
         sent_mail = outbox[0]
         assert "submitter@test.com" in sent_mail.recipients

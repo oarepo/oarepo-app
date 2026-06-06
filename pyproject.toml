@@ -11,6 +11,9 @@ dependencies = [
     "json5",
 ]
 
+[project.urls]
+Homepage = "https://github.com/oarepo/oarepo-app"
+
 [project.optional-dependencies]
 ccmm-development = [
     "ccmm-invenio>=1.1.0,<1.2.0",

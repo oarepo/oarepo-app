@@ -4,14 +4,12 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
 import subprocess
 import tomllib
 import urllib.error
 import urllib.request
 from copy import replace
-from pathlib import Path
-from struct import pack
+from typing import TYPE_CHECKING
 
 import tomli_w
 from oarepo_build_tools.constants import CESNET_PYPI_URL
@@ -19,7 +17,11 @@ from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.utils import parse_sdist_filename, parse_wheel_filename
 from packaging.version import Version
-from rich import print
+from rich import print as rich_print
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 
 # ─── PyPI version querying ────────────────────────────────────────────────────
 
@@ -37,7 +39,7 @@ def get_available_versions(
     """
     url = f"{index_url.rstrip('/')}/{package}/"
     try:
-        with urllib.request.urlopen(url) as resp:
+        with urllib.request.urlopen(url) as resp:  # noqa: S310 - index_url is always https (default: CESNET_PYPI_URL)
             content = resp.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
@@ -62,7 +64,7 @@ def get_available_versions(
             if version not in seen:
                 seen.add(version)
                 versions.append(version)
-        except Exception:
+        except Exception:  # noqa: BLE001, S110
             pass
 
     return versions
@@ -202,7 +204,7 @@ def run_uv_lock(
 ) -> None:
     """Run ``uv lock`` inside *directory* to regenerate the lock file."""
     # clean the cache first to avoid stale lock file issues
-    subprocess.run(["uv", "cache", "clean"])
+    subprocess.run(["uv", "cache", "clean"], check=False)  # noqa: S607
 
     lock_file_path = directory / "uv.lock"
     if lock_file_path.exists():
@@ -213,7 +215,7 @@ def run_uv_lock(
         lock_command.extend(extra_options)
 
     # and lock the dependencies
-    subprocess.run(
+    subprocess.run(  # noqa: S603
         lock_command,
         cwd=directory,
         check=True,
@@ -236,13 +238,12 @@ def parse_uv_lock(lock_path: Path) -> dict[str, str]:
 # ─── oarepo-app versioning ────────────────────────────────────────────────────
 
 
-def get_oarepo_app_version(
+def get_oarepo_app_version(  # noqa: C901 TODO: refactor into smaller helpers
     changelog_path: Path,
     pyproject_path: Path,
     release_candidate: str = "public",
 ) -> str:
-    """Compute the next unused oarepo-app version derived from the current version
-    and a list of changes.
+    """Compute the next unused oarepo-app version derived from the current version and a list of changes.
 
     To do so, read the CHANGELOG.json and compare the first two records. For each,
     check the version of the packages to get the level of change:
@@ -255,11 +256,11 @@ def get_oarepo_app_version(
 
     The *release_candidate* parameter controls whether and how an RC suffix is applied:
 
-    - ``"public"``   – no RC; current behaviour (default).
-    - ``"patch-rc"`` – ensure at least a patch bump, then append ``rc1``.
-    - ``"minor-rc"`` – ensure at least a minor bump, then append ``rc1``.
-    - ``"major-rc"`` – ensure at least a major bump, then append ``rc1``.
-    - ``"inc-rc"``   – keep the current base release, increment the existing RC
+    - ``"public"``   - no RC; current behaviour (default).
+    - ``"patch-rc"`` - ensure at least a patch bump, then append ``rc1``.
+    - ``"minor-rc"`` - ensure at least a minor bump, then append ``rc1``.
+    - ``"major-rc"`` - ensure at least a major bump, then append ``rc1``.
+    - ``"inc-rc"``   - keep the current base release, increment the existing RC
                        number (or start at ``rc1`` if there is none).
 
     For the ``*-rc`` modes the "current versioning mechanism" is applied first to
@@ -271,14 +272,14 @@ def get_oarepo_app_version(
     minor_needed = False
     patch_needed = False
 
-    print("[bold blue]🔢[/bold blue] Computing oarepo-app version bump …")
+    rich_print("[bold blue]🔢[/bold blue] Computing oarepo-app version bump …")
 
     from .logs import get_two_latest_log_entries
 
     current, previous = get_two_latest_log_entries(changelog_path)
     if not previous:
         major_needed = True
-        print("  [dim]↳[/dim] no previous changelog entry — [bold red]major[/bold red] bump required")
+        rich_print("  [dim]↳[/dim] no previous changelog entry — [bold red]major[/bold red] bump required")
     else:
         current_packages = set(current["packages"])
         previous_packages = set(previous["packages"])
@@ -286,13 +287,13 @@ def get_oarepo_app_version(
             added = current_packages - previous_packages
             removed = previous_packages - current_packages
             if added:
-                print(
+                rich_print(
                     f"  [dim]↳[/dim] new packages: "
                     f"[cyan]{', '.join(sorted(added))}[/cyan] → "
                     "[bold red]major[/bold red] bump"
                 )
             if removed:
-                print(
+                rich_print(
                     f"  [dim]↳[/dim] removed packages: "
                     f"[cyan]{', '.join(sorted(removed))}[/cyan] → "
                     "[bold red]major[/bold red] bump"
@@ -306,7 +307,7 @@ def get_oarepo_app_version(
                 if current_version == previous_version:
                     continue
                 if current_version.major != previous_version.major:
-                    print(
+                    rich_print(
                         f"  [dim]↳[/dim] [cyan]{pkg}[/cyan]: "
                         f"[dim]{previous_version}[/dim] → "
                         f"[bold green]{current_version}[/bold green] "
@@ -314,7 +315,7 @@ def get_oarepo_app_version(
                     )
                     major_needed = True
                 elif current_version.minor != previous_version.minor:
-                    print(
+                    rich_print(
                         f"  [dim]↳[/dim] [cyan]{pkg}[/cyan]: "
                         f"[dim]{previous_version}[/dim] → "
                         f"[bold green]{current_version}[/bold green] "
@@ -326,7 +327,7 @@ def get_oarepo_app_version(
                     or current_version.dev != previous_version.dev
                     or current_version.pre != previous_version.pre
                 ):
-                    print(
+                    rich_print(
                         f"  [dim]↳[/dim] [cyan]{pkg}[/cyan]: "
                         f"[dim]{previous_version}[/dim] → "
                         f"[bold green]{current_version}[/bold green] "
@@ -335,36 +336,38 @@ def get_oarepo_app_version(
                     patch_needed = True
 
     current_oarepo_app_version = Version(get_pyproject_version(pyproject_path))
-    # Base release tuple – strips any RC/pre-release suffix.
+    # Base release tuple - strips any RC/pre-release suffix.
     base_major, base_minor, base_micro = current_oarepo_app_version.release
 
     if release_candidate == "public":
         # ── original behaviour ────────────────────────────────────────────────
         if major_needed:
-            print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [bold red]major[/bold red] bump")
+            rich_print(
+                f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [bold red]major[/bold red] bump"
+            )
             new_version = replace(
                 current_oarepo_app_version,
                 release=(base_major + 1, 0, 0),
             )
         elif minor_needed:
-            print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [yellow]minor[/yellow] bump")
+            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [yellow]minor[/yellow] bump")
             new_version = replace(
                 current_oarepo_app_version,
                 release=(base_major, base_minor + 1, 0),
             )
         elif patch_needed:
-            print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → patch bump")
+            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → patch bump")
             new_version = replace(
                 current_oarepo_app_version,
                 release=(base_major, base_minor, base_micro + 1),
             )
         else:
-            print(
+            rich_print(
                 f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
                 "no changes detected, keeping current version"
             )
             new_version = current_oarepo_app_version
-        print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version}[/bold green]")
+        rich_print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version}[/bold green]")
         return str(new_version)
 
     # ── release-candidate modes ───────────────────────────────────────────────
@@ -380,7 +383,7 @@ def get_oarepo_app_version(
         else:
             rc_num = 1
         new_release = (base_major, base_minor, base_micro)
-        print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [cyan]inc-rc[/cyan] → rc{rc_num}")
+        rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [cyan]inc-rc[/cyan] → rc{rc_num}")
     else:
         # Determine the minimum bump level implied by the RC mode.
         min_level = {"patch-rc": 1, "minor-rc": 2, "major-rc": 3}[release_candidate]
@@ -397,13 +400,13 @@ def get_oarepo_app_version(
             new_release = (base_major, base_minor, base_micro + 1)
             bump_label = "patch"
 
-        print(
+        rich_print(
             f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
             f"{bump_label} bump + [cyan]{release_candidate}[/cyan]"
         )
 
     new_version_str = f"{new_release[0]}.{new_release[1]}.{new_release[2]}rc{rc_num}"
-    print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version_str}[/bold green]")
+    rich_print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version_str}[/bold green]")
     return new_version_str
 
 
@@ -414,7 +417,7 @@ def get_pyproject_version(pyproject_path: Path) -> str:
     try:
         return data.get("project", {})["version"]
     except KeyError:
-        raise KeyError(f"Version not found in pyproject.toml in {pyproject_path}")
+        raise KeyError(f"Version not found in pyproject.toml in {pyproject_path}") from None
 
 
 def set_pyproject_version(pyproject_path: Path, version: str) -> None:
@@ -467,6 +470,7 @@ def find_package_on_github(oarepo_github: dict, name: str) -> tuple[str, str, st
 
     Returns:
         A tuple of (org, repo, branch) if found, otherwise raises KeyError.
+
     """
     for _key in sorted(oarepo_github):
         section = oarepo_github[_key]
@@ -479,9 +483,8 @@ def find_package_on_github(oarepo_github: dict, name: str) -> tuple[str, str, st
         else:
             includes = section.get("include", "")
             excludes = section.get("exclude", "")
-            if includes and re.match(includes, name):
-                if not excludes or not re.match(excludes, name):
-                    return org, name, branch
+            if includes and re.match(includes, name) and (not excludes or not re.match(excludes, name)):
+                return org, name, branch
     raise KeyError(name)
 
 
@@ -495,9 +498,11 @@ def clone_oarepo_packages(
     Args:
         local_packages_dir: The directory to clone the packages into.
         oarepo_packages_map: A mapping of package names to (org, repo, branch) tuples.
+        upgraded_packages: Optional list of packages to upgrade, in GitHub PR/branch format.
 
     Returns:
         A dictionary mapping package names to the local path of the cloned package.
+
     """
     upgraded_packages = upgraded_packages or []
     upgraded_packages_map: dict[str, str] = {}
@@ -513,8 +518,8 @@ def clone_oarepo_packages(
         if package_path.exists():
             continue
 
-        subprocess.check_call(
-            [
+        subprocess.check_call(  # noqa: S603
+            [  # noqa: S607
                 "gh",
                 "repo",
                 "clone",
@@ -526,8 +531,8 @@ def clone_oarepo_packages(
             ]
         )
         current_package_version = get_pyproject_version(package_path / "pyproject.toml")
-        subprocess.call(
-            ["git", "switch", upgraded_packages_map.get(org_with_repo, branch)],
+        subprocess.call(  # noqa: S603
+            ["git", "switch", upgraded_packages_map.get(org_with_repo, branch)],  # noqa: S607
             cwd=package_path,
         )
         if org_with_repo in upgraded_packages_map:
@@ -537,8 +542,8 @@ def clone_oarepo_packages(
 
 def _resolve_pr_branch(org: str, repo: str, pr_number: str) -> str:
     """Resolve a GitHub PR number to its head branch name using the ``gh`` CLI."""
-    result = subprocess.check_output(
-        [
+    result = subprocess.check_output(  # noqa: S603
+        [  # noqa: S607
             "gh",
             "pr",
             "view",
@@ -556,8 +561,9 @@ def _resolve_pr_branch(org: str, repo: str, pr_number: str) -> str:
 
 
 def parse_github_pr_branch_identification(pkg: str) -> tuple[str, str, str]:
-    """Parse the github identification and return a tuple of (org, repo, branch_name)
-    pkg can be:
+    """Parse the GitHub identification and return a tuple of (org, repo, branch_name).
+
+    *pkg* can be:
         * org/repo#pr
         * org/repo@branch
         * github pr url
@@ -603,8 +609,9 @@ def set_original_package_version(pyproject_path: Path, version: str) -> None:
 
 
 def unpin_versions_in_oarepo_packages(path: Path) -> None:
-    """Load pyproject.toml from *path* and unpin all dependency versions
-    (that is, remove <abc from requirement version specifiers).
+    """Load pyproject.toml from *path* and unpin all dependency versions.
+
+    That is, remove ``<abc`` from requirement version specifiers.
     """
     pyproject_path = path / "pyproject.toml"
     data = tomllib.loads(pyproject_path.read_text())
@@ -655,8 +662,9 @@ def pin_upper_bound_in_dependencies(
         upper_bound = f"{(1 + int(lower_bound.split('.', maxsplit=1)[0]))}.0.0"
         deps.append(f"{r.name}>={lower_bound},<{upper_bound}")
         if not original_r.specifier.contains(lower_bound):
-            print(
-                f"  ⬆️  {package_name} needs upgrade: {dep_name} with specifier{original_r.specifier} (bumped to {lower_bound})"
+            rich_print(
+                f"  ⬆️  {package_name} needs upgrade: {dep_name}"
+                f" with specifier{original_r.specifier} (bumped to {lower_bound})"
             )
             major_version_needed = True
     return deps, major_version_needed
@@ -695,7 +703,7 @@ def delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path: dict[st
     """Delete the source map in pyproject.toml for OARepo packages."""
     data = tomllib.loads(pyproject_path.read_text())
     sources = data.setdefault("tool", {}).setdefault("uv", {}).setdefault("sources", {})
-    for oarepo_name in oarepo_packages_to_path.keys():
+    for oarepo_name in oarepo_packages_to_path:
         sources.pop(oarepo_name, None)
     data["tool"]["uv"]["sources"] = sources
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
@@ -706,9 +714,10 @@ def propagate_resolved_versions(
 ) -> dict[str, tuple[str, bool]]:
     """Propagate resolved versions from uv.lock to pyproject.toml for OARepo packages.
 
-    Returns a dict of package names -> (original version, major_bump_needed) that need a major bump due to version conflicts.
-    Note that this list is not exhaustive - it only includes packages that have direct version conflicts,
-    but not transitive ones.
+    Returns a dict of package names -> (original version, major_bump_needed) that need a major bump
+    due to version conflicts.
+    Note that this list is not exhaustive - it only includes packages that have direct version
+    conflicts, but not transitive ones.
     """
     packages_with_major_bump_needed = {}
     for package_name, package_path in oarepo_packages_to_path.items():
@@ -782,7 +791,7 @@ def update_versions(
     local_packages_dir = root / ".local-packages"
 
     # ── Step 1: remove production section ─────────────────────────────────────
-    print("[bold blue]Step 1/3[/bold blue] 🗑️  Removing production section from pyproject.toml …")
+    rich_print("[bold blue]Step 1/3[/bold blue] 🗑️  Removing production section from pyproject.toml …")
     remove_production_section(pyproject_path)
 
     if upgrade_major_versions:
@@ -790,20 +799,20 @@ def update_versions(
         # map from package name to (github_repo, github_branch)
         oarepo_packages_map = extract_oarepo_packages(pyproject_path)
         oarepo_packages_to_path = clone_oarepo_packages(local_packages_dir, oarepo_packages_map, upgraded_packages)
-        for name, path in oarepo_packages_to_path.items():
+        for path in oarepo_packages_to_path.values():
             unpin_versions_in_oarepo_packages(path)
         update_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
 
     # ── Step 2: uv lock ──────────────────────────────────────────────────────
-    print("[bold blue]Step 2/3[/bold blue] 🔒 Running [cyan]uv lock[/cyan] …")
+    rich_print("[bold blue]Step 2/3[/bold blue] 🔒 Running [cyan]uv lock[/cyan] …")
     run_uv_lock(root)
 
     # ── Step 3: pin to resolved versions ────────────────────────────────────
-    print("[bold blue]Step 3/3[/bold blue] 📌 Pinning to resolved versions …")
+    rich_print("[bold blue]Step 3/3[/bold blue] 📌 Pinning to resolved versions …")
 
     resolved = parse_uv_lock(lock_path)
     if pin_pyproject_deps(pyproject_path, resolved):
-        print("  [dim]↳[/dim] 📌 [green]pinned[/green] pyproject.toml")
+        rich_print("  [dim]↳[/dim] 📌 [green]pinned[/green] pyproject.toml")
 
     pin_development_major_versions(pyproject_path, resolved)
     upgraded_packages_with_versions: dict[str, tuple[str, bool]] = {}
@@ -811,7 +820,7 @@ def update_versions(
         upgraded_packages_with_versions = propagate_resolved_versions(oarepo_packages_to_path, resolved)
         # ── Cleanup: remove the temporary local-path source overrides ──────
         delete_pyproject_source_map(pyproject_path, oarepo_packages_to_path)
-    print("🎉 [bold green]Done.[/bold green]")
+    rich_print("🎉 [bold green]Done.[/bold green]")
     return upgraded_packages_with_versions
 
 

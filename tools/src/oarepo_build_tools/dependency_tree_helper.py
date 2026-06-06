@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Helper script for extracting package dependencies.
 
 This script is called by dependency_tree.py to analyze package dependencies
@@ -11,6 +10,7 @@ import sys
 from importlib.metadata import metadata
 
 from packaging.requirements import Requirement
+from rich import print as rich_print
 
 
 def should_exclude_extra(extra_name):
@@ -21,6 +21,7 @@ def should_exclude_extra(extra_name):
 
     Returns:
         True if the extra should be excluded
+
     """
     excluded_prefixes = ("elasticsearch", "sqlite", "mysql")
     return any(extra_name.lower().startswith(prefix) for prefix in excluded_prefixes)
@@ -35,18 +36,20 @@ def parse_requirement(requirement):
     Returns:
         Tuple of (package_name, version_specifiers)
         Example: ("oarepo-app", ">=1.0,<2.0")
+
     """
     try:
         req = Requirement(requirement)
         pkg_name = req.name.lower()
         version_spec = str(req.specifier) if req.specifier else ""
-        return pkg_name, version_spec
-    except Exception:
+    except Exception:  # noqa: BLE001
         return "", ""
+    else:
+        return pkg_name, version_spec
 
 
-def main():
-    """Main function to process package dependencies."""
+def main():  # noqa: C901 TODO: refactor into smaller helpers
+    """Process package dependencies as the main entry point."""
     # Read package info from stdin (dict of package name -> version)
     packages_input = json.load(sys.stdin)
     result = {}
@@ -77,7 +80,7 @@ def main():
                                     break
                             if req_obj is None:
                                 continue
-                except Exception:
+                except Exception:  # noqa: BLE001, S112
                     # If we can't parse, skip this requirement
                     continue
 
@@ -91,25 +94,20 @@ def main():
                         existing = dependencies_dict[pkg_name_parsed]
                         if version_spec not in existing:
                             dependencies_dict[pkg_name_parsed] = (
-                                existing + "," + version_spec
-                                if existing
-                                else version_spec
+                                existing + "," + version_spec if existing else version_spec
                             )
 
             # Format as list of "package>=1.0,<2.0" strings
-            dependencies = [
-                f"{pkg}{spec}" if spec else pkg
-                for pkg, spec in sorted(dependencies_dict.items())
-            ]
+            dependencies = [f"{pkg}{spec}" if spec else pkg for pkg, spec in sorted(dependencies_dict.items())]
 
             result[pkg_name] = {
                 "version": pkg_version,
                 "dependencies": dependencies,
             }
-        except Exception as e:
+        except Exception:  # noqa: BLE001
             result[pkg_name] = {"version": pkg_version, "dependencies": []}
 
-    print(json.dumps(result))
+    rich_print(json.dumps(result))
 
 
 if __name__ == "__main__":

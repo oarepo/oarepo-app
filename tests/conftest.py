@@ -1,3 +1,15 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import pytest
 from flask import Blueprint
 from invenio_access.models import Role
@@ -7,6 +19,10 @@ from oarepo_requests.utils import system_identity
 
 from oarepo_app.config.config import IndividualWorkflow
 from oarepo_app.config.workflows.community import CommunityWorkflow
+
+if TYPE_CHECKING:
+    from invenio_communities.communities.records.api import Community
+
 
 pytest_plugins = [
     "pytest_oarepo.requests.fixtures",
@@ -68,7 +84,8 @@ def app_config(app_config):
             review_required=True,
             reviewer_needs=["review-access"],
         ).build_workflow(),
-        # community workflows. Note: using slugs because we name communities in tests in the same way as workflows they use
+        # community workflows. Note: using slugs because we name communities
+        # in tests in the same way as the workflows they use
         CommunityWorkflow(code="default-community").build_workflow(),
         # members can also create drafts
         CommunityWorkflow(
@@ -76,13 +93,9 @@ def app_config(app_config):
             draft_creation_community_roles=["member", "submitter"],
         ).build_workflow(),
         # any authenticated user can create (community-open)
-        CommunityWorkflow(
-            code="community-open", authenticated_draft_creation=True
-        ).build_workflow(),
+        CommunityWorkflow(code="community-open", authenticated_draft_creation=True).build_workflow(),
         # curators are added as review requesters
-        CommunityWorkflow(
-            code="community-curator-requests", community_curator_roles=["curator"]
-        ).build_workflow(),
+        CommunityWorkflow(code="community-curator-requests", community_curator_roles=["curator"]).build_workflow(),
         # members can read drafts/submitted + restricted published records
         CommunityWorkflow(
             code="community-member-reads",
@@ -90,38 +103,36 @@ def app_config(app_config):
             read_restricted_community_roles=["member"],
         ).build_workflow(),
         # members can manage records
-        CommunityWorkflow(
-            code="community-member-manages", record_manage_community_roles=["member"]
-        ).build_workflow(),
+        CommunityWorkflow(code="community-member-manages", record_manage_community_roles=["member"]).build_workflow(),
     ]
 
     app_config["COMMUNITIES_ROLES"] = [
-        dict(
-            name="owner",
-            title=_("Community owner"),
-            description=_("Can manage community."),
-            is_owner=True,
-            can_manage=True,
-            can_manage_roles=["owner", "curator", "member"],
-        ),
-        dict(
-            name="curator",
-            title=_("Curator"),
-            description=_("Can curate records."),
-            can_manage=True,
+        {
+            "name": "owner",
+            "title": _("Community owner"),
+            "description": _("Can manage community."),
+            "is_owner": True,
+            "can_manage": True,
+            "can_manage_roles": ["owner", "curator", "member"],
+        },
+        {
+            "name": "curator",
+            "title": _("Curator"),
+            "description": _("Can curate records."),
+            "can_manage": True,
             # NTK decision: curator should NOT be able to manage curators
-            can_manage_roles=["member"],
-        ),
-        dict(
-            name="submitter",
-            title=_("Submitter"),
-            description=_("Community submitter - can submit records to the community."),
-        ),
-        dict(
-            name="member",
-            title=_("Member"),
-            description=_("Community member with read permissions."),
-        ),
+            "can_manage_roles": ["member"],
+        },
+        {
+            "name": "submitter",
+            "title": _("Submitter"),
+            "description": _("Community submitter - can submit records to the community."),
+        },
+        {
+            "name": "member",
+            "title": _("Member"),
+            "description": _("Community member with read permissions."),
+        },
     ]
     app_config["COMMUNITIES_PERMISSION_POLICY"] = CommunityPermissionPolicy
 
@@ -158,9 +169,7 @@ def app(app):
     def record_latest(pid_value: str) -> str:
         return "latest ok"
 
-    @bp.route(
-        "/test-requests/records/<pid_value>/export/<export_format>", methods=["GET"]
-    )
+    @bp.route("/test-requests/records/<pid_value>/export/<export_format>", methods=["GET"])
     def export(pid_value, export_format: str) -> str:
         return "export ok"
 
@@ -170,7 +179,7 @@ def app(app):
 
 @pytest.fixture
 def roles(db):
-    def _create(role_name):
+    def _create(role_name) -> Role:
         r = db.session.query(Role).filter_by(name=role_name).first()
         if not r:
             r = Role(name=role_name)
@@ -197,14 +206,10 @@ def vocabularies(app, database):
 
 
 @pytest.fixture
-def communities(
-    app, db, community_get_or_create, users, location, init_communities_cf, invite
-):
+def communities(app, db, community_get_or_create, users, location, init_communities_cf, invite):
 
-    def create_community(code):
-        community = community_get_or_create(
-            users[0], code, {}, workflow=code, allowed_workflows=[code]
-        )
+    def create_community(code: str) -> Community:
+        community = community_get_or_create(users[0], code, {}, workflow=code, allowed_workflows=[code])
         invite(users[1], community.id, "curator")
         invite(users[2], community.id, "submitter")
         invite(users[3], community.id, "member")

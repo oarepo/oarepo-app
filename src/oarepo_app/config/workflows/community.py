@@ -1,6 +1,17 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
+"""Community workflow configuration for OARepo."""
+
 from __future__ import annotations
 
 import dataclasses
+from typing import TYPE_CHECKING
 
 from invenio_rdm_records.requests.community_submission import CommunitySubmission
 from invenio_rdm_records.services.generators import (
@@ -8,8 +19,6 @@ from invenio_rdm_records.services.generators import (
     RecordCommunitiesAction,
     RecordOwners,
 )
-from invenio_records_permissions.generators import Generator
-from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_communities.services.permissions.generators import (
     CommunityRole,
     InAnyCommunity,
@@ -17,11 +26,15 @@ from oarepo_communities.services.permissions.generators import (
 )
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
-from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.composite import (
     CompositePermissionPolicyMixin,
 )
+
+if TYPE_CHECKING:
+    from invenio_records_permissions.generators import Generator
+    from invenio_records_permissions.policies.base import BasePermissionPolicy
+    from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 
 from .base import BaseWorkflowSettings
 
@@ -79,15 +92,15 @@ class CommunityWorkflow(BaseWorkflowSettings):
     # --- permission policy ----------------------------------------------------
 
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):
+        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
             can_read = self.base_permission_policy.can_read + self._build_record_view_permissions()
-            can_rdm_manage = self._build_record_rdm_manage_generators(self.base_permission_policy.can_rdm_manage)
-            can_rdm_view = self._build_record_rdm_view_permissions(self.base_permission_policy.can_rdm_view)
-            can_rdm_preview = self._build_record_rdm_preview_generators(self.base_permission_policy.can_rdm_preview)
-            can_publish = [*self.base_permission_policy.can_publish, RequestActive()]
+            can_rdm_manage = self._build_record_rdm_manage_generators(self.base_permission_policy.can_rdm_manage)  # type: ignore[attr-defined]
+            can_rdm_view = self._build_record_rdm_view_permissions(self.base_permission_policy.can_rdm_view)  # type: ignore[attr-defined]
+            can_rdm_preview = self._build_record_rdm_preview_generators(self.base_permission_policy.can_rdm_preview)  # type: ignore[attr-defined]
+            can_publish = (*self.base_permission_policy.can_publish, RequestActive())  # type: ignore[attr-defined]
 
         return PermissionPolicy
 
@@ -105,7 +118,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
         """
         create_generators = list(super()._build_record_create_generators())
         for role in self.draft_creation_community_roles:
-            # TODO: this needs optimisation – cost grows with the number of communities
+            # TODO: this needs optimisation - cost grows with the number of communities
             create_generators += [InAnyCommunity(PrimaryCommunityRole(role))]
         return tuple(create_generators)
 
@@ -138,8 +151,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
 
         """
         result = [gen for gen in original_permissions if not isinstance(gen, RecordCommunitiesAction)]
-        for role in community_roles:
-            result.append(CommunityRole(role))
+        result.extend(CommunityRole(role) for role in community_roles)
         return result
 
     def _build_record_rdm_view_permissions(self, original_rdm_permissions: list[Generator]) -> list[Generator]:

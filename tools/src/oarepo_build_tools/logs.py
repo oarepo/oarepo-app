@@ -6,13 +6,14 @@ import json
 import re
 import subprocess
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from oarepo_build_tools.constants import LOG_PACKAGES
 from oarepo_build_tools.python import parse_uv_lock
 from packaging.version import InvalidVersion, Version
-from rich import print
+from rich import print as rich_print
 
 _CHANGELOG_FILENAME = "CHANGELOG.json"
 
@@ -100,7 +101,7 @@ def call_with_retries(
     cmd: list[str],
     *,
     retry_delays: tuple[int, ...] = _RETRY_DELAYS,
-    **kwargs,
+    **kwargs: Any,
 ) -> subprocess.CompletedProcess:
     """Run *cmd* via :func:`subprocess.run`, retrying on timeout or non-zero exit.
 
@@ -108,8 +109,8 @@ def call_with_retries(
     attempt a warning is printed.  Only after the final attempt is an error
     surfaced:
 
-    * :class:`subprocess.TimeoutExpired` – re-raised after the last timed-out attempt.
-    * A :class:`subprocess.CompletedProcess` with a non-zero ``returncode`` –
+    * :class:`subprocess.TimeoutExpired` - re-raised after the last timed-out attempt.
+    * A :class:`subprocess.CompletedProcess` with a non-zero ``returncode`` -
       returned to the caller so it can raise or handle as appropriate.
 
     :exc:`FileNotFoundError` (binary not found) is **not** retried and
@@ -120,15 +121,15 @@ def call_with_retries(
 
     for attempt, pre_delay in enumerate([0, *retry_delays]):
         if pre_delay:
-            print(f"  [dim]↳[/dim] ⏳ retrying in [yellow]{pre_delay}s[/yellow] …")
+            rich_print(f"  [dim]↳[/dim] ⏳ retrying in [yellow]{pre_delay}s[/yellow] …")
             time.sleep(pre_delay)
 
         try:
-            result = subprocess.run(cmd, **kwargs)
+            result = subprocess.run(cmd, check=False, **kwargs)  # noqa: S603
         except subprocess.TimeoutExpired as exc:
             last_timeout = exc
             last_result = None
-            print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} timed out")
+            rich_print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} timed out")
             continue
 
         last_timeout = None
@@ -137,7 +138,7 @@ def call_with_retries(
         if result.returncode == 0:
             return result
 
-        print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} failed (exit {result.returncode})")
+        rich_print(f"  [dim]↳[/dim] ⚠️  attempt {attempt + 1} failed (exit {result.returncode})")
 
     if last_timeout is not None:
         raise last_timeout
@@ -182,8 +183,8 @@ def read_tags(github_organization: str, github_repo: str) -> dict[Version, str]:
         return _tag_cache[cache_key]
 
     try:
-        result = subprocess.run(
-            [
+        result = subprocess.run(  # noqa: S603
+            [  # noqa: S607
                 "gh",
                 "api",
                 "--paginate",
@@ -194,32 +195,35 @@ def read_tags(github_organization: str, github_repo: str) -> dict[Version, str]:
             capture_output=True,
             text=True,
             timeout=60,
+            check=False,
         )
     except FileNotFoundError:
-        print(f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — cannot read tags for [cyan]{github_repo}[/cyan]")
+        rich_print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — cannot read tags for [cyan]{github_repo}[/cyan]"
+        )
         _tag_cache[cache_key] = {}
         return {}
     except subprocess.TimeoutExpired:
-        print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out reading tags for [cyan]{github_repo}[/cyan]")
+        rich_print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out reading tags for [cyan]{github_repo}[/cyan]")
         _tag_cache[cache_key] = {}
         return {}
 
     if result.returncode != 0:
-        print(f"  [dim]↳[/dim] ⚠️  failed to read tags for [cyan]{github_repo}[/cyan]: {result.stderr.strip()}")
+        rich_print(f"  [dim]↳[/dim] ⚠️  failed to read tags for [cyan]{github_repo}[/cyan]: {result.stderr.strip()}")
         _tag_cache[cache_key] = {}
         return {}
 
     mapping: dict[Version, str] = {}
     for raw_tag in result.stdout.splitlines():
-        raw_tag = raw_tag.strip()
-        if not raw_tag:
+        tag = raw_tag.strip()
+        if not tag:
             continue
-        version = _normalise_tag(raw_tag)
+        version = _normalise_tag(tag)
         if version is None:
             continue
         # Keep the longest original tag string when two tags share a Version.
-        if version not in mapping or len(raw_tag) > len(mapping[version]):
-            mapping[version] = raw_tag
+        if version not in mapping or len(tag) > len(mapping[version]):
+            mapping[version] = tag
 
     _tag_cache[cache_key] = mapping
     return mapping
@@ -270,14 +274,16 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
         return []
 
     if previous_tag is None:
-        print(
-            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {previous_tag} not found in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
+        rich_print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {previous_tag} not found"
+            f" in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
         )
         return []
 
     if current_tag is None:
-        print(
-            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {current_tag} not found in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
+        rich_print(
+            f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] {current_tag} not found"
+            f" in repository {github_repo} — skipping commits for [cyan]{name}[/cyan]"
         )
         return []
 
@@ -293,14 +299,14 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
             timeout=30,
         )
     except FileNotFoundError:
-        print(f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — skipping commits for [cyan]{name}[/cyan]")
+        rich_print(f"  [dim]↳[/dim] ⚠️  [yellow]gh[/yellow] CLI not found — skipping commits for [cyan]{name}[/cyan]")
         return []
     except subprocess.TimeoutExpired:
-        print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out for [cyan]{name}[/cyan]")
+        rich_print(f"  [dim]↳[/dim] ⚠️  gh CLI timed out for [cyan]{name}[/cyan]")
         return []
 
     if result.returncode != 0:
-        print(
+        rich_print(
             f"  [dim]↳[/dim] ⚠️  compare failed for [cyan]{name}[/cyan] "
             f"([dim]{previous_tag}…{current_tag}[/dim]): {result.stderr.strip()}\n"
             f"gh api repos/{github_organization}/{github_repo}/compare/{previous_tag}...{current_tag}",
@@ -310,7 +316,7 @@ def _fetch_package_changes(name: str, pkg: dict, group: dict) -> list[dict]:
     try:
         data = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
-        print(f"  [dim]↳[/dim] ⚠️  JSON parse error for [cyan]{name}[/cyan]: {exc}")
+        rich_print(f"  [dim]↳[/dim] ⚠️  JSON parse error for [cyan]{name}[/cyan]: {exc}")
         return []
 
     raw_commits = data.get("commits", [])
@@ -357,17 +363,18 @@ def _populate_single_package_changes(name: str, pkg: dict, group: dict) -> None:
     changes = _fetch_package_changes(name, pkg, group)
     pkg["changes"] = changes
     if changes:
-        print(f"  [dim]\u21b3[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
+        rich_print(f"  [dim]\u21b3[/dim] [cyan]{name}[/cyan]: {len(changes)} commit(s)")
 
 
 def _get_head_sha(directory: Path) -> str | None:
     """Return the current HEAD commit SHA, or None if unavailable."""
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
+            ["git", "rev-parse", "HEAD"],  # noqa: S607
             capture_output=True,
             text=True,
             cwd=str(directory),
+            check=False,
         )
         if result.returncode == 0:
             return result.stdout.strip()
@@ -376,7 +383,7 @@ def _get_head_sha(directory: Path) -> str | None:
     return None
 
 
-def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
+def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:  # noqa: C901 TODO: refactor into smaller helpers
     """Fetch commits and set ``github_url`` for the ``oarepo-app`` package in *entry*.
 
     Must be called **after** ``packages["oarepo-app"]["version"]`` and
@@ -417,7 +424,7 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
     # second ref so the GitHub compare API can return the right set of commits.
     head_sha = _get_head_sha(directory)
     if head_sha is None:
-        print("  [dim]↳[/dim] ⚠️  cannot determine HEAD SHA – skipping oarepo-app commits")
+        rich_print("  [dim]↳[/dim] ⚠️  cannot determine HEAD SHA - skipping oarepo-app commits")
         pkg["changes"] = []
         return
 
@@ -433,16 +440,16 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
             timeout=30,
         )
     except FileNotFoundError:
-        print("  [dim]↳[/dim] ⚠️  gh CLI not found – skipping oarepo-app commits")
+        rich_print("  [dim]↳[/dim] ⚠️  gh CLI not found - skipping oarepo-app commits")
         pkg["changes"] = []
         return
     except subprocess.TimeoutExpired:
-        print("  [dim]↳[/dim] ⚠️  gh CLI timed out for oarepo-app")
+        rich_print("  [dim]↳[/dim] ⚠️  gh CLI timed out for oarepo-app")
         pkg["changes"] = []
         return
 
     if result.returncode != 0:
-        print(
+        rich_print(
             f"  [dim]↳[/dim] ⚠️  compare failed for oarepo-app "
             f"({actual_previous_tag}…{head_sha[:8]}): {result.stderr.strip()}"
         )
@@ -452,7 +459,7 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
     try:
         data = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
-        print(f"  [dim]↳[/dim] ⚠️  JSON parse error for oarepo-app: {exc}")
+        rich_print(f"  [dim]↳[/dim] ⚠️  JSON parse error for oarepo-app: {exc}")
         pkg["changes"] = []
         return
 
@@ -466,13 +473,10 @@ def populate_oarepo_app_changes(entry: dict, directory: Path) -> None:
         for c in raw_commits
     ]
     commits_with_dates.sort(key=lambda c: c["date"], reverse=True)
-    changes = [
-        {"commit": c["sha"], "message": c["message"].split("\n")[0]}
-        for c in commits_with_dates
-    ]
+    changes = [{"commit": c["sha"], "message": c["message"].split("\n")[0]} for c in commits_with_dates]
     pkg["changes"] = changes
     if changes:
-        print(f"  [dim]↳[/dim] [cyan]oarepo-app[/cyan]: {len(changes)} commit(s)")
+        rich_print(f"  [dim]↳[/dim] [cyan]oarepo-app[/cyan]: {len(changes)} commit(s)")
 
 
 def _populate_all_changes(entry: dict) -> None:
@@ -547,13 +551,13 @@ def render_changelog_md(changelog: list, directory: Path) -> None:
         loader=FileSystemLoader(str(template_dir)),
         trim_blocks=True,
         lstrip_blocks=True,
+        autoescape=False,  # noqa: S701
     )
 
     def _github_anchor(text: str) -> str:
         text = text.lower()
         text = re.sub(r"[^\w\s-]", "", text)
-        text = re.sub(r"\s+", "-", text)
-        return text
+        return re.sub(r"\s+", "-", text)
 
     env.filters["format_datetime"] = _format_datetime
     env.filters["github_anchor"] = _github_anchor
@@ -567,9 +571,9 @@ def render_changelog_md(changelog: list, directory: Path) -> None:
 
 
 def get_two_latest_log_entries(changelog_path: Path) -> tuple[dict, dict | None]:
-    """
-    Returns the latest and the second latest entries from the changelog.
-    The first entry is the latest, the second is the second latest.
+    """Return the latest and second-latest entries from the changelog.
+
+    The first return value is the latest, the second is the second-latest.
     """
     changelog = _read_changelog(changelog_path)
     if len(changelog) >= 2:
@@ -586,29 +590,29 @@ def create_log_entry(directory: Path) -> None:
     lock_path = directory / "uv.lock"
     changelog_path = directory / _CHANGELOG_FILENAME
 
-    print("[bold blue]📋[/bold blue] Creating log entry …")
+    rich_print("[bold blue]📋[/bold blue] Creating log entry …")
 
     all_packages = parse_uv_lock(lock_path)
     oarepo_version = all_packages.get("oarepo", "unknown")
-    print(f"  [dim]↳[/dim] oarepo version: [bold green]{oarepo_version}[/bold green]")
+    rich_print(f"  [dim]↳[/dim] oarepo version: [bold green]{oarepo_version}[/bold green]")
 
     packages = _collect_logged_packages(all_packages)
-    print(f"  [dim]↳[/dim] {len(packages)} packages matched LOG_PACKAGES")
+    rich_print(f"  [dim]↳[/dim] {len(packages)} packages matched LOG_PACKAGES")
 
     entry = _build_entry(oarepo_version, packages)
-    entry["created"] = datetime.now(timezone.utc).isoformat()
+    entry["created"] = datetime.now(UTC).isoformat()
 
     changelog = _read_changelog(changelog_path)
     previous_entry = changelog[0] if changelog else None
     _detect_breaking_changes(entry, previous_entry)
 
-    print("[bold blue]🔍[/bold blue] Fetching commit logs …")
+    rich_print("[bold blue]🔍[/bold blue] Fetching commit logs …")
     _populate_all_changes(entry)
 
     breaking_packages = [n for n, p in entry["packages"].items() if p.get("breaking")]
     if breaking_packages:
-        print(f"  [dim]↳[/dim] 💥 [bold red]breaking[/bold red]: {', '.join(breaking_packages)}")
+        rich_print(f"  [dim]↳[/dim] 💥 [bold red]breaking[/bold red]: {', '.join(breaking_packages)}")
 
     changelog.insert(0, entry)
     _write_changelog(changelog_path, changelog)
-    print(f"  [dim]↳[/dim] ✅ written to [cyan]{changelog_path.relative_to(directory)}[/cyan]")
+    rich_print(f"  [dim]↳[/dim] ✅ written to [cyan]{changelog_path.relative_to(directory)}[/cyan]")

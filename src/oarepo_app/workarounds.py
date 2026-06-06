@@ -1,18 +1,25 @@
+#
+# Copyright (c) 2026 CESNET z.s.p.o.
+#
+# This file is a part of oarepo-app (see https://github.com/oarepo/oarepo-app).
+#
+# oarepo-app is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+#
 """Workarounds for invenio/oarepo issues.
 
 These should be removed once the issues are fixed. This file is called as a part of
 config loading, so reasonably early in the process.
 """
 
+from __future__ import annotations
+
 # workaround: loading vocabularies
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from decimal import MAX_EMAX
-from pathlib import Path
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import tqdm
-import yaml
 from flask import current_app
 from invenio_access.permissions import (
     system_identity,
@@ -22,19 +29,23 @@ from invenio_db import db
 from invenio_db.uow import UnitOfWork
 from invenio_pidstore.errors import PersistentIdentifierError
 from invenio_rdm_records.fixtures.vocabularies import (
-    GenericVocabularyEntry,
     VocabulariesFixture,
     VocabularyEntry,
-    VocabularyEntryWithSchemes,
 )
 from invenio_records_resources.proxies import current_service_registry
-from invenio_records_resources.services.records import RecordService
 from invenio_records_resources.services.uow import RecordCommitOp
 from invenio_vocabularies.records.api import Vocabulary
+from oarepo_runtime.typing import record_from_result
 from sqlalchemy.exc import NoResultFound
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
-def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork):
+    from flask_principal import Identity
+    from invenio_records_resources.services.records import RecordService
+
+
+def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork) -> str | None:
     """Create a vocabulary record using the service. Unlike RDM, this call accepts a uow.
 
     We do not want to put this to our RDM patches because Invenio is planning a complete rewrite
@@ -46,36 +57,36 @@ def create_vocabulary_record(service: RecordService, data: dict, uow: UnitOfWork
             pid = (data["type"], data["id"])
             try:
                 # If the entry hasn't been added, this will fail
-                record = Vocabulary.pid.resolve(pid)
-                record = service.update(system_identity, pid, data=data, uow=uow)
+                record = Vocabulary.pid.resolve(pid)  # type: ignore[arg-type]
+                record = service.update(system_identity, pid, data=data, uow=uow)  # type: ignore[arg-type]
             except PersistentIdentifierError:
                 record = service.create(system_identity, data, uow=uow)
-            return record._record.id
-        else:
-            if "id" in data:
-                id = data["id"]
-                try:
-                    # If the entry hasn't been added, this will fail
-                    record = service.read(system_identity, id)
-                    record = service.update(system_identity, id, data=data, uow=uow)
-                except PersistentIdentifierError, NoResultFound:
-                    record = service.create(system_identity, data, uow=uow)
-            else:
+            return cast("str", record_from_result(record).id)
+        if "id" in data:
+            record_id = data["id"]
+            try:
+                # If the entry hasn't been added, this will fail
+                record = service.read(system_identity, record_id)
+                record = service.update(system_identity, record_id, data=data, uow=uow)
+            except PersistentIdentifierError, NoResultFound:
                 record = service.create(system_identity, data, uow=uow)
-            return record._record.id
+        else:
+            record = service.create(system_identity, data, uow=uow)
+        return cast("str", record_from_result(record).id)
     except Exception as e:
         import traceback
 
         traceback.print_exc()
-        current_app.logger.error(f"failed to load vocabulary entry: {type(e).__name__} {e}:\n{data}")
+        current_app.logger.exception("failed to load vocabulary entry: %s:\n%s", type(e).__name__, data)
+        return None
 
 
-def remove_record_index_operation(uow: UnitOfWork):
+def remove_record_index_operation(uow: UnitOfWork) -> None:
     """Remove all RecordCommitOp operations from the unit of work as we will be calling bulk index on these."""
-    uow._operations = [x for x in uow._operations if not isinstance(x, RecordCommitOp)]
+    uow._operations = [x for x in uow._operations if not isinstance(x, RecordCommitOp)]  # noqa: SLF001
 
 
-def bulk_index_records(service: RecordService, record_ids: list[str]):
+def bulk_index_records(service: RecordService, record_ids: list[str]) -> None:
     """Bulk index the records."""
     service.indexer.bulk_index(record_ids)
 
@@ -83,7 +94,12 @@ def bulk_index_records(service: RecordService, record_ids: list[str]):
 BATCH_SIZE = 500
 
 
-def load_vocabulary_entry(self, identity, ignore=None, delay=False):
+def load_vocabulary_entry(
+    self: VocabularyEntry,
+    identity: Identity,
+    ignore: Iterable[str] | None = None,
+    delay: bool = False,  # noqa: ARG001
+) -> list[str]:
     """Template method design pattern for loading entries."""
     ignore = ignore or set()
     self.pre_load(identity, ignore=ignore)
@@ -112,18 +128,21 @@ def load_vocabulary_entry(self, identity, ignore=None, delay=False):
         # the db.session.add(...) has already been called when the RecordCommitOp
         # was registered with the uow.
         uow.commit()
-    return self.loaded()
+    return self.loaded()  # type: ignore[no-any-return]
 
 
 VocabularyEntry.load = load_vocabulary_entry
 
 
 # I/O-bound threads (DB writes) benefit from more parallelism than CPU count alone;
-# use 2× logical CPUs, with a floor of 2 and a ceiling of 32.
+# use 2x logical CPUs, with a floor of 2 and a ceiling of 32.
 MAX_VOCABULARIES_PARALLEL_WORKERS = max(2, min(32, (os.cpu_count() or 1) * 2))
 
 
-def parallel_load_vocabulary_entries(self, ignore=None):
+def parallel_load_vocabulary_entries(
+    self: VocabulariesFixture,
+    ignore: Iterable[str] | None = None,
+) -> set[str]:
     """Load the whole fixture.
 
     ignore: iterable of ids to ignore
@@ -137,15 +156,15 @@ def parallel_load_vocabulary_entries(self, ignore=None):
 
     # Capture the app reference in the main thread; each worker must push its
     # own application context because Flask contexts are thread-local.
-    app = current_app._get_current_object()
+    app = current_app._get_current_object()  # noqa: SLF001  # type: ignore[attr-defined]
 
-    def _load_in_ctx(entry):
+    def _load_in_ctx(entry: VocabularyEntry) -> list[str]:
         with app.app_context():
-            return entry.load(self._identity, ignore=ids, delay=False)
+            return entry.load(self._identity, ignore=ids, delay=False)  # type: ignore[no-any-return]
 
     loaded_data = list(self.read())
     thread_count = min(len(loaded_data), MAX_VOCABULARIES_PARALLEL_WORKERS)
-    current_app.logger.info(f"Using {thread_count} workers to load vocabularies")
+    current_app.logger.info(f"Using {thread_count} workers to load vocabularies")  # noqa: G004 - current_app.logger does not support % formatting
     with ThreadPoolExecutor(max_workers=thread_count) as executor:
         tasks = [executor.submit(_load_in_ctx, entry) for id_, entry in loaded_data]
         with tqdm.tqdm(total=len(tasks), desc="Loading vocabularies") as progress:
