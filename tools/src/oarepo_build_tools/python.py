@@ -8,7 +8,6 @@ import subprocess
 import tomllib
 import urllib.error
 import urllib.request
-from copy import replace
 from typing import TYPE_CHECKING
 
 import tomli_w
@@ -246,40 +245,36 @@ def parse_uv_lock(lock_path: Path) -> dict[str, str]:
 def get_oarepo_app_version(  # noqa: C901 TODO: refactor into smaller helpers
     changelog_path: Path,
     pyproject_path: Path,
-    release_candidate: str = "public",
+    bump_level: str = "auto",
+    rc: bool = False,
 ) -> str:
-    """Compute the next unused oarepo-app version derived from the current version and a list of changes.
+    """Compute the next oarepo-app version.
 
-    To do so, read the CHANGELOG.json and compare the first two records. For each,
-    check the version of the packages to get the level of change:
+    *bump_level* controls how the base version is advanced:
 
-    1. If the major version has changed, we need to do a major bump of oarepo-app.
-    2. If the minor version has changed, we need to do a minor bump of oarepo-app.
-    3. If the patch version has changed, we need to do a patch bump of oarepo-app.
-    4. If the package was not present in the previous dump and is present now, we need to do a major bump of oarepo-app.
-    5. If the package was present in the previous dump and is not present now, we need to do a major bump of oarepo-app.
+    - ``"auto"``  - derive the bump from the changelog diff (major/minor/patch/none).
+    - ``"major"`` - always bump the major component.
+    - ``"minor"`` - always bump the minor component.
+    - ``"patch"`` - always bump the patch component.
+    - ``"keep"``  - keep the current base version unchanged.
 
-    The *release_candidate* parameter controls whether and how an RC suffix is applied:
+    *rc* controls whether a release-candidate suffix is added:
 
-    - ``"public"``   - no RC; current behaviour (default).
-    - ``"patch-rc"`` - ensure at least a patch bump, then append ``rc1``.
-    - ``"minor-rc"`` - ensure at least a minor bump, then append ``rc1``.
-    - ``"major-rc"`` - ensure at least a major bump, then append ``rc1``.
-    - ``"inc-rc"``   - keep the current base release, increment the existing RC
-                       number (or start at ``rc1`` if there is none).
-
-    For the ``*-rc`` modes the "current versioning mechanism" is applied first to
-    determine the required bump level.  If the changelog already demands a higher
-    bump than the one requested, the higher bump wins (e.g. requesting
-    ``patch-rc`` when a major bump is required yields ``<major+1>.0.0rc1``).
+    - ``False`` - produce a plain release (no suffix).
+    - ``True``  - append ``rc1`` to the bumped version.  Exception: when
+                  *bump_level* is ``"keep"`` (or ``"auto"`` detected no change),
+                  the existing RC counter is incremented instead.  If there is
+                  no existing RC in that case, a ``ValueError`` is raised
+                  (cannot create an RC of an already-released version).
     """
-    major_needed = False
-    minor_needed = False
-    patch_needed = False
-
     rich_print("[bold blue]🔢[/bold blue] Computing oarepo-app version bump …")
 
     from .logs import get_two_latest_log_entries
+
+    # ── Step 1: changelog analysis (always run; used when bump_level="auto") ──
+    major_needed = False
+    minor_needed = False
+    patch_needed = False
 
     current, previous = get_two_latest_log_entries(changelog_path)
     if not previous:
@@ -341,76 +336,54 @@ def get_oarepo_app_version(  # noqa: C901 TODO: refactor into smaller helpers
                     patch_needed = True
 
     current_oarepo_app_version = Version(get_pyproject_version(pyproject_path))
-    # Base release tuple - strips any RC/pre-release suffix.
+    # Base release tuple - strips any existing RC/pre-release suffix.
     base_major, base_minor, base_micro = current_oarepo_app_version.release
 
-    if release_candidate == "public":
-        # ── original behaviour ────────────────────────────────────────────────
-        if major_needed:
-            rich_print(
-                f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [bold red]major[/bold red] bump"
-            )
-            new_version = replace(
-                current_oarepo_app_version,
-                release=(base_major + 1, 0, 0),
-            )
-        elif minor_needed:
-            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [yellow]minor[/yellow] bump")
-            new_version = replace(
-                current_oarepo_app_version,
-                release=(base_major, base_minor + 1, 0),
-            )
-        elif patch_needed:
-            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → patch bump")
-            new_version = replace(
-                current_oarepo_app_version,
-                release=(base_major, base_minor, base_micro + 1),
-            )
+    # ── Step 2: resolve effective bump level ───────────────────────────────────
+    if bump_level == "auto":
+        effective_bump = "major" if major_needed else "minor" if minor_needed else "patch" if patch_needed else "keep"
+    else:
+        effective_bump = bump_level  # "major" / "minor" / "patch" / "keep"
+
+    # ── Step 3: apply bump to produce the new base release tuple ──────────────
+    if effective_bump == "major":
+        new_release = (base_major + 1, 0, 0)
+        bump_label = "[bold red]major[/bold red]"
+    elif effective_bump == "minor":
+        new_release = (base_major, base_minor + 1, 0)
+        bump_label = "[yellow]minor[/yellow]"
+    elif effective_bump == "patch":
+        new_release = (base_major, base_minor, base_micro + 1)
+        bump_label = "patch"
+    else:  # "keep"
+        new_release = (base_major, base_minor, base_micro)
+        bump_label = None
+
+    if bump_label is None:
+        if bump_level == "auto":
+            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → no changes detected")
         else:
-            rich_print(
-                f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
-                "no changes detected, keeping current version"
-            )
-            new_version = current_oarepo_app_version
-        rich_print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version}[/bold green]")
-        return str(new_version)
+            rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → keep")
+    else:
+        rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → {bump_label} bump")
 
-    # ── release-candidate modes ───────────────────────────────────────────────
-    # Map the changelog analysis to a numeric bump level so we can compare it
-    # with the minimum level requested by the caller.
-    #   0 = no change, 1 = patch, 2 = minor, 3 = major
-    bump_level = 3 if major_needed else 2 if minor_needed else 1 if patch_needed else 0
-
-    if release_candidate == "inc-rc":
-        # Keep the same base release; just increment the RC counter.
+    # ── Step 4: apply RC suffix ────────────────────────────────────────────────
+    if not rc:
+        new_version_str = f"{new_release[0]}.{new_release[1]}.{new_release[2]}"
+    elif effective_bump == "keep":
+        # Increment the existing RC counter, or raise if there is none.
         if current_oarepo_app_version.pre and current_oarepo_app_version.pre[0] == "rc":
             rc_num = current_oarepo_app_version.pre[1] + 1
+            new_version_str = f"{new_release[0]}.{new_release[1]}.{new_release[2]}rc{rc_num}"
         else:
-            rc_num = 1
-        new_release = (base_major, base_minor, base_micro)
-        rich_print(f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → [cyan]inc-rc[/cyan] → rc{rc_num}")
+            raise ValueError(
+                f"Cannot create a release candidate from already-released version "
+                f"{current_oarepo_app_version} with bump_level='keep' (or auto/no-change). "
+                "Use bump_level='patch', 'minor', or 'major' to start a new RC series."
+            )
     else:
-        # Determine the minimum bump level implied by the RC mode.
-        min_level = {"patch-rc": 1, "minor-rc": 2, "major-rc": 3}[release_candidate]
-        effective_level = max(bump_level, min_level)
-        rc_num = 1
+        new_version_str = f"{new_release[0]}.{new_release[1]}.{new_release[2]}rc1"
 
-        if effective_level == 3:
-            new_release = (base_major + 1, 0, 0)
-            bump_label = "[bold red]major[/bold red]"
-        elif effective_level == 2:
-            new_release = (base_major, base_minor + 1, 0)
-            bump_label = "[yellow]minor[/yellow]"
-        else:  # 1
-            new_release = (base_major, base_minor, base_micro + 1)
-            bump_label = "patch"
-
-        rich_print(
-            f"  [dim]↳[/dim] current [dim]{current_oarepo_app_version}[/dim] → "
-            f"{bump_label} bump + [cyan]{release_candidate}[/cyan]"
-        )
-
-    new_version_str = f"{new_release[0]}.{new_release[1]}.{new_release[2]}rc{rc_num}"
     rich_print(f"  [dim]↳[/dim] ✅ new version: [bold green]{new_version_str}[/bold green]")
     return new_version_str
 

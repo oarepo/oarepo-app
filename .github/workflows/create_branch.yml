@@ -12,17 +12,22 @@ on:
         required: false
         type: boolean
         default: false
-      release-candidate:
-        description: "Release-candidate mode: 'public' (normal release), 'patch-rc', 'minor-rc', 'major-rc', or 'inc-rc'"
+      bump-level:
+        description: "Version bump level: 'auto' (from changelog), 'patch', 'minor', 'major', or 'keep' (no change)"
         required: false
         type: choice
         options:
-          - public
-          - patch-rc
-          - minor-rc
-          - major-rc
-          - inc-rc
-        default: public
+          - auto
+          - patch
+          - minor
+          - major
+          - keep
+        default: auto
+      rc:
+        description: "Append an rc1 suffix (with 'keep', increments an existing RC counter instead)"
+        required: false
+        type: boolean
+        default: false
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -69,8 +74,11 @@ jobs:
           if [ -n "$OAREPO_VERSION" ]; then
             ARGS+=(--oarepo-version "$OAREPO_VERSION")
           fi
-          if [ "${{ inputs.release-candidate }}" != "public" ]; then
-            ARGS+=(--release-candidate "${{ inputs.release-candidate }}")
+          if [ "${{ inputs.bump-level }}" != "auto" ]; then
+            ARGS+=(--bump-level "${{ inputs.bump-level }}")
+          fi
+          if [ "${{ inputs.rc }}" = "true" ]; then
+            ARGS+=(--rc)
           fi
           oarepo-app-build setup "${ARGS[@]}"
 
