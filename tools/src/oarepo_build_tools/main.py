@@ -44,17 +44,15 @@ def setup(
         "--upgrade-major-versions",
         help="Upgrade major versions of oarepo dependencies.",
     ),
-    release_candidate: str = typer.Option(
-        "public",
-        "--release-candidate",
-        help=(
-            "Release-candidate mode. "
-            "'public' - normal release (default). "
-            "'patch-rc' - bump at least patch, append rc1. "
-            "'minor-rc' - bump at least minor, append rc1. "
-            "'major-rc' - bump at least major, append rc1. "
-            "'inc-rc' - keep current base version, increment existing RC number."
-        ),
+    bump_level: str = typer.Option(
+        "auto",
+        "--bump-level",
+        help="Version bump level: 'auto' (from changelog, default), 'patch', 'minor', 'major', or 'keep' (no change).",
+    ),
+    rc: bool = typer.Option(
+        False,
+        "--rc",
+        help="Append rc1 to the new version. With --bump-level keep, increments an existing RC counter instead (error if none).",
     ),
 ) -> None:
     """Set up the repository for the given oarepo major version."""
@@ -77,7 +75,8 @@ def setup(
     oarepo_app_version = get_oarepo_app_version(
         root / "CHANGELOG.json",
         root / "pyproject.toml",
-        release_candidate=release_candidate,
+        bump_level=bump_level,
+        rc=rc,
     )
     rich_print(f"  [dim]↳[/dim] version: [bold green]{oarepo_app_version}[/bold green]")
     set_pyproject_version(root / "pyproject.toml", oarepo_app_version)
