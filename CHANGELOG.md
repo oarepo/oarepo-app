@@ -2,11 +2,44 @@
 
 ## Contents
 
-- [7.0.0rc1](#620rc2)
+- [6.2.0rc3](#620rc3)
+- [6.2.0rc2](#620rc2)
 - [6.2.0rc1](#620rc1)
 - [6.1.0](#610)
 - [6.0.0](#600)
-- [5.0.0](#500)
+
+---
+
+## 6.2.0rc3
+
+Released: **June 7, 2026 at 18:39 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `oarepo-app` 6.2.0rc3
+[6.2.0rc2 → 6.2.0rc3](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc2...v6.2.0rc3)
+
+- [`b29ac420`](https://github.com/oarepo/oarepo-app/commit/b29ac4205757c8f91e68d019b0ecc4e2e97dc8de) Merge pull request #51 from oarepo/better-version-control
+- [`e86851f7`](https://github.com/oarepo/oarepo-app/commit/e86851f7e298eaf53a7537bd9eacb5140404365e) Merge pull request #52 from oarepo/deprecation-warnings
+- [`c544a924`](https://github.com/oarepo/oarepo-app/commit/c544a924103d1433b1666ef4fb523e7782f99f3c) fix: deprecation warnings
+- [`12f637a0`](https://github.com/oarepo/oarepo-app/commit/12f637a03fe2d0450bc07e72440ffd705034dfa8) Better version control in release script
+
+#### `oarepo-communities` 10.0.1
+[10.0.0 → 10.0.1](https://github.com/oarepo/oarepo-communities/compare/v10.0.0...v10.0.1)
+
+- [`d2600328`](https://github.com/oarepo/oarepo-communities/commit/d26003289ad7c03ccab78aa710b19f0c4d3caa67) fix: removed deprecation messages
+
+#### `oarepo-oai-pmh-harvester` 9.0.0 💥
+[8.0.0 → 9.0.0](https://github.com/oarepo/oarepo-oai-pmh-harvester/compare/v8.0.0...v9.0.0)
+
+- [`d22afb45`](https://github.com/oarepo/oarepo-oai-pmh-harvester/commit/d22afb45b4ef785d07636009fd3675863719aa40) Version bump due to changes in invenio (#120)
+
+#### `oarepo-workflows` 6.0.1
+[6.0.0 → 6.0.1](https://github.com/oarepo/oarepo-workflows/compare/v6.0.0...v6.0.1)
+
+- [`18747be9`](https://github.com/oarepo/oarepo-workflows/commit/18747be9dd8b9f83a500f4196fe81c0b97b87069) Use Generator from invenio_records_permissions (#60)
 
 ---
 
@@ -157,8 +190,8 @@ Released: **June 6, 2026 at 18:55 UTC**
 - [`f45fad66`](https://github.com/inveniosoftware/invenio-vocabularies/commit/f45fad6651838c3745ca07dbb9fb3f86c67dc4f3) release: v13.0.0
 - [`d9188156`](https://github.com/inveniosoftware/invenio-vocabularies/commit/d9188156d7733f2a676eead66334ccc64b9cdb70) fix(schema): use SanitizedUnicode for i18n_strings values
 
-#### `oarepo-app` 7.0.0rc1
-[6.2.0rc1 → 7.0.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc1...v7.0.0rc1)
+#### `oarepo-app` 6.2.0rc2
+[6.2.0rc1 → 6.2.0rc2](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc1...v6.2.0rc2)
 
 - [`9073e8fa`](https://github.com/oarepo/oarepo-app/commit/9073e8fa14c3ed06416073c2e41cae84182c8c52) fix: strip local version of oarepo package
 - [`7c7a061c`](https://github.com/oarepo/oarepo-app/commit/7c7a061c50f7721bbe0e37fec7e4345c68280652) pytest-oarepo was missing from major bumps - fixed.
