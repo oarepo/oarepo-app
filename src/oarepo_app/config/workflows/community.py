@@ -27,9 +27,7 @@ from oarepo_communities.services.permissions.generators import (
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.services.permissions import IfInState
-from oarepo_workflows.services.permissions.composite import (
-    CompositePermissionPolicyMixin,
-)
+from oarepo_workflows.services.permissions.composite import BooleanPermissionPolicyMixin
 
 if TYPE_CHECKING:
     from invenio_records_permissions.generators import Generator
@@ -92,7 +90,7 @@ class CommunityWorkflow(BaseWorkflowSettings):
     # --- permission policy ----------------------------------------------------
 
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
+        class PermissionPolicy(BooleanPermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
