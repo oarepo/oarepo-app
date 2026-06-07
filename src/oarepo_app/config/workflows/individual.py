@@ -22,8 +22,8 @@ from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.requests.generators.record_owners import RecordOwnersForRecipients
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.composite import (
-    CompositeAndGenerator,
-    CompositePermissionPolicyMixin,
+    BooleanPermissionPolicyMixin,
+    RequireAll,
 )
 from oarepo_workflows.services.permissions.generators import (
     HasActionNeed,
@@ -117,7 +117,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
     """
 
     def _build_permission_policy(self) -> type[BasePermissionPolicy]:
-        class PermissionPolicy(CompositePermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
+        class PermissionPolicy(BooleanPermissionPolicyMixin, self.base_permission_policy):  # type: ignore[name-defined]
             """A permission policy for the workflow."""
 
             can_create = self._build_record_create_generators()
@@ -156,13 +156,11 @@ class IndividualWorkflow(BaseWorkflowSettings):
         publish_generators: list[Generator] = []
         if self.publish_without_review_roles:
             publish_generators += [
-                CompositeAndGenerator(RecordOwners(), UserWithRole(role_name))
-                for role_name in self.publish_without_review_roles
+                RequireAll(RecordOwners(), UserWithRole(role_name)) for role_name in self.publish_without_review_roles
             ]
         if self.publish_without_review_needs:
             publish_generators += [
-                CompositeAndGenerator(RecordOwners(), HasActionNeed(action))
-                for action in self.publish_without_review_needs
+                RequireAll(RecordOwners(), HasActionNeed(action)) for action in self.publish_without_review_needs
             ]
         if not publish_generators and self.publish_without_review:
             publish_generators = [RecordOwners()]

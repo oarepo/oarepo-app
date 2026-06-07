@@ -40,11 +40,12 @@ from invenio_records_permissions.generators import (
     AuthenticatedUser,
     Disable,
     IfConfig,
+    SameAs,
     SystemProcess,
 )
 from invenio_users_resources.services.permissions import UserManager
 from oarepo_workflows.services.permissions import BaseWorkflowPermissionPolicy
-from oarepo_workflows.services.permissions.generators import IfInState, SameAs
+from oarepo_workflows.services.permissions.generators import IfInState
 
 
 class DefaultWorkflowPermissions(BaseWorkflowPermissionPolicy):

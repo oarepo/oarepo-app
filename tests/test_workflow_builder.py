@@ -26,7 +26,7 @@ from invenio_records_permissions.generators import AnyUser, AuthenticatedUser
 from invenio_records_permissions.policies.base import BasePermissionPolicy
 from oarepo_workflows.requests.policy import WorkflowRequestPolicy
 from oarepo_workflows.services.permissions import IfInState
-from oarepo_workflows.services.permissions.composite import CompositeAndGenerator
+from oarepo_workflows.services.permissions.composite import RequireAll
 
 from oarepo_app.config.workflows import configure_workflows
 from oarepo_app.config.workflows.base import add_if_in_state
@@ -194,14 +194,14 @@ def test_record_view_permissions_non_empty_builds_if_in_state(app, db):
 
 
 def test_publish_without_review_needs_produces_composite_generators(app, db):
-    """publish_without_review_needs creates CompositeAndGenerator entries."""
+    """publish_without_review_needs creates RequireAll entries."""
     settings = IndividualWorkflow(
         code="pub-needs",
         publish_without_review_needs=["publish-access"],
     )
     generators = settings._build_record_publish_generators()  # noqa: SLF001
     assert len(generators) == 1
-    assert isinstance(generators[0], CompositeAndGenerator)
+    assert isinstance(generators[0], RequireAll)
 
 
 def test_publish_after_review_false_raises_not_implemented(app, db):
