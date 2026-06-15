@@ -21,6 +21,13 @@ from rich import print as rich_print
 if TYPE_CHECKING:
     from pathlib import Path
 
+SECTION_MAPPING_TABLE = {
+    "development": "production",
+    "ccmm-development": "ccmm",
+    "oaipmh-harvester-development": "oaipmh-harvester",
+    "llm-development": "llm",
+}
+
 
 # ─── PyPI version querying ────────────────────────────────────────────────────
 
@@ -117,9 +124,8 @@ def remove_production_section(pyproject_path: Path) -> None:
     with pyproject_path.open("rb") as fh:
         data = tomllib.load(fh)
         project = data.get("project", {})
-    project.get("optional-dependencies", {}).pop("production", None)
-    project.get("optional-dependencies", {}).pop("ccmm", None)
-    project.get("optional-dependencies", {}).pop("oaipmh-harvester", None)
+    for dropped_section in SECTION_MAPPING_TABLE.values():
+        project.get("optional-dependencies", {}).pop(dropped_section, None)
     pyproject_path.write_bytes(tomli_w.dumps(data).encode())
 
 
@@ -144,11 +150,7 @@ def pin_pyproject_deps(
         project = data.get("project", {})
     original_data = tomli_w.dumps(data).encode()
     optional_dependencies = project.get("optional-dependencies", {})
-    for source_extra, target_extra in [
-        ("development", "production"),
-        ("ccmm-development", "ccmm"),
-        ("oaipmh-harvester-development", "oaipmh-harvester"),
-    ]:
+    for source_extra, target_extra in SECTION_MAPPING_TABLE.items():
         development_dependencies = optional_dependencies.get(source_extra, [])
         production_dependencies = [_pin(dep) for dep in development_dependencies]
         optional_dependencies[target_extra] = production_dependencies
@@ -163,7 +165,7 @@ def unpin_development_major_versions(pyproject_path: Path) -> None:
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development", "tests"]:
+    for extra_name in [*SECTION_MAPPING_TABLE.keys(), "tests"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
             req = Requirement(dep)
@@ -183,7 +185,7 @@ def pin_development_major_versions(pyproject_path: Path, resolved: dict[str, str
         data = tomllib.load(fh)
         project = data.get("project", {})
     optional_dependencies = project.get("optional-dependencies", {})
-    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development", "tests"]:
+    for extra_name in [*SECTION_MAPPING_TABLE.keys(), "tests"]:
         development_deps = optional_dependencies.get(extra_name, [])
         for idx, dep in enumerate(development_deps):
             req = Requirement(dep)
@@ -414,7 +416,7 @@ def extract_oarepo_packages(pyproject_path: Path) -> dict[str, tuple[str, str, s
     optional_dependencies = project.get("optional-dependencies", {})
     oarepo_github = data.get("tool", {}).get("oarepo", {}).get("github", {})
     packages = {}
-    for extra_name in ["development", "ccmm-development", "oaipmh-harvester-development"]:
+    for extra_name in SECTION_MAPPING_TABLE:
         development_deps = optional_dependencies.get(extra_name, [])
         for dep in development_deps:
             req = Requirement(dep)
