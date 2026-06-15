@@ -27,7 +27,7 @@ from oarepo_communities.services.permissions.generators import (
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.services.permissions import IfInState
-from oarepo_workflows.services.permissions.composite import BooleanPermissionPolicyMixin
+from oarepo_workflows.services.permissions.composite import BooleanPermissionPolicyMixin, RequireAll
 
 if TYPE_CHECKING:
     from invenio_records_permissions.generators import Generator
@@ -41,7 +41,9 @@ from .base import BaseWorkflowSettings
 class CommunityWorkflow(BaseWorkflowSettings):
     """Workflow configuration for deposits inside communities."""
 
-    draft_creation_community_roles: list[str] = dataclasses.field(default_factory=lambda: ["submitter"])
+    draft_creation_community_roles: list[str] = dataclasses.field(
+        default_factory=lambda: ["submitter", "curator", "owner"]
+    )
     """Restrict draft creation to community members with at least one of these roles.
 
     If not specified (empty list), any member of the community can create a
@@ -223,7 +225,13 @@ class CommunityWorkflow(BaseWorkflowSettings):
                         else_=[
                             IfInState(
                                 ["draft", "review_requested"],
-                                [RecordOwners(), *curator_generators],
+                                [
+                                    *[
+                                        RequireAll(RecordOwners(), PrimaryCommunityRole(role))
+                                        for role in self.draft_creation_community_roles
+                                    ],
+                                    *curator_generators,
+                                ],
                             )
                         ],
                     )
