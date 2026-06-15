@@ -26,7 +26,7 @@ from oarepo_communities.services.permissions.generators import (
 )
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
-from oarepo_workflows.services.permissions import IfInState
+from oarepo_workflows.services.permissions import IfInState, IfRDMRecordPassed
 from oarepo_workflows.services.permissions.composite import BooleanPermissionPolicyMixin, RequireAll
 
 if TYPE_CHECKING:
@@ -223,16 +223,21 @@ class CommunityWorkflow(BaseWorkflowSettings):
                     IfNewRecord(
                         then_=self._build_record_create_generators(),
                         else_=[
-                            IfInState(
-                                ["draft", "review_requested"],
-                                [
-                                    *[
-                                        RequireAll(RecordOwners(), PrimaryCommunityRole(role))
-                                        for role in self.draft_creation_community_roles
-                                    ],
-                                    *curator_generators,
-                                ],
-                            )
+                            # Note: this permission check can be called from /review url, that is
+                            # inside review service's create method. The problem is that review
+                            # service does not pass the original record - it fills the "record"
+                            # parameter with a community. That's why we can not use IfInState
+                            # and similar permission generators that depend on the record.
+                            *[
+                                IfRDMRecordPassed(
+                                    # the user has called the requests' create method directly
+                                    then_=[RequireAll(RecordOwners(), PrimaryCommunityRole(role))],
+                                    # the user went through the review flow which did not pass the record
+                                    else_=[PrimaryCommunityRole(role)],
+                                )
+                                for role in self.draft_creation_community_roles
+                            ],
+                            *curator_generators,
                         ],
                     )
                 ],
