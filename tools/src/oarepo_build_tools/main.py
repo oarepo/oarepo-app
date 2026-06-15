@@ -50,9 +50,10 @@ def setup(
         help="Version bump level: 'auto' (from changelog, default), 'patch', 'minor', 'major', or 'keep' (no change).",
     ),
     rc: bool = typer.Option(
-        False,
+        False,  # noqa: FBT003
         "--rc",
-        help="Append rc1 to the new version. With --bump-level keep, increments an existing RC counter instead (error if none).",
+        help="Append rc1 to the new version. With --bump-level keep, "
+        "increments an existing RC counter instead (error if none).",
     ),
 ) -> None:
     """Set up the repository for the given oarepo major version."""

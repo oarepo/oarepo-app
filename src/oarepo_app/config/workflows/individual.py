@@ -176,7 +176,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
         if self.reviewer_needs:
             reviewer_generators.extend([HasActionNeed(need) for need in self.reviewer_needs])
         if self.self_review_enabled:
-            reviewer_generators.append(RecordOwnersForRecipients())  # type: ignore[arg-type]
+            reviewer_generators.extend(self.record_owners_with_correct_roles(RecordOwnersForRecipients()))  # type: ignore[arg-type]
         if not self.publish_after_review:
             raise NotImplementedError(
                 "Disabling publish_after_review is not supported in this version, "
@@ -184,7 +184,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
             )
         requestors = [*reviewer_generators]
         if not self.self_review_enabled:
-            requestors.append(RecordOwners())  # type: ignore[arg-type]
+            requestors.extend(self.record_owners_with_correct_roles(RecordOwners()))  # type: ignore[arg-type]
 
         requests = {
             PublishDraftRequestType.type_id: WorkflowRequest(
@@ -204,3 +204,16 @@ class IndividualWorkflow(BaseWorkflowSettings):
         }
 
         return self._create_request_policy("GlobalReviewRequestPolicy", requests)
+
+    def record_owners_with_correct_roles(self, record_owner_generator: RecordOwners) -> list[Generator]:
+        """Return the record owner generator with the correct roles/needs."""
+        generators: list[Generator] = []
+        if self.draft_creation_roles:
+            generators += [
+                RequireAll(record_owner_generator, UserWithRole(role_name)) for role_name in self.draft_creation_roles
+            ]
+        if self.draft_creation_needs:
+            generators += [RequireAll(RecordOwners(), HasActionNeed(action)) for action in self.draft_creation_needs]
+        if not generators:
+            generators = [record_owner_generator]
+        return generators
