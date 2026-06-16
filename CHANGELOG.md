@@ -2,11 +2,211 @@
 
 ## Contents
 
+- [6.2.0rc4](#620rc4)
 - [6.2.0rc3](#620rc3)
 - [6.2.0rc2](#620rc2)
 - [6.2.0rc1](#620rc1)
 - [6.1.0](#610)
-- [6.0.0](#600)
+
+---
+
+## 6.2.0rc4
+
+Released: **June 16, 2026 at 10:26 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.15
+[1.1.12 → 1.1.15](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.12...v1.1.15)
+
+- [`1e575f6b`](https://github.com/nrp-cz/ccmm-invenio/commit/1e575f6b74e25982ccc8c13b03adc2b5d1b79df3) Major version bump due to major bump in packages: invenio-rdm-records (#46)
+- [`78aa9e58`](https://github.com/nrp-cz/ccmm-invenio/commit/78aa9e586c89227d14ef185dde86a014d085811e) [skip ci] Bump version to v1.1.14
+- [`de9fb795`](https://github.com/nrp-cz/ccmm-invenio/commit/de9fb795eea4c95438363d7f46bea98fe40f5f9e) fix(BE-1103): filter language vocabulary to ISO 639-1 primary languages (#44)
+- [`687d480c`](https://github.com/nrp-cz/ccmm-invenio/commit/687d480cb037fe665b19d7e8efde4e00c394bc63) [skip ci] Bump version to v1.1.13
+- [`6c5bf938`](https://github.com/nrp-cz/ccmm-invenio/commit/6c5bf9385126eb70a4a1a44ba0b0064cab2721fb) feat: add Frascati subjects vocabulary for RDM subjects picker (#43)
+- [`6b690d54`](https://github.com/nrp-cz/ccmm-invenio/commit/6b690d5419882aafb6ae94aa51f97e882759dc27) fix: rebase rewrote a variable
+- [`f3bb26d9`](https://github.com/nrp-cz/ccmm-invenio/commit/f3bb26d9d945f3fdf3c53a9d4e916e7c426f4aaa) feat: get related resource from doi
+- [`63a8a81e`](https://github.com/nrp-cz/ccmm-invenio/commit/63a8a81e5133ea70eb93e44659334ad4018f76d5) added aborting for when user closes modal
+- [`089dd883`](https://github.com/nrp-cz/ccmm-invenio/commit/089dd883fc376cca8a86a9f65870d96b38f24f9d) added translations
+- [`5b8ed90b`](https://github.com/nrp-cz/ccmm-invenio/commit/5b8ed90b352c1218cc6950d4c461569234239dc9) added tests
+- [`f01604cf`](https://github.com/nrp-cz/ccmm-invenio/commit/f01604cf6b65aa1ff693241640bce24e0dadd1f5) saving when leaving modal
+- [`89f40e9e`](https://github.com/nrp-cz/ccmm-invenio/commit/89f40e9ec8fbbc1246b5f3f559fc16d5a8c8aa9e) put required fields on top of general section
+- [`bbd80321`](https://github.com/nrp-cz/ccmm-invenio/commit/bbd8032119274575a136a66fe1a7f1ffa8b06cf2) added input for relation type
+- [`c8f90e62`](https://github.com/nrp-cz/ccmm-invenio/commit/c8f90e6249bcdf712d6659a760833a7adde176eb) fix: show required next to publisher when doi is required
+
+#### `invenio-administration` 6.0.1+oarepo.1.4zjvsn4usjkp2owp
+[6.0.0+oarepo.1.vrkijc6bgf4hnbd6 → 6.0.1+oarepo.1.4zjvsn4usjkp2owp](https://github.com/inveniosoftware/invenio-administration/compare/v6.0.0...v6.0.1)
+
+- [`fa3ef268`](https://github.com/inveniosoftware/invenio-administration/commit/fa3ef26835a6931628c7d3858b326556c96df541) release: v6.0.1
+- [`98721ac1`](https://github.com/inveniosoftware/invenio-administration/commit/98721ac1805429bed480a78a198208581a639735) fix(Actions): dropdown component initialisation
+
+#### `invenio-app-rdm` 14.0.0rc2+oarepo.1.mkromkhusu2i7mjx
+[14.0.0b11.dev4+oarepo.2.ovgwkwrw5wjd4zb6 → 14.0.0rc2+oarepo.1.mkromkhusu2i7mjx](https://github.com/inveniosoftware/invenio-app-rdm/compare/v14.0.0b11.dev4...v14.0.0rc2)
+
+- [`0133d142`](https://github.com/inveniosoftware/invenio-app-rdm/commit/0133d142b3aaaa3f522a3116439413dac4d135c5) refactor(views): Move get_record_requests to RecordCommunitiesService
+- [`e7d31d43`](https://github.com/inveniosoftware/invenio-app-rdm/commit/e7d31d43184fab0893d361f6a7693a133fe90513) chore(setup): bump dependencies
+- [`2ec2263f`](https://github.com/inveniosoftware/invenio-app-rdm/commit/2ec2263f2a6bcb35bc57a859ab0b4fb6d31dbd6a) release: v14.0.0rc2
+- [`a1df0983`](https://github.com/inveniosoftware/invenio-app-rdm/commit/a1df098330370baa38a336ff56111d921fcdc00b) release: v14.0.0rc1
+
+#### `invenio-communities` 28.1.0+oarepo.1.l3urhst5vd4hljnl
+[28.0.0+oarepo.1.q2q5mh3b6ck6ne4w → 28.1.0+oarepo.1.l3urhst5vd4hljnl](https://github.com/inveniosoftware/invenio-communities/compare/v28.0.0...v28.1.0)
+
+- [`d36137ae`](https://github.com/inveniosoftware/invenio-communities/commit/d36137ae18ba93f3fd0144ff1b120cc8c27a59a0) release: v28.1.0
+- [`33b587d5`](https://github.com/inveniosoftware/invenio-communities/commit/33b587d568a0519b807c08aeea41e6e0a8b1ff50) feat(manager): Add API to search accepted community requests
+- [`041e207d`](https://github.com/inveniosoftware/invenio-communities/commit/041e207d20eb583097415079ffcb7b7b65919d48) refactor(models): Deprecate CommunityRelationMixin class
+- [`7634f5cb`](https://github.com/inveniosoftware/invenio-communities/commit/7634f5cb5674aaec2b3a33961a270566b966226c) template: pages: fix missing titles (about and curation policy)
+- [`1ebd1aa1`](https://github.com/inveniosoftware/invenio-communities/commit/1ebd1aa196aa274bdc78d62c7b18d4fd0b5f27b1) fix: custom fields serialization
+- [`0592bf85`](https://github.com/inveniosoftware/invenio-communities/commit/0592bf85382aa06c40b09fcc5c60609627680d82) feat: added overridable blocks around community invitations modal
+
+#### `invenio-logging` 4.2.0
+[4.1.1 → 4.2.0](https://github.com/inveniosoftware/invenio-logging/compare/v4.1.1...v4.2.0)
+
+- [`b36030e2`](https://github.com/inveniosoftware/invenio-logging/commit/b36030e27d98293e15d9393e7b9251a5a0a8caf5) release: v4.2.0
+- [`aeec9638`](https://github.com/inveniosoftware/invenio-logging/commit/aeec9638819a4543f6f88030cdfa59696ee39cef) chore(git-blame): ignore the SPDX license header commit
+- [`ac792491`](https://github.com/inveniosoftware/invenio-logging/commit/ac79249125c40f9a2f7ca2bb564476776f9a4475) chore(licenses): update license headers to use SPDX
+- [`031eb9b4`](https://github.com/inveniosoftware/invenio-logging/commit/031eb9b4368c82e4ca98b24081a478de338b77c3) fix: upgrade sentry-sdk from 1.* to 2.*
+- [`41a15235`](https://github.com/inveniosoftware/invenio-logging/commit/41a15235c49a040d207aa4fb2b417bc489d0f249) chore: move all imports to the top of the file
+- [`71178b2c`](https://github.com/inveniosoftware/invenio-logging/commit/71178b2ccc4f639d6e2135cdf4993501ac9b6431) fix(tests): replaced deprecated Hub with global context in tests
+
+#### `invenio-previewer` 5.0.1
+[5.0.0 → 5.0.1](https://github.com/inveniosoftware/invenio-previewer/compare/v5.0.0...v5.0.1)
+
+- [`aba11d66`](https://github.com/inveniosoftware/invenio-previewer/commit/aba11d66d845896ccbaca546b979c6de1db75631) release: v5.0.1
+- [`3c783b5d`](https://github.com/inveniosoftware/invenio-previewer/commit/3c783b5d52c3ebeda54961a7eac06dbe98e05e3e) fix(pdfjs): drop super() in head to avoid RDM theme.css
+
+#### `invenio-rdm-records` 32.0.1+oarepo.1.umup67j3ivro5rix 💥
+[31.0.0+oarepo.1.4hk6xwmk2fco7q2v → 32.0.1+oarepo.1.umup67j3ivro5rix](https://github.com/inveniosoftware/invenio-rdm-records/compare/v31.0.0...v32.0.1)
+
+- [`6094a4d6`](https://github.com/inveniosoftware/invenio-rdm-records/commit/6094a4d67c8adc75acd565dbd13a5722624cbf7d) release: v32.0.1
+- [`2f5090c8`](https://github.com/inveniosoftware/invenio-rdm-records/commit/2f5090c8172c1f080327e222f3ec10cf58ca9fec) fix(get_record_requests): allow anonymous users to access landing page
+- [`06f2d59b`](https://github.com/inveniosoftware/invenio-rdm-records/commit/06f2d59b27f0ca01806202d4d2c596b8c9dea6f1) chore(git-blame): ignore the SPDX license header commit
+- [`ddc1072d`](https://github.com/inveniosoftware/invenio-rdm-records/commit/ddc1072da482ac258a7a56acc112a8d7be4c0a41) chore(licenses): update license headers to use SPDX
+- [`c72c2953`](https://github.com/inveniosoftware/invenio-rdm-records/commit/c72c2953fc1933f2bce53d4070396979f2b85067) release: v32.0.0
+- [`0102e529`](https://github.com/inveniosoftware/invenio-rdm-records/commit/0102e529ad1ec5f9a193c318b4be890fe263b11b) feat(RecordCommunitiesService): Add get_record_requests service method
+- [`fb1d4cc2`](https://github.com/inveniosoftware/invenio-rdm-records/commit/fb1d4cc2d83ac9a6070ec4a3013fc24ff04ef804) refactor(models): Move CommunityRelationMixin from invenio-communities
+- [`f636c8e2`](https://github.com/inveniosoftware/invenio-rdm-records/commit/f636c8e255da29898a7b438ffc956f01d4782bee) alembic: create record_id index in rdm_parents_community
+- [`fe1ed1cd`](https://github.com/inveniosoftware/invenio-rdm-records/commit/fe1ed1cdde403d2ed0bcd901d97c965efe71b38b) fix(CreatibutorsField): Mount CreatibutorsModal only when opened
+- [`998e53bd`](https://github.com/inveniosoftware/invenio-rdm-records/commit/998e53bdb539a7b49478feea23554810cefa94b5) fix malformed link header
+- [`535f41e8`](https://github.com/inveniosoftware/invenio-rdm-records/commit/535f41e825102d3b6952b4b43d9aeeecd1551e4c) add test
+- [`3871cfac`](https://github.com/inveniosoftware/invenio-rdm-records/commit/3871cfac59ba079813c539a5daad11ca80e31623) fix(signposting): serialize typed link w/ profile for described_by and item
+
+#### `oarepo-app` 6.2.0rc4
+[6.2.0rc3 → 6.2.0rc4](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc3...v6.2.0rc4)
+
+- [`5150331c`](https://github.com/oarepo/oarepo-app/commit/5150331c10371dfa5013616814e2c6ae319b1a0b) Merge pull request #54 from oarepo/fix-narrow-permissions
+- [`56119614`](https://github.com/oarepo/oarepo-app/commit/5611961445198c767357e33df4816fe3e03f0934) fix: workaround for invenio not passing the record in review request' permissions
+- [`9fd1bb86`](https://github.com/oarepo/oarepo-app/commit/9fd1bb86d97bdd9a612aa20b3ffec2b5acde46c2) Merge pull request #55 from oarepo/feat-llm
+- [`0b7c4a6b`](https://github.com/oarepo/oarepo-app/commit/0b7c4a6b3b39c1e4a5ed185dae990a3e7de3bbf3) feat: added llm dependency
+- [`f03bcd8c`](https://github.com/oarepo/oarepo-app/commit/f03bcd8c634e00e72491546ad3e12278aafeb052) fix: narrowed permissions for review/publish requests
+
+#### `oarepo-communities` 11.1.0 💥
+[10.0.1 → 11.1.0](https://github.com/oarepo/oarepo-communities/compare/v10.0.1...v11.1.0)
+
+- [`d2a21392`](https://github.com/oarepo/oarepo-communities/commit/d2a21392a2ead34d71ffa981099518cbbbc5d317) fix: invenio-communities added overridables
+- [`e8337117`](https://github.com/oarepo/oarepo-communities/commit/e8337117d37357f44603305fe64958f60272ea2e) fix: dependencies
+- [`ce78da75`](https://github.com/oarepo/oarepo-communities/commit/ce78da75c7a7525b4ddc4824e087aca5265e7126) Major version bump due to major bump in packages: invenio-rdm-records
+- [`c0a43c6a`](https://github.com/oarepo/oarepo-communities/commit/c0a43c6ab8a65ef72836814d1ca258dbe483ed07) [skip ci] Bump version to v10.2.0
+- [`831e052a`](https://github.com/oarepo/oarepo-communities/commit/831e052a6b8026ea4a53096cd26f44cec29d5862) fix: passing communities as records
+- [`63e3d94c`](https://github.com/oarepo/oarepo-communities/commit/63e3d94c67bb6d247bc6aa3a95f0a912f6e75a0a) Workarounds for request service not passing the record to the permission check
+- [`df89aeac`](https://github.com/oarepo/oarepo-communities/commit/df89aeac4179a8a4eee7131ee9f586cb7d656ec6) [skip ci] Bump version to v10.1.0
+- [`b97e8e18`](https://github.com/oarepo/oarepo-communities/commit/b97e8e185238cd2d134b8af8c5998e16f270a101) make selected role more visible
+- [`df51ac66`](https://github.com/oarepo/oarepo-communities/commit/df51ac66f921e6203a1e881d5841d8cb34830e6c) [skip ci] Bump version to v10.0.1
+
+#### `oarepo-dashboard` 8.0.0 💥
+[7.0.0 → 8.0.0](https://github.com/oarepo/oarepo-dashboard/compare/v7.0.0...v8.0.0)
+
+- [`d8378493`](https://github.com/oarepo/oarepo-dashboard/commit/d8378493cdf7ce70e18b359682e1e343ed873b87) Major version bump due to major bump in packages: invenio-rdm-records
+
+#### `oarepo-doi` 7.0.0 💥
+[6.0.0 → 7.0.0](https://github.com/oarepo/oarepo-doi/compare/v6.0.0...v7.0.0)
+
+- [`02295201`](https://github.com/oarepo/oarepo-doi/commit/02295201af93480679ea5ca0babd1af52b3a250d) Major version bump due to major bump in packages: invenio-rdm-records (#50)
+- [`fa7a6d17`](https://github.com/oarepo/oarepo-doi/commit/fa7a6d17cc466ef71af589f82ebaacb6e8a69a39) [skip ci] Bump version to v6.0.1
+- [`aad32571`](https://github.com/oarepo/oarepo-doi/commit/aad325710e4cb68601899f5477a66f007fd0cdfd) Merge pull request #49 from oarepo/fix/thread-safe-datacite-record-context
+- [`66835584`](https://github.com/oarepo/oarepo-doi/commit/66835584fd2b4dd83f5f5a935985069122cdbdec) feat: add record context decorator
+- [`3011c461`](https://github.com/oarepo/oarepo-doi/commit/3011c46145670014d67d1d38b779fa5f6d48fd8e) fix: make DataCite record context thread-safe
+
+#### `oarepo-model` 5.0.0 💥
+[4.0.0 → 5.0.0](https://github.com/oarepo/oarepo-model/compare/v4.0.0...v5.0.0)
+
+- [`d1296c4c`](https://github.com/oarepo/oarepo-model/commit/d1296c4c1433a32b514efd71cb9d79413bb0ae9b) Major version bump due to major bump in packages: invenio-rdm-records (#128)
+- [`163c48e7`](https://github.com/oarepo/oarepo-model/commit/163c48e763d43acb5a074d27f9ef1007900986d5) [skip ci] Bump version to v4.0.1
+- [`200f591a`](https://github.com/oarepo/oarepo-model/commit/200f591a710a758e4d23a84fa7297643769d1ee8) Mirekys/be 1094 facet label for array fields (#126)
+
+#### `oarepo-oidc-einfra` 7.0.0 💥
+[6.0.0 → 7.0.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v6.0.0...v7.0.0)
+
+- [`daba569b`](https://github.com/oarepo/oarepo-oidc-einfra/commit/daba569bc2f6bd3e538e937371c44f729b4f59fb) Major version bump due to major bump in packages: invenio-rdm-records (#44)
+
+#### `oarepo-rdm` 8.0.0 💥
+[7.0.0 → 8.0.0](https://github.com/oarepo/oarepo-rdm/compare/v7.0.0...v8.0.0)
+
+- [`76863ab6`](https://github.com/oarepo/oarepo-rdm/commit/76863ab60c9c04929f1605f3fce9794992907ac1) Major version bump due to major bump in packages: invenio-rdm-records (#103)
+- [`ae0b0935`](https://github.com/oarepo/oarepo-rdm/commit/ae0b09358a355846e8b3b921e6064ddb8147b8b0) [skip ci] Bump version to v7.2.1
+- [`01a08e3b`](https://github.com/oarepo/oarepo-rdm/commit/01a08e3b3c8d684a9ecfa90aba7b88590ff3c6b1) fix: RDM based search options for rdm preset (#101)
+- [`2947e1ca`](https://github.com/oarepo/oarepo-rdm/commit/2947e1ca9f00c0a121f179af1e0b9da54a530534) [skip ci] Bump version to v7.2.0
+- [`f511a4ae`](https://github.com/oarepo/oarepo-rdm/commit/f511a4ae16b1138350742c8cbfafc5e50723bb23) fix: resolve pids through specialized service (#100)
+- [`ba35d021`](https://github.com/oarepo/oarepo-rdm/commit/ba35d021f3b0069fc65bda51cc298c8b5b6bddb2) [skip ci] Bump version to v7.1.0
+- [`10d7c6f9`](https://github.com/oarepo/oarepo-rdm/commit/10d7c6f976b396f5225e21bbd12802c71473fef0) feat: update record blueprint (#99)
+- [`c72af38a`](https://github.com/oarepo/oarepo-rdm/commit/c72af38a0e0fe59541595abafb30ed7bcdec71ac) [skip ci] Bump version to v7.0.1
+- [`40c5058d`](https://github.com/oarepo/oarepo-rdm/commit/40c5058df0dcf84383ddf5eb17977d1bc80c110e) Remove ChecksComponent from record service components (#95)
+- [`1fd63a77`](https://github.com/oarepo/oarepo-rdm/commit/1fd63a77fe898acfa04df185d9565ab38613eeaa) fix: labels for top level fields
+- [`42d8f751`](https://github.com/oarepo/oarepo-rdm/commit/42d8f75179a455da0b0b30a8773b3e2e93b8c0d1) added tests
+
+#### `oarepo-related-resources` 4.0.0 💥
+[3.0.0 → 4.0.0](https://github.com/oarepo/oarepo-related-resources/compare/v3.0.0...v4.0.0)
+
+- [`a72ac8ea`](https://github.com/oarepo/oarepo-related-resources/commit/a72ac8ea97180e18d497e1c3b45b090b36bd7b10) Major version bump due to major bump in packages: invenio-rdm-records (#7)
+- [`aefecbbb`](https://github.com/oarepo/oarepo-related-resources/commit/aefecbbb0c3fa91e7f43f32adf90129fada1016b) [skip ci] Bump version to v3.1.0
+- [`d3b00f94`](https://github.com/oarepo/oarepo-related-resources/commit/d3b00f94ca25eced03c987d05412d09fcace700d) feat: summarize validation errors (#6)
+- [`764b3057`](https://github.com/oarepo/oarepo-related-resources/commit/764b3057ec8918bea33745c838fad2eae6fdf2c9) feat: add response handlers (#5)
+
+#### `oarepo-requests` 9.0.0 💥
+[8.0.0 → 9.0.0](https://github.com/oarepo/oarepo-requests/compare/v8.0.0...v9.0.0)
+
+- [`476c4d0d`](https://github.com/oarepo/oarepo-requests/commit/476c4d0d3bd1d07cb5ca46a722c02b03be4f8329) Major version bump due to major bump in packages: invenio-rdm-records (#192)
+- [`76b885dd`](https://github.com/oarepo/oarepo-requests/commit/76b885dd39d04a4d5db9ceeb4f53925d325d4100) [skip ci] Bump version to v8.1.0
+- [`36fc52f2`](https://github.com/oarepo/oarepo-requests/commit/36fc52f22058d8f6857297a338c9ec54e23b861a) [Breaking] added js assets and oarepo-ui dependency (#189)
+- [`e91838fa`](https://github.com/oarepo/oarepo-requests/commit/e91838faa69918a14e15ad2dc61e3396823520bb) [skip ci] Bump version to v8.0.1
+- [`ffc3e706`](https://github.com/oarepo/oarepo-requests/commit/ffc3e7068d4e4c1b7de365b31be462aa9fdc55ee) fix: missing workflow error raised in aai community invitation (#191)
+
+#### `oarepo-runtime` 7.0.0 💥
+[6.0.0 → 7.0.0](https://github.com/oarepo/oarepo-runtime/compare/v6.0.0...v7.0.0)
+
+- [`20dc096e`](https://github.com/oarepo/oarepo-runtime/commit/20dc096e385ae894b6a810158d8437224da57435) Major version bump due to major bump in packages: invenio-rdm-records (#415)
+
+#### `oarepo-theme` 6.0.0 💥
+[5.0.0 → 6.0.0](https://github.com/oarepo/oarepo-theme/compare/v5.0.0...v6.0.0)
+
+- [`9dff13e6`](https://github.com/oarepo/oarepo-theme/commit/9dff13e68b02eaf78935985cab5989d1e8b5b5fa) Major version bump due to major bump in packages: invenio-rdm-records
+
+#### `oarepo-ui` 13.0.0 💥
+[12.0.0 → 13.0.0](https://github.com/oarepo/oarepo-ui/compare/v12.0.0...v13.0.0)
+
+- [`6160f672`](https://github.com/oarepo/oarepo-ui/commit/6160f672be1ac11111efd330177f8e9c925cccef) Major version bump due to major bump in packages: invenio-rdm-records (#471)
+- [`6a1d7947`](https://github.com/oarepo/oarepo-ui/commit/6a1d79477ba39895957fd04978b954ffecc6166e) [skip ci] Bump version to v12.1.0
+- [`d98243fe`](https://github.com/oarepo/oarepo-ui/commit/d98243fe14926f95a7c6a131682cff4c562f2f97) fix: back to edit showing when record locked via publish draft request (#470)
+- [`c3563c44`](https://github.com/oarepo/oarepo-ui/commit/c3563c440e7cfb1f81ad97e53fb9cc8e44401f28) added publish_draft request action (#467)
+- [`10be2308`](https://github.com/oarepo/oarepo-ui/commit/10be2308f4c06c4c364b3bb4323ecbbe8a85e041) [skip ci] Bump version to v12.0.2
+- [`af25bbb9`](https://github.com/oarepo/oarepo-ui/commit/af25bbb909d383c52aeb4146675de12d8b49839f) fix: fixed returning array with empty sentinel when no data (#469)
+- [`430f41eb`](https://github.com/oarepo/oarepo-ui/commit/430f41eb6233118f3e660baf5a7c52e8a1530cec) [skip ci] Bump version to v12.0.1
+- [`92f1f5e0`](https://github.com/oarepo/oarepo-ui/commit/92f1f5e0b2c120f715ec771911bd0c3157b729ea) fix: navigating back to form (#466)
+- [`3a55f72b`](https://github.com/oarepo/oarepo-ui/commit/3a55f72b6433393e24fefff2cafb5d37fc49bb95) fix: fixed form inside modal styling (#465)
+
+#### `oarepo-vocabularies` 9.0.0 💥
+[8.0.0 → 9.0.0](https://github.com/oarepo/oarepo-vocabularies/compare/v8.0.0...v9.0.0)
+
+- [`f77fec35`](https://github.com/oarepo/oarepo-vocabularies/commit/f77fec3537c7a8dcf6b79c878208dc265beb5993) Major version bump due to major bump in packages: invenio-rdm-records (#260)
+
+#### `oarepo-workflows` 7.0.0 💥
+[6.0.1 → 7.0.0](https://github.com/oarepo/oarepo-workflows/compare/v6.0.1...v7.0.0)
+
+- [`fafbabb0`](https://github.com/oarepo/oarepo-workflows/commit/fafbabb09d23cf8792642a6284a299d2b5139bc5) Major version bump due to major bump in packages: invenio-rdm-records (#62)
+- [`94e7c222`](https://github.com/oarepo/oarepo-workflows/commit/94e7c2227afab8711fe6533ed9f2e427dae4c63a) [skip ci] Bump version to v6.1.0
+- [`835078d0`](https://github.com/oarepo/oarepo-workflows/commit/835078d00e495cb8796ab4672c971a8970e97995) feat: enable RequireAll in workflows, fixed community permissions in … (#61)
+- [`b6e9d1fc`](https://github.com/oarepo/oarepo-workflows/commit/b6e9d1fc611bd4eff5a2277797be5623802744e2) [skip ci] Bump version to v6.0.1
 
 ---
 
