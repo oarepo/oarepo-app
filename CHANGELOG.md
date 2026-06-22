@@ -2,11 +2,98 @@
 
 ## Contents
 
+- [6.2.0rc5](#620rc5)
 - [6.2.0rc4](#620rc4)
 - [6.2.0rc3](#620rc3)
 - [6.2.0rc2](#620rc2)
 - [6.2.0rc1](#620rc1)
-- [6.1.0](#610)
+
+---
+
+## 6.2.0rc5
+
+Released: **June 22, 2026 at 17:03 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.18
+[1.1.15 → 1.1.18](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.15...v1.1.18)
+
+- [`d8544d37`](https://github.com/nrp-cz/ccmm-invenio/commit/d8544d3762c21ff327b839690a5d29cedf7dbecb) fix: rendering title as html (#51)
+- [`07a4423f`](https://github.com/nrp-cz/ccmm-invenio/commit/07a4423ff478be4a6b04842a4d504888aa6c2e1d) [skip ci] Bump version to v1.1.17
+- [`b77fa5ef`](https://github.com/nrp-cz/ccmm-invenio/commit/b77fa5eff42a381aa590e622d6d302be607fab46) removed bam code language as the parent reference to man is missing (#50)
+- [`929f5fb8`](https://github.com/nrp-cz/ccmm-invenio/commit/929f5fb8ed5038bd984e7bc3648d487588a558a3) [skip ci] Bump version to v1.1.16
+- [`bf4ffc95`](https://github.com/nrp-cz/ccmm-invenio/commit/bf4ffc958c0aad584a5581cc4976c8784fc27fea) fix: my communities first in community picker (#47)
+- [`e44abef5`](https://github.com/nrp-cz/ccmm-invenio/commit/e44abef57f340bd17e6317a6a17f0608bcc737a1) fix: add correct citation exporter (#48)
+- [`79e7859f`](https://github.com/nrp-cz/ccmm-invenio/commit/79e7859fdadccdc6e23273356778bf204bf14f3c) using localized and optimized default ui edtf date marshmallow field (#49)
+
+#### `oarepo-app` 6.2.0rc5
+[6.2.0rc4 → 6.2.0rc5](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc4...v6.2.0rc5)
+
+
+#### `oarepo-checks` 2.1.1
+[2.0.0 → 2.1.1](https://github.com/oarepo/oarepo-checks/compare/v2.0.0...v2.1.1)
+
+- [`e6b1d0f2`](https://github.com/oarepo/oarepo-checks/commit/e6b1d0f2e453a7e13575d3f098e7f93d411aaa88) Merge pull request #7 from oarepo/fix-remove-obsolete-config
+- [`1765023e`](https://github.com/oarepo/oarepo-checks/commit/1765023e4ef2e076ce35fc1a00f8f4e577ba7de3) fix: lint
+- [`5e716419`](https://github.com/oarepo/oarepo-checks/commit/5e71641909aa38251421b7107bae1d30e83534c7) fix: remove obsolete llm config
+- [`d36e657e`](https://github.com/oarepo/oarepo-checks/commit/d36e657ea755ca762cf6e1fb98798c756b29826f) [skip ci] Bump version to v2.1.0
+- [`70d1d6ee`](https://github.com/oarepo/oarepo-checks/commit/70d1d6eec6f88dc6dc64ce831bd0e9985848aa5a) Making LLM work with PublishDraft request
+
+#### `oarepo-doi` 7.1.0
+[7.0.0 → 7.1.0](https://github.com/oarepo/oarepo-doi/compare/v7.0.0...v7.1.0)
+
+- [`c7de542c`](https://github.com/oarepo/oarepo-doi/commit/c7de542cb77b96c88ffa7676975fc8125458c1c9) feat: update if doi already taken (#51)
+
+#### `oarepo-model` 5.1.0
+[5.0.0 → 5.1.0](https://github.com/oarepo/oarepo-model/compare/v5.0.0...v5.1.0)
+
+- [`4589a595`](https://github.com/oarepo/oarepo-model/commit/4589a595c8745548e99ac3394ffb8cd04b93b1e0) using localized and optimized default ui edtf date marshmallow field (#131)
+- [`4d13de30`](https://github.com/oarepo/oarepo-model/commit/4d13de3083f6920dda9812b4a307ef3d29394b1a) fix: handle special vocabulary types (#130)
+
+#### `oarepo-oidc-einfra` 7.0.3
+[7.0.0 → 7.0.3](https://github.com/oarepo/oarepo-oidc-einfra/compare/v7.0.0...v7.0.3)
+
+- [`dc3473a9`](https://github.com/oarepo/oarepo-oidc-einfra/commit/dc3473a9cb61230466d96cf27ac7d29a462f3a0c) fix: not changing email when user already exists with the same email (#48)
+- [`8b9f6b1c`](https://github.com/oarepo/oarepo-oidc-einfra/commit/8b9f6b1cadf4e4d3a8dd4f49af050724ab9b5fec) [skip ci] Bump version to v7.0.2
+- [`091d9631`](https://github.com/oarepo/oarepo-oidc-einfra/commit/091d963102586bd82a7eda619c969203391e3201) fix: user service strips none, so we need to use a 'real' username (#47)
+- [`652ae8c9`](https://github.com/oarepo/oarepo-oidc-einfra/commit/652ae8c93017ba5c2d8f24abdbab6fa680754993) [skip ci] Bump version to v7.0.1
+- [`f656e80f`](https://github.com/oarepo/oarepo-oidc-einfra/commit/f656e80f7174828ac0f5a8ab353f53959092f790) fix: removed obsolete cesnet scope (#46)
+- [`e1c66a44`](https://github.com/oarepo/oarepo-oidc-einfra/commit/e1c66a4471c81a6ab64638429bea4ef93bcab3b8) mandatory username fix (#45)
+
+#### `oarepo-rdm` 8.1.0
+[8.0.0 → 8.1.0](https://github.com/oarepo/oarepo-rdm/compare/v8.0.0...v8.1.0)
+
+- [`92ff3fee`](https://github.com/oarepo/oarepo-rdm/commit/92ff3feea224a535a3be5292b46623fc906c0c22) added rdm file service (config) base classes (#104)
+
+#### `oarepo-requests` 9.2.0
+[9.0.0 → 9.2.0](https://github.com/oarepo/oarepo-requests/compare/v9.0.0...v9.2.0)
+
+- [`08cfe9d7`](https://github.com/oarepo/oarepo-requests/commit/08cfe9d7d6a42ca78998d867c784d627829734d0) fix: added record title to request title (#195)
+- [`18487278`](https://github.com/oarepo/oarepo-requests/commit/18487278c61368be29e6226ce604e895db330b78) on request detail, stay on same tab after refresh (#194)
+- [`e02ed680`](https://github.com/oarepo/oarepo-requests/commit/e02ed680609e2ee3e8ce181dee5fa37f8f2099ec) [skip ci] Bump version to v9.1.0
+- [`8bd9bf9d`](https://github.com/oarepo/oarepo-requests/commit/8bd9bf9d8c31995cd53b70acb10ffa8339dbe253) fix: make available actions as class property (#193)
+
+#### `oarepo-runtime` 7.1.0
+[7.0.0 → 7.1.0](https://github.com/oarepo/oarepo-runtime/compare/v7.0.0...v7.1.0)
+
+- [`cc384fe3`](https://github.com/oarepo/oarepo-runtime/commit/cc384fe37877a74909ff5ce193e5e0ba3c76293c) Multilayer format edtf optimization (#416)
+
+#### `oarepo-ui` 13.2.2
+[13.0.0 → 13.2.2](https://github.com/oarepo/oarepo-ui/compare/v13.0.0...v13.2.2)
+
+- [`84d2dc06`](https://github.com/oarepo/oarepo-ui/commit/84d2dc06e145df90d4ebbffe41bf396b83db6da2) feat: limit file header links (#475)
+- [`2b56413d`](https://github.com/oarepo/oarepo-ui/commit/2b56413d6c7c9b5784cf9c1e9972ef854895d1b5) [skip ci] Bump version to v13.2.1
+- [`9e8d2817`](https://github.com/oarepo/oarepo-ui/commit/9e8d2817644a04b8f64f92b2902ebff970763a15) fix: show only exporters if display true (#474)
+- [`67233e74`](https://github.com/oarepo/oarepo-ui/commit/67233e74b4198891c00e5f42fff1b5d23177f463) [skip ci] Bump version to v13.2.0
+- [`e5bf2966`](https://github.com/oarepo/oarepo-ui/commit/e5bf296689e61c0163654acdc46d69c3cd439b8f) feat: preselecting community if user is member of only one (#473)
+- [`58230e68`](https://github.com/oarepo/oarepo-ui/commit/58230e68fe08327a34ab18595d8dfcee603ce6f0) [skip ci] Bump version to v13.1.0
+- [`afef0ab3`](https://github.com/oarepo/oarepo-ui/commit/afef0ab30736c05924f53c728f46bf7656cf5723) removing direct publish from flow conditionally (#472)
+
+#### `oarepo-workflows` 7.1.0
+[7.0.0 → 7.1.0](https://github.com/oarepo/oarepo-workflows/compare/v7.0.0...v7.1.0)
+
+- [`60269c45`](https://github.com/oarepo/oarepo-workflows/commit/60269c45efa764c528d9dad74c247ded1a0f1e5e) fix: invenio sometimes does not pass event type to permissions (#63)
 
 ---
 
