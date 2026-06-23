@@ -2,11 +2,45 @@
 
 ## Contents
 
+- [6.2.0rc6](#620rc6)
 - [6.2.0rc5](#620rc5)
 - [6.2.0rc4](#620rc4)
 - [6.2.0rc3](#620rc3)
 - [6.2.0rc2](#620rc2)
-- [6.2.0rc1](#620rc1)
+
+---
+
+## 6.2.0rc6
+
+Released: **June 23, 2026 at 13:20 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.2.0rc6
+[6.2.0rc5 → 6.2.0rc6](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc5...v6.2.0rc6)
+
+- [`3f9b02ac`](https://github.com/oarepo/oarepo-app/commit/3f9b02accd3a528b766f789f49abe602a701fbb8) Merge pull request #58 from oarepo/default-community-workflow
+- [`fc3334b7`](https://github.com/oarepo/oarepo-app/commit/fc3334b75b1a17beea482d5dfbbf11c04ab85b86) Add support for setting default community workflow configuration
+
+#### `oarepo-communities` 11.2.0
+[11.1.0 → 11.2.0](https://github.com/oarepo/oarepo-communities/compare/v11.1.0...v11.2.0)
+
+- [`4963c3b6`](https://github.com/oarepo/oarepo-communities/commit/4963c3b6a7cb3cfb2db24b626812a4b66dd93695) getting default workflow and allowed_workflows from community custom fields fallbacks default workflow
+- [`8dd50814`](https://github.com/oarepo/oarepo-communities/commit/8dd50814d20ebaafc5878a05fcdb6a8d92600c9f) linter issue
+- [`6b331062`](https://github.com/oarepo/oarepo-communities/commit/6b331062da3d0c4f03744bb11acfd30332054701) bug fix, added tests
+- [`4a8cb6b4`](https://github.com/oarepo/oarepo-communities/commit/4a8cb6b4e75fa1a54e2db2c9a825b7e872c0ce93) [skip ci] Bump version to v11.1.0
+
+#### `oarepo-related-resources` 4.1.0
+[4.0.0 → 4.1.0](https://github.com/oarepo/oarepo-related-resources/compare/v4.0.0...v4.1.0)
+
+- [`ebef2e57`](https://github.com/oarepo/oarepo-related-resources/commit/ebef2e574e4b254778cdf7ded39ba668707a6666) fix: normalize unsupported date formats in datacite (#8)
+
+#### `oarepo-ui` 13.2.3
+[13.2.2 → 13.2.3](https://github.com/oarepo/oarepo-ui/compare/v13.2.2...v13.2.3)
+
+- [`5704d3e2`](https://github.com/oarepo/oarepo-ui/commit/5704d3e2ad1f761434cfdcb3d7cc7ecd76a5cd4f) fix: submit for review button disabled until full refresh (#478)
+- [`9b43c784`](https://github.com/oarepo/oarepo-ui/commit/9b43c7848000e33b027abe07f0c143307aa0d199) fix: fix restricted message (#477)
+- [`1c02ed79`](https://github.com/oarepo/oarepo-ui/commit/1c02ed79e96fe751922b54dbb07d91833e43e046) [skip ci] Bump version to v13.2.2
 
 ---
 
