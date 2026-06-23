@@ -26,6 +26,7 @@ from .individual import IndividualWorkflow
 def configure_workflows(
     *workflow_definitions: BaseWorkflowSettings,
     default_individual_workflow: str = "individual",
+    default_community_workflow: str = "community",
     context: dict | None = None,
 ) -> list[Workflow]:
     """Set up workflows based on the provided workflow definitions.
@@ -98,11 +99,13 @@ def configure_workflows(
     if context:
         context["WORKFLOWS"] = built_workflows
         context["WORKFLOWS_DEFAULT_WORKFLOW"] = default_individual_workflow
+        context["OAREPO_COMMUNITIES_DEFAULT_WORKFLOW"] = default_community_workflow
     else:
         set_constants_in_caller(
             {
                 "WORKFLOWS": built_workflows,
                 "WORKFLOWS_DEFAULT_WORKFLOW": default_individual_workflow,
+                "OAREPO_COMMUNITIES_DEFAULT_WORKFLOW": default_community_workflow,
             }
         )
     return built_workflows
