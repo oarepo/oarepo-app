@@ -283,9 +283,9 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     # draft: review hierarchy; revision_requested: curate hierarchy (no external reviewers);
     # submitted / approved / published: immutable.
     can_update = (
-        IfInState("draft", [SameAs("can_rdm_review")]),
+        IfInState(["draft", "submitted"], [SameAs("can_rdm_review")]),
         IfInState("revision_requested", [SameAs("can_rdm_review")]),
-        IfInState(["submitted", "approved", "published"], [Disable()]),
+        IfInState(["approved", "published"], [Disable()]),
     )
     can_update_draft = (SameAs("can_update"),)
 
