@@ -17,7 +17,11 @@ from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.generators import RecordOwners
 from oarepo_requests.services.permissions.generators import RequestActive
-from oarepo_requests.types import PublishDraftRequestType
+from oarepo_requests.types import (
+    PublishChangedMetadataRequestType,
+    PublishDraftRequestType,
+    PublishNewVersionRequestType,
+)
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.requests.generators.record_owners import RecordOwnersForRecipients
 from oarepo_workflows.services.permissions import IfInState
@@ -200,7 +204,35 @@ class IndividualWorkflow(BaseWorkflowSettings):
                     accepted="published",
                     declined="revision_requested",
                 ),
-            )
+            ),
+            PublishChangedMetadataRequestType.type_id: WorkflowRequest(
+                requesters=[
+                    IfInState(
+                        ["draft", "revision_requested"],
+                        requestors,
+                    )
+                ],
+                recipients=reviewer_generators,
+                transitions=WorkflowTransitions(
+                    submitted="submitted",
+                    accepted="published",
+                    declined="revision_requested",
+                ),
+            ),
+            PublishNewVersionRequestType.type_id: WorkflowRequest(
+                requesters=[
+                    IfInState(
+                        ["draft", "revision_requested"],
+                        requestors,
+                    )
+                ],
+                recipients=reviewer_generators,
+                transitions=WorkflowTransitions(
+                    submitted="submitted",
+                    accepted="published",
+                    declined="revision_requested",
+                ),
+            ),
         }
 
         return self._create_request_policy("GlobalReviewRequestPolicy", requests)
