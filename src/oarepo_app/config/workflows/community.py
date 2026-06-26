@@ -25,6 +25,10 @@ from oarepo_communities.services.permissions.generators import (
     PrimaryCommunityRole,
 )
 from oarepo_requests.services.permissions.generators import RequestActive
+from oarepo_requests.types import (
+    PublishChangedMetadataRequestType,
+    PublishNewVersionRequestType,
+)
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
 from oarepo_workflows.services.permissions import IfInState, IfRDMRecordPassed
 from oarepo_workflows.services.permissions.composite import BooleanPermissionPolicyMixin, RequireAll
@@ -247,7 +251,41 @@ class CommunityWorkflow(BaseWorkflowSettings):
                     accepted="published",
                     declined="review_requested",
                 ),
-            )
+            ),
+            PublishChangedMetadataRequestType.type_id: WorkflowRequest(
+                requesters=[
+                    IfInState(
+                        ["draft", "revision_requested"],
+                        [
+                            RecordOwners(),
+                            *curator_generators,
+                        ],
+                    )
+                ],
+                recipients=curator_generators,
+                transitions=WorkflowTransitions(
+                    submitted="submitted",
+                    accepted="published",
+                    declined="revision_requested",
+                ),
+            ),
+            PublishNewVersionRequestType.type_id: WorkflowRequest(
+                requesters=[
+                    IfInState(
+                        ["draft", "revision_requested"],
+                        [
+                            RecordOwners(),
+                            *curator_generators,
+                        ],
+                    )
+                ],
+                recipients=curator_generators,
+                transitions=WorkflowTransitions(
+                    submitted="submitted",
+                    accepted="published",
+                    declined="revision_requested",
+                ),
+            ),
         }
 
         return self._create_request_policy("CommunityReviewRequestPolicy", requests)
