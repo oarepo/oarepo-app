@@ -1,5 +1,564 @@
 [
   {
+    "version": "6.2.0rc7",
+    "breaking": false,
+    "packages": {
+      "ccmm-invenio": {
+        "version": "1.1.18",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.1.18"
+      },
+      "invenio-access": {
+        "version": "6.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.0.0"
+      },
+      "invenio-accounts": {
+        "version": "8.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.1.0"
+      },
+      "invenio-administration": {
+        "version": "6.0.1+oarepo.1.4zjvsn4usjkp2owp",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.0.1+oarepo.1.4zjvsn4usjkp2owp"
+      },
+      "invenio-app": {
+        "version": "3.1.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.1.1"
+      },
+      "invenio-app-rdm": {
+        "version": "14.0.0rc2+oarepo.1.mkromkhusu2i7mjx",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "14.0.0rc2+oarepo.1.mkromkhusu2i7mjx"
+      },
+      "invenio-assets": {
+        "version": "4.2.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.2.1"
+      },
+      "invenio-audit-logs": {
+        "version": "3.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.0"
+      },
+      "invenio-banners": {
+        "version": "7.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.0.0"
+      },
+      "invenio-base": {
+        "version": "2.4.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.4.0"
+      },
+      "invenio-cache": {
+        "version": "3.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.0"
+      },
+      "invenio-celery": {
+        "version": "2.2.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.2.0"
+      },
+      "invenio-checks": {
+        "version": "10.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.0.0"
+      },
+      "invenio-collections": {
+        "version": "9.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.0.0"
+      },
+      "invenio-communities": {
+        "version": "28.1.0+oarepo.1.l3urhst5vd4hljnl",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "28.1.0+oarepo.1.l3urhst5vd4hljnl"
+      },
+      "invenio-config": {
+        "version": "1.1.0+oarepo.4.uquwys7agp2l27a3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.1.0+oarepo.4.uquwys7agp2l27a3"
+      },
+      "invenio-db": {
+        "version": "2.5.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.5.1"
+      },
+      "invenio-drafts-resources": {
+        "version": "10.0.0+oarepo.1.aa7esyllsxmsu6a4",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.0.0+oarepo.1.aa7esyllsxmsu6a4"
+      },
+      "invenio-files-rest": {
+        "version": "5.0.0+oarepo.1.rm6vkq5heonxnonk",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0+oarepo.1.rm6vkq5heonxnonk"
+      },
+      "invenio-formatter": {
+        "version": "4.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.0.0"
+      },
+      "invenio-i18n": {
+        "version": "3.5.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.5.0"
+      },
+      "invenio-indexer": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "invenio-jobs": {
+        "version": "10.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.0.0"
+      },
+      "invenio-jsonschemas": {
+        "version": "2.1.0+oarepo.4.ah2r67trm7bozrty",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.1.0+oarepo.4.ah2r67trm7bozrty"
+      },
+      "invenio-logging": {
+        "version": "4.2.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.2.0"
+      },
+      "invenio-mail": {
+        "version": "2.3.0+oarepo.4.qsg7jcloi7wbim37",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.3.0+oarepo.4.qsg7jcloi7wbim37"
+      },
+      "invenio-notifications": {
+        "version": "1.3.0+oarepo.2.6aeoh5zp2umw2kjc",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.3.0+oarepo.2.6aeoh5zp2umw2kjc"
+      },
+      "invenio-oaipmh-scythe": {
+        "version": "0.13.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "0.13.0"
+      },
+      "invenio-oaiserver": {
+        "version": "5.0.0+oarepo.1.fe244nvk3gg6riuz",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0+oarepo.1.fe244nvk3gg6riuz"
+      },
+      "invenio-oauth2server": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "invenio-oauthclient": {
+        "version": "8.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.0.0"
+      },
+      "invenio-pages": {
+        "version": "9.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.0.0"
+      },
+      "invenio-pidstore": {
+        "version": "3.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.0"
+      },
+      "invenio-previewer": {
+        "version": "5.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.1"
+      },
+      "invenio-queues": {
+        "version": "1.0.3+oarepo.1.mbv3n5punhjld6n3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.0.3+oarepo.1.mbv3n5punhjld6n3"
+      },
+      "invenio-rdm-records": {
+        "version": "32.0.1+oarepo.1.umup67j3ivro5rix",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "32.0.1+oarepo.1.umup67j3ivro5rix"
+      },
+      "invenio-records": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "invenio-records-files": {
+        "version": "3.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.0"
+      },
+      "invenio-records-permissions": {
+        "version": "3.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.0"
+      },
+      "invenio-records-resources": {
+        "version": "10.1.0+oarepo.1.trnrudg2qsn3n65k",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.1.0+oarepo.1.trnrudg2qsn3n65k"
+      },
+      "invenio-records-rest": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "invenio-records-ui": {
+        "version": "4.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.0.0"
+      },
+      "invenio-requests": {
+        "version": "14.0.0+oarepo.1.2lmx3k7srcawdrgk",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "14.0.0+oarepo.1.2lmx3k7srcawdrgk"
+      },
+      "invenio-rest": {
+        "version": "3.0.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.2"
+      },
+      "invenio-s3": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "invenio-search": {
+        "version": "3.1.2+oarepo.4.uwz7uudxhtm36x5h",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.1.2+oarepo.4.uwz7uudxhtm36x5h"
+      },
+      "invenio-search-ui": {
+        "version": "4.2.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.2.1"
+      },
+      "invenio-sitemap": {
+        "version": "1.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.0.0"
+      },
+      "invenio-stats": {
+        "version": "6.1.3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.1.3"
+      },
+      "invenio-theme": {
+        "version": "4.8.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.8.0"
+      },
+      "invenio-userprofiles": {
+        "version": "6.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.0.0"
+      },
+      "invenio-users-resources": {
+        "version": "12.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "12.0.0"
+      },
+      "invenio-vocabularies": {
+        "version": "13.0.0+oarepo.1.jaaeqz7sxjzde5rc",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "13.0.0+oarepo.1.jaaeqz7sxjzde5rc"
+      },
+      "oarepo-app": {
+        "version": "6.2.0rc7",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "128cc9087bec6f8811ead78dab74af5948fff172",
+            "message": "Merge pull request #61 from oarepo/fix-permissions"
+          },
+          {
+            "commit": "e0d97f331b885af34710586ea835b7b0b2ec8d47",
+            "message": "fix: can_edit permission"
+          },
+          {
+            "commit": "a74196891cb47fe9f784b76e8f825e1e57b40077",
+            "message": "Working on permissions"
+          },
+          {
+            "commit": "3779ac82ffaf5bd760ab365f37acd29f2c644d5e",
+            "message": "Merge pull request #60 from oarepo/fix-edit-metadata"
+          },
+          {
+            "commit": "c957d9e23c1fd34bd0b7d86a8f1cc7c9468333e1",
+            "message": "Extra requests"
+          }
+        ],
+        "previous_version": "6.2.0rc6",
+        "github_url": "https://github.com/oarepo/oarepo-app/compare/v6.2.0rc6...v6.2.0rc7"
+      },
+      "oarepo-checks": {
+        "version": "2.1.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.1.1"
+      },
+      "oarepo-communities": {
+        "version": "11.3.0",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "6298e2857562d829a65d22274353d02eecb7ffea",
+            "message": "fix: communities in user api"
+          },
+          {
+            "commit": "591372b2b99d4c14a6f72752f6f75ed25fff9153",
+            "message": "tests: added search_user_requests test"
+          },
+          {
+            "commit": "5f96a12be3183a259403a21697ae155073dbd98b",
+            "message": "[skip ci] Bump version to v11.2.0"
+          }
+        ],
+        "previous_version": "11.2.0",
+        "github_url": "https://github.com/oarepo/oarepo-communities/compare/v11.2.0...v11.3.0"
+      },
+      "oarepo-dashboard": {
+        "version": "8.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.0.0"
+      },
+      "oarepo-doi": {
+        "version": "7.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.1.0"
+      },
+      "oarepo-glitchtip": {
+        "version": "1.3.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.3.0"
+      },
+      "oarepo-invenio-typing-stubs": {
+        "version": "0.1.32",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "0.1.32"
+      },
+      "oarepo-model": {
+        "version": "5.2.0",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "44be94a9fa9edaaf3429c26451908f3566042a44",
+            "message": "fix: opt in for full links generation in search results (#132)"
+          },
+          {
+            "commit": "d3ba7e505688ecc1b9cb04eb55e70a3818b5a92c",
+            "message": "[skip ci] Bump version to v5.1.0"
+          }
+        ],
+        "previous_version": "5.1.0",
+        "github_url": "https://github.com/oarepo/oarepo-model/compare/v5.1.0...v5.2.0"
+      },
+      "oarepo-oai-pmh-harvester": {
+        "version": "9.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.0.0"
+      },
+      "oarepo-oidc-einfra": {
+        "version": "7.0.3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.0.3"
+      },
+      "oarepo-rdm": {
+        "version": "8.3.1",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "6a42d68004860c4b6b67de462cbfc213bce6a30a",
+            "message": "fix: entrypoint name (#108)"
+          },
+          {
+            "commit": "85311b3bf6ab45ee7ca810fda9fb87a221dbc347",
+            "message": "[skip ci] Bump version to v8.3.0"
+          },
+          {
+            "commit": "1e6c94aa730995a2b72d728093ed7ef5e5f9f92b",
+            "message": "cli for merging/reowning records (#106)"
+          },
+          {
+            "commit": "d874b6ad7977b9eb62173da40bcd44537a8e00cf",
+            "message": "[skip ci] Bump version to v8.2.0"
+          },
+          {
+            "commit": "6f47fcf4bfe4a558d8e039baa1703009acfb414a",
+            "message": "fix: returning all links in search (#105)"
+          },
+          {
+            "commit": "79576656614c50191999f515712f539d77c25f80",
+            "message": "[skip ci] Bump version to v8.1.0"
+          }
+        ],
+        "previous_version": "8.1.0",
+        "github_url": "https://github.com/oarepo/oarepo-rdm/compare/v8.1.0...v8.3.1"
+      },
+      "oarepo-related-resources": {
+        "version": "4.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.1.0"
+      },
+      "oarepo-requests": {
+        "version": "9.2.1",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "41b7857995c4ec87f98cb45bc10a2b876f994d50",
+            "message": "fix: resolving to draft topics in publish (#196)"
+          },
+          {
+            "commit": "089d8875654104d0e49be81404f0f69e495c691c",
+            "message": "[skip ci] Bump version to v9.2.0"
+          }
+        ],
+        "previous_version": "9.2.0",
+        "github_url": "https://github.com/oarepo/oarepo-requests/compare/v9.2.0...v9.2.1"
+      },
+      "oarepo-runtime": {
+        "version": "7.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.1.0"
+      },
+      "oarepo-theme": {
+        "version": "6.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.0.0"
+      },
+      "oarepo-ui": {
+        "version": "13.4.0",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "330c135a636dfb19608e5434ba9ce6b173144c89",
+            "message": "feat: publish button with other oarepo requests (#486)"
+          },
+          {
+            "commit": "2b473e8fcfe994c5753254278cd8ab34166b8fff",
+            "message": "feat: function can be used to determine saveontabchange (#481)"
+          },
+          {
+            "commit": "2404cc3cb30cdfb3ee5e703be6d35405dd660a92",
+            "message": "feat: lock tabs under certain conditions (#485)"
+          },
+          {
+            "commit": "630e3e64dce436baaf5467854bfaa724aeafd066",
+            "message": "[skip ci] Bump version to v13.3.0"
+          },
+          {
+            "commit": "61108116d9d58fc64f7d0f75d89fb5bb2bd96b1e",
+            "message": "added can_view_deposit_page filter (#482)"
+          },
+          {
+            "commit": "b818011ea0f24b04db193db61e75a53bdcd14f6f",
+            "message": "fix: removed duplicate record_header part (#483)"
+          },
+          {
+            "commit": "2a5517af0d58798d0cd86a27de42ba8fbb29dadb",
+            "message": "fix: app-hanging-on-restricted-record-access-when-not-logged-in (#484)"
+          },
+          {
+            "commit": "1f13031e11fa68835976c89d4c74694c6e1c63db",
+            "message": "added DRAFT_PREVIEW_FAILED_WITH_VALIDATION_ERRORS (#479)"
+          },
+          {
+            "commit": "5b73b9f53f252a530b72bb23f7c305eaa5545c5c",
+            "message": "[skip ci] Bump version to v13.2.3"
+          }
+        ],
+        "previous_version": "13.2.3",
+        "github_url": "https://github.com/oarepo/oarepo-ui/compare/v13.2.3...v13.4.0"
+      },
+      "oarepo-vocabularies": {
+        "version": "9.0.1",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "5cbf113e744f3949aa2bab230e7da02621bd2fc8",
+            "message": "fix: edge case - id might not be set when systemfield is called (#261)"
+          }
+        ],
+        "previous_version": "9.0.0",
+        "github_url": "https://github.com/oarepo/oarepo-vocabularies/compare/v9.0.0...v9.0.1"
+      },
+      "oarepo-workflows": {
+        "version": "7.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.1.0"
+      }
+    },
+    "created": "2026-06-29T10:03:32.253149+00:00"
+  },
+  {
     "version": "6.2.0rc6",
     "breaking": false,
     "packages": {
