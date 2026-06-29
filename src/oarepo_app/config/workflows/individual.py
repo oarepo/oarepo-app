@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.generators import RecordOwners
+from invenio_requests.customizations import CommentEventType
 from oarepo_requests.services.permissions.generators import RequestActive
 from oarepo_requests.types import (
     PublishChangedMetadataRequestType,
@@ -23,6 +24,7 @@ from oarepo_requests.types import (
     PublishNewVersionRequestType,
 )
 from oarepo_workflows.requests import WorkflowRequest, WorkflowTransitions
+from oarepo_workflows.requests.events import WorkflowEvent, WorkflowEvents
 from oarepo_workflows.requests.generators.record_owners import RecordOwnersForRecipients
 from oarepo_workflows.services.permissions import IfInState
 from oarepo_workflows.services.permissions.composite import (
@@ -203,6 +205,9 @@ class IndividualWorkflow(BaseWorkflowSettings):
                     submitted="submitted",
                     accepted="published",
                     declined="revision_requested",
+                ),
+                events=WorkflowEvents(
+                    {CommentEventType.type_id: WorkflowEvent(submitters=[*requestors, *reviewer_generators])}
                 ),
             ),
             PublishChangedMetadataRequestType.type_id: WorkflowRequest(
