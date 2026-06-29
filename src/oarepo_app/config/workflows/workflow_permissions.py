@@ -312,7 +312,11 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_edit = (
         IfDeleted(
             then_=[Disable()],
-            else_=[IfInState("published", [SameAs("can_rdm_curate")])],
+            # Note: RDM calls can_edit both on the published and draft versions of a record.
+            # that is why we can not use IfInState("published"), because then the "Edit" button
+            # will be visible but clicking on it will end up with an error.
+            # else_=[IfInState("published", [SameAs("can_rdm_curate")])],
+            else_=[SameAs("can_rdm_curate")],
         ),
     )
 
