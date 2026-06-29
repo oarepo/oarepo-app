@@ -2,11 +2,75 @@
 
 ## Contents
 
+- [6.2.0rc7](#620rc7)
 - [6.2.0rc6](#620rc6)
 - [6.2.0rc5](#620rc5)
 - [6.2.0rc4](#620rc4)
 - [6.2.0rc3](#620rc3)
-- [6.2.0rc2](#620rc2)
+
+---
+
+## 6.2.0rc7
+
+Released: **June 29, 2026 at 10:03 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.2.0rc7
+[6.2.0rc6 → 6.2.0rc7](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc6...v6.2.0rc7)
+
+- [`128cc908`](https://github.com/oarepo/oarepo-app/commit/128cc9087bec6f8811ead78dab74af5948fff172) Merge pull request #61 from oarepo/fix-permissions
+- [`e0d97f33`](https://github.com/oarepo/oarepo-app/commit/e0d97f331b885af34710586ea835b7b0b2ec8d47) fix: can_edit permission
+- [`a7419689`](https://github.com/oarepo/oarepo-app/commit/a74196891cb47fe9f784b76e8f825e1e57b40077) Working on permissions
+- [`3779ac82`](https://github.com/oarepo/oarepo-app/commit/3779ac82ffaf5bd760ab365f37acd29f2c644d5e) Merge pull request #60 from oarepo/fix-edit-metadata
+- [`c957d9e2`](https://github.com/oarepo/oarepo-app/commit/c957d9e23c1fd34bd0b7d86a8f1cc7c9468333e1) Extra requests
+
+#### `oarepo-communities` 11.3.0
+[11.2.0 → 11.3.0](https://github.com/oarepo/oarepo-communities/compare/v11.2.0...v11.3.0)
+
+- [`6298e285`](https://github.com/oarepo/oarepo-communities/commit/6298e2857562d829a65d22274353d02eecb7ffea) fix: communities in user api
+- [`591372b2`](https://github.com/oarepo/oarepo-communities/commit/591372b2b99d4c14a6f72752f6f75ed25fff9153) tests: added search_user_requests test
+- [`5f96a12b`](https://github.com/oarepo/oarepo-communities/commit/5f96a12be3183a259403a21697ae155073dbd98b) [skip ci] Bump version to v11.2.0
+
+#### `oarepo-model` 5.2.0
+[5.1.0 → 5.2.0](https://github.com/oarepo/oarepo-model/compare/v5.1.0...v5.2.0)
+
+- [`44be94a9`](https://github.com/oarepo/oarepo-model/commit/44be94a9fa9edaaf3429c26451908f3566042a44) fix: opt in for full links generation in search results (#132)
+- [`d3ba7e50`](https://github.com/oarepo/oarepo-model/commit/d3ba7e505688ecc1b9cb04eb55e70a3818b5a92c) [skip ci] Bump version to v5.1.0
+
+#### `oarepo-rdm` 8.3.1
+[8.1.0 → 8.3.1](https://github.com/oarepo/oarepo-rdm/compare/v8.1.0...v8.3.1)
+
+- [`6a42d680`](https://github.com/oarepo/oarepo-rdm/commit/6a42d68004860c4b6b67de462cbfc213bce6a30a) fix: entrypoint name (#108)
+- [`85311b3b`](https://github.com/oarepo/oarepo-rdm/commit/85311b3bf6ab45ee7ca810fda9fb87a221dbc347) [skip ci] Bump version to v8.3.0
+- [`1e6c94aa`](https://github.com/oarepo/oarepo-rdm/commit/1e6c94aa730995a2b72d728093ed7ef5e5f9f92b) cli for merging/reowning records (#106)
+- [`d874b6ad`](https://github.com/oarepo/oarepo-rdm/commit/d874b6ad7977b9eb62173da40bcd44537a8e00cf) [skip ci] Bump version to v8.2.0
+- [`6f47fcf4`](https://github.com/oarepo/oarepo-rdm/commit/6f47fcf4bfe4a558d8e039baa1703009acfb414a) fix: returning all links in search (#105)
+- [`79576656`](https://github.com/oarepo/oarepo-rdm/commit/79576656614c50191999f515712f539d77c25f80) [skip ci] Bump version to v8.1.0
+
+#### `oarepo-requests` 9.2.1
+[9.2.0 → 9.2.1](https://github.com/oarepo/oarepo-requests/compare/v9.2.0...v9.2.1)
+
+- [`41b78579`](https://github.com/oarepo/oarepo-requests/commit/41b7857995c4ec87f98cb45bc10a2b876f994d50) fix: resolving to draft topics in publish (#196)
+- [`089d8875`](https://github.com/oarepo/oarepo-requests/commit/089d8875654104d0e49be81404f0f69e495c691c) [skip ci] Bump version to v9.2.0
+
+#### `oarepo-ui` 13.4.0
+[13.2.3 → 13.4.0](https://github.com/oarepo/oarepo-ui/compare/v13.2.3...v13.4.0)
+
+- [`330c135a`](https://github.com/oarepo/oarepo-ui/commit/330c135a636dfb19608e5434ba9ce6b173144c89) feat: publish button with other oarepo requests (#486)
+- [`2b473e8f`](https://github.com/oarepo/oarepo-ui/commit/2b473e8fcfe994c5753254278cd8ab34166b8fff) feat: function can be used to determine saveontabchange (#481)
+- [`2404cc3c`](https://github.com/oarepo/oarepo-ui/commit/2404cc3cb30cdfb3ee5e703be6d35405dd660a92) feat: lock tabs under certain conditions (#485)
+- [`630e3e64`](https://github.com/oarepo/oarepo-ui/commit/630e3e64dce436baaf5467854bfaa724aeafd066) [skip ci] Bump version to v13.3.0
+- [`61108116`](https://github.com/oarepo/oarepo-ui/commit/61108116d9d58fc64f7d0f75d89fb5bb2bd96b1e) added can_view_deposit_page filter (#482)
+- [`b818011e`](https://github.com/oarepo/oarepo-ui/commit/b818011ea0f24b04db193db61e75a53bdcd14f6f) fix: removed duplicate record_header part (#483)
+- [`2a5517af`](https://github.com/oarepo/oarepo-ui/commit/2a5517af0d58798d0cd86a27de42ba8fbb29dadb) fix: app-hanging-on-restricted-record-access-when-not-logged-in (#484)
+- [`1f13031e`](https://github.com/oarepo/oarepo-ui/commit/1f13031e11fa68835976c89d4c74694c6e1c63db) added DRAFT_PREVIEW_FAILED_WITH_VALIDATION_ERRORS (#479)
+- [`5b73b9f5`](https://github.com/oarepo/oarepo-ui/commit/5b73b9f53f252a530b72bb23f7c305eaa5545c5c) [skip ci] Bump version to v13.2.3
+
+#### `oarepo-vocabularies` 9.0.1
+[9.0.0 → 9.0.1](https://github.com/oarepo/oarepo-vocabularies/compare/v9.0.0...v9.0.1)
+
+- [`5cbf113e`](https://github.com/oarepo/oarepo-vocabularies/commit/5cbf113e744f3949aa2bab230e7da02621bd2fc8) fix: edge case - id might not be set when systemfield is called (#261)
 
 ---
 
