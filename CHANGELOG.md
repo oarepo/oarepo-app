@@ -2,11 +2,37 @@
 
 ## Contents
 
+- [6.2.0rc8](#620rc8)
 - [6.2.0rc7](#620rc7)
 - [6.2.0rc6](#620rc6)
 - [6.2.0rc5](#620rc5)
 - [6.2.0rc4](#620rc4)
-- [6.2.0rc3](#620rc3)
+
+---
+
+## 6.2.0rc8
+
+Released: **July 2, 2026 at 04:56 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.2.0rc8
+[6.2.0rc7 → 6.2.0rc8](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc7...v6.2.0rc8)
+
+
+#### `oarepo-checks` 2.2.1
+[2.1.1 → 2.2.1](https://github.com/oarepo/oarepo-checks/compare/v2.1.1...v2.2.1)
+
+- [`cd0cd75f`](https://github.com/oarepo/oarepo-checks/commit/cd0cd75f2335e6456d1311780878172a43fd4772) fix: review communities were not used in checks (#10)
+- [`d0634b22`](https://github.com/oarepo/oarepo-checks/commit/d0634b22be0e65a9da98c11ae7f9e3c48a0a43c4) [skip ci] Bump version to v2.2.0
+- [`df786650`](https://github.com/oarepo/oarepo-checks/commit/df786650cde18836850fd3d937b6bb368ae3dafe) added logging (#9)
+- [`b4539250`](https://github.com/oarepo/oarepo-checks/commit/b4539250f9439d2cc00e46409578ceaa56af9e47) [skip ci] Bump version to v2.1.1
+
+#### `oarepo-oidc-einfra` 7.1.0
+[7.0.3 → 7.1.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v7.0.3...v7.1.0)
+
+- [`6270a1dc`](https://github.com/oarepo/oarepo-oidc-einfra/commit/6270a1dcfb91ce692de677afa79d80d0bde7512d) fix: invenio in 27.0.0 changed the name of the method to accept_member_request (#49)
+- [`906a07d5`](https://github.com/oarepo/oarepo-oidc-einfra/commit/906a07d5e7efb92908b88dd002534a9db56b9184) [skip ci] Bump version to v7.0.3
 
 ---
 
