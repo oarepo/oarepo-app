@@ -2,11 +2,46 @@
 
 ## Contents
 
+- [6.2.0](#620)
 - [6.2.0rc8](#620rc8)
 - [6.2.0rc7](#620rc7)
 - [6.2.0rc6](#620rc6)
 - [6.2.0rc5](#620rc5)
-- [6.2.0rc4](#620rc4)
+
+---
+
+## 6.2.0
+
+Released: **July 2, 2026 at 06:37 UTC**
+
+### Updated packages
+
+#### `invenio-assets` 4.2.3
+[4.2.1 → 4.2.3](https://github.com/inveniosoftware/invenio-assets/compare/v4.2.1...v4.2.3)
+
+- [`a977d346`](https://github.com/inveniosoftware/invenio-assets/commit/a977d34691e5ba6f77261ad808b67a532bb45cb3) release: v4.2.3
+- [`f9053b94`](https://github.com/inveniosoftware/invenio-assets/commit/f9053b94b33cab31f4fb1ea9d457d3a18993334f) chore(setup): migrate from setuptools to hatchling
+- [`9985604e`](https://github.com/inveniosoftware/invenio-assets/commit/9985604ef00f392f97f9dddb0824bb6125fedc5a) release: v4.2.2
+- [`818e2542`](https://github.com/inveniosoftware/invenio-assets/commit/818e2542f7446f0e9d62024481378d558959b6fa) fix: add pnpm allowBuilds config
+- [`17b19229`](https://github.com/inveniosoftware/invenio-assets/commit/17b19229cedf82f126d6fa9f342a1cdd2f3b59b1) chore(git-blame): ignore SPDX license header commit
+- [`46a32a14`](https://github.com/inveniosoftware/invenio-assets/commit/46a32a14b7dc1271181ad4b4b55d5f44036cfbf7) chore(licenses): update license headers to use SPDX
+
+#### `invenio-collections` 9.0.3
+[9.0.0 → 9.0.3](https://github.com/inveniosoftware/invenio-collections/compare/v9.0.0...v9.0.3)
+
+- [`50043a85`](https://github.com/inveniosoftware/invenio-collections/commit/50043a85efd2016443ca7f7f0c529c22845c5225) fix(i18n): update Transifex config
+- [`872ebe7f`](https://github.com/inveniosoftware/invenio-collections/commit/872ebe7f1c2f5e80e31a622baffe8ff47307fc0f) release: v9.0.3
+- [`d4c6326c`](https://github.com/inveniosoftware/invenio-collections/commit/d4c6326cefaabb3775321d4b82c397e414270346) i18n: fix outdated transifex config for UI
+- [`966050c5`](https://github.com/inveniosoftware/invenio-collections/commit/966050c59258ad8e173e3f4055c75c35412c56df) release: v9.0.2
+- [`3d3f028a`](https://github.com/inveniosoftware/invenio-collections/commit/3d3f028ad08229fd92299ef78683ea9ef4ae5427) Release maint-v9.0.1
+- [`b048c285`](https://github.com/inveniosoftware/invenio-collections/commit/b048c285dd05849da17eced417c8ffc39528a852) i18n: update string format to use %()s instead
+- [`669b8fbe`](https://github.com/inveniosoftware/invenio-collections/commit/669b8fbe6b68cfaf727b27b1e882530178b68110) fix(i18n): support pyproject extraction
+- [`35efdf11`](https://github.com/inveniosoftware/invenio-collections/commit/35efdf11e6100afdfa2855aa78254e4be6462fe6) chore(git-blame): ignore SPDX license header commit
+- [`3eb04d5a`](https://github.com/inveniosoftware/invenio-collections/commit/3eb04d5afaeb8433ec1cc632272d8b0ab95f2e70) chore(licenses): update license headers to use SPDX
+
+#### `oarepo-app` 6.2.0
+[6.2.0rc8 → 6.2.0](https://github.com/oarepo/oarepo-app/compare/v6.2.0rc8...v6.2.0)
+
 
 ---
 

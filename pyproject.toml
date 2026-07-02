@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "6.2.0rc8"
+version = "6.2.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -51,7 +51,7 @@ tests = [
     "pytest-oarepo>=6.0.1,<7.0.0",
 ]
 production = [
-    "oarepo[s3]==14.2.1rc2+1.rdm.14.0.0rc2",
+    "oarepo[s3]==14.2.1rc2+3.rdm.14.0.0rc2",
     "marshmallow-i18n-messages==0.4.1",
     "oarepo-communities==11.3.0",
     "oarepo-dashboard==8.0.0",
