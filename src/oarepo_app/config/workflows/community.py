@@ -56,10 +56,11 @@ class CommunityWorkflow(BaseWorkflowSettings):
     :attr:`~BaseWorkflowSettings.draft_creation_needs` restrictions.
     """
 
-    read_restricted_community_roles: list[str] = dataclasses.field(default_factory=list)
+    read_restricted_community_roles: list[str] = dataclasses.field(default_factory=lambda: ["curator", "owner"])
     """Community roles that may read restricted (published) records without requesting access.
 
-    If empty, only the record owner can read the content after publishing.
+    If empty, only the record owner can read the content after publishing. By default allowing curators
+    and community owners to access restricted records.
 
     Note:
         Community roles are used instead of
@@ -79,10 +80,11 @@ class CommunityWorkflow(BaseWorkflowSettings):
         so that each workflow can have independent read/draft/manage permissions.
     """
 
-    record_manage_community_roles: list[str] = dataclasses.field(default_factory=list)
+    record_manage_community_roles: list[str] = dataclasses.field(default_factory=lambda: ["curator", "owner"])
     """Community roles that may manage (edit, delete, publish) records.
 
-    If empty, only the record owner can manage the record.
+    If empty, only the record owner can manage the record. By default allowing curators
+    and community owners to manage all records.
 
     Note:
         Community roles are used instead of
