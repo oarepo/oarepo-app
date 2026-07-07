@@ -285,9 +285,12 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
     can_update = (
         IfInState(["draft", "submitted"], [SameAs("can_rdm_review")]),
         IfInState("revision_requested", [SameAs("can_rdm_review")]),
-        IfInState(["approved", "published"], [Disable()]),
+        # IfInState(["approved", "published"], [Disable()]), # noqa: ERA001 # keeping as a reminder
     )
-    can_update_draft = (SameAs("can_update"),)
+    # the update draft for whatever reason is used as the source of truth for the "share" button
+    # - so even if it does not make sense to have this on a published record, we need to have
+    # the permission open so that sharing works.
+    can_update_draft = (SameAs("can_rdm_review"),)
 
     # Curators may delete a draft or a revision_requested record; all other states deny.
     can_delete = (
@@ -315,7 +318,7 @@ class DefaultRDMWorkflowPermissions(BaseWorkflowPermissionPolicy):
             # Note: RDM calls can_edit both on the published and draft versions of a record.
             # that is why we can not use IfInState("published"), because then the "Edit" button
             # will be visible but clicking on it will end up with an error.
-            # else_=[IfInState("published", [SameAs("can_rdm_curate")])],
+            # else_=[IfInState("published", [SameAs("can_rdm_curate")])],  # noqa: ERA001 # keeping as a reminder
             else_=[SameAs("can_rdm_curate")],
         ),
     )

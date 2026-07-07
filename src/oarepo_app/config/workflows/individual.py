@@ -207,7 +207,7 @@ class IndividualWorkflow(BaseWorkflowSettings):
                     declined="revision_requested",
                 ),
                 events=WorkflowEvents(
-                    {CommentEventType.type_id: WorkflowEvent(submitters=[*requestors, *reviewer_generators])}
+                    {CommentEventType.type_id or "C": WorkflowEvent(submitters=[*requestors, *reviewer_generators])}
                 ),
             ),
             PublishChangedMetadataRequestType.type_id: WorkflowRequest(
