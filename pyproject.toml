@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "6.3.0rc1"
+version = "6.3.0rc2"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -22,7 +22,7 @@ oaipmh-harvester-development = [
     "oarepo-oai-pmh-harvester>=9.0.0,<10.0.0",
 ]
 llm-development = [
-    "oarepo-checks>=2.2.1,<3.0.0",
+    "oarepo-checks>=2.3.0,<3.0.0",
 ]
 development = [
     "oarepo[s3]>=14.2.1rc2,<15.0.0",
@@ -76,7 +76,7 @@ oaipmh-harvester = [
     "oarepo-oai-pmh-harvester==9.0.0",
 ]
 llm = [
-    "oarepo-checks==2.2.1",
+    "oarepo-checks==2.3.0",
 ]
 
 [project.entry-points."invenio_config.module"]

@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [6.3.0rc2](#630rc2)
 - [6.3.0rc1](#630rc1)
 - [6.2.0](#620)
 - [6.2.0rc8](#620rc8)
 - [6.2.0rc7](#620rc7)
-- [6.2.0rc6](#620rc6)
+
+---
+
+## 6.3.0rc2
+
+Released: **July 10, 2026 at 12:38 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.3.0rc2
+[6.3.0rc1 → 6.3.0rc2](https://github.com/oarepo/oarepo-app/compare/v6.3.0rc1...v6.3.0rc2)
+
+
+#### `oarepo-checks` 2.3.0
+[2.2.1 → 2.3.0](https://github.com/oarepo/oarepo-checks/compare/v2.2.1...v2.3.0)
+
+- [`982b0867`](https://github.com/oarepo/oarepo-checks/commit/982b08675b2140c00cc8355abfaae35a0e0a2531) config split (#11)
+- [`c5a75984`](https://github.com/oarepo/oarepo-checks/commit/c5a7598406696b26d478a77b798d28c33fe9fe74) [skip ci] Bump version to v2.2.1
 
 ---
 
