@@ -2,11 +2,25 @@
 
 ## Contents
 
+- [6.3.0rc3](#630rc3)
 - [6.3.0rc2](#630rc2)
 - [6.3.0rc1](#630rc1)
 - [6.2.0](#620)
 - [6.2.0rc8](#620rc8)
-- [6.2.0rc7](#620rc7)
+
+---
+
+## 6.3.0rc3
+
+Released: **July 10, 2026 at 12:50 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.3.0rc3
+[6.3.0rc2 → 6.3.0rc3](https://github.com/oarepo/oarepo-app/compare/v6.3.0rc2...v6.3.0rc3)
+
+- [`ac609113`](https://github.com/oarepo/oarepo-app/commit/ac609113a6e0b2eef51c668d368d5494da69b0f1) Merge pull request #71 from oarepo/oarepo-config
+- [`03aa33bc`](https://github.com/oarepo/oarepo-app/commit/03aa33bc6b6efdb1c8a38534e86d166de0429bc4) including oarepo-config
 
 ---
 
