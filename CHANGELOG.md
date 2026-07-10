@@ -2,11 +2,96 @@
 
 ## Contents
 
+- [6.3.0rc1](#630rc1)
 - [6.2.0](#620)
 - [6.2.0rc8](#620rc8)
 - [6.2.0rc7](#620rc7)
 - [6.2.0rc6](#620rc6)
-- [6.2.0rc5](#620rc5)
+
+---
+
+## 6.3.0rc1
+
+Released: **July 10, 2026 at 10:08 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.20
+[1.1.19 → 1.1.20](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.19...v1.1.20)
+
+- [`3d1d3982`](https://github.com/nrp-cz/ccmm-invenio/commit/3d1d3982ea4f2030f7717b8174409f5647aae2db) fix: files quota (#53)
+- [`612c410b`](https://github.com/nrp-cz/ccmm-invenio/commit/612c410bc216e289269b76cbdf2a8606ca3d35ee) [skip ci] Bump version to v1.1.19
+
+#### `invenio-checks` 10.1.0
+[10.0.0 → 10.1.0](https://github.com/inveniosoftware/invenio-checks/compare/v10.0.0...v10.1.0)
+
+- [`3291770c`](https://github.com/inveniosoftware/invenio-checks/commit/3291770c6fc9262b04f6598d3a38b780396bc8d0) I18n add translation support for invenio-checks (#49)
+- [`f03da2fc`](https://github.com/inveniosoftware/invenio-checks/commit/f03da2fc6202ebeb045f003d09f8df0bfd305761) 📦 release: v10.1.0
+- [`958dfb3c`](https://github.com/inveniosoftware/invenio-checks/commit/958dfb3c77e9b993aa843474f5b51f9d23f3608f) fix: don't add None community_id from global check runs to community_ids set
+- [`e60965a5`](https://github.com/inveniosoftware/invenio-checks/commit/e60965a5cf78947b36453370281a2bf3b27d49a8) chore(git-blame): ignore SPDX license header commit
+- [`b204e2c7`](https://github.com/inveniosoftware/invenio-checks/commit/b204e2c7af007c51151ab7dcaa4f92fb617ddbf0) chore(packaging): exclude .git-blame-ignore-revs from distribution
+- [`cec453aa`](https://github.com/inveniosoftware/invenio-checks/commit/cec453aa27f8bb0a29c2a2f23dd90b626cc89fea) chore(licenses): update license headers to use SPDX
+
+#### `invenio-rdm-records` 32.0.2+oarepo.1.ahremuzamvsazmfy
+[32.0.1+oarepo.1.umup67j3ivro5rix → 32.0.2+oarepo.1.ahremuzamvsazmfy](https://github.com/inveniosoftware/invenio-rdm-records/compare/v32.0.1...v32.0.2)
+
+- [`dbad58f0`](https://github.com/inveniosoftware/invenio-rdm-records/commit/dbad58f01eeaebd23fae3792afdcd6b9c46930d6) release: v32.0.2
+- [`84f2cf94`](https://github.com/inveniosoftware/invenio-rdm-records/commit/84f2cf9400c30aef8edc0cb56567318b1f43e6c4) fix(iiif): add handlers for more possible IIIF errors
+- [`5dbff1ea`](https://github.com/inveniosoftware/invenio-rdm-records/commit/5dbff1ea35b681a40467c18bdbc662768f9270b4) fix(tests): add tests for invalid identifiers in IIIF endpoints
+- [`fa90b223`](https://github.com/inveniosoftware/invenio-rdm-records/commit/fa90b223747cdc898219ce0d2c8a14afce8814e9) fix(iiif): validate expected shape of identifiers
+- [`79a08e9a`](https://github.com/inveniosoftware/invenio-rdm-records/commit/79a08e9a4edd9479905700385c858540b718d23b) tests: update citation string for csl 1.0.2
+- [`93c5372c`](https://github.com/inveniosoftware/invenio-rdm-records/commit/93c5372cb588c5c0b0a217b1af0c88c36fe67a62) fix(citation): use harvard-cite-them-right and setup _extras in tests
+- [`b710d04e`](https://github.com/inveniosoftware/invenio-rdm-records/commit/b710d04eea2796ce9a94e937848fc927660bdde6) fix(checks): Removed redundant check
+- [`a5f11351`](https://github.com/inveniosoftware/invenio-rdm-records/commit/a5f113514a0decd285d84f4f939a590475cc7437) fix(checks): resolve section labels
+
+#### `invenio-records-rest` 5.0.1
+[5.0.0 → 5.0.1](https://github.com/inveniosoftware/invenio-records-rest/compare/v5.0.0...v5.0.1)
+
+- [`2ba098fd`](https://github.com/inveniosoftware/invenio-records-rest/commit/2ba098fdaf10eaaf3ebe8d0d2878752870eb211a) release: v5.0.1
+- [`f1c41ca6`](https://github.com/inveniosoftware/invenio-records-rest/commit/f1c41ca6eef607821702c2d2cb207cfc56b1bad6) tests: improved title case in csl 1.0.2
+- [`5b22666c`](https://github.com/inveniosoftware/invenio-records-rest/commit/5b22666c3de11ee55f711cd8b7d38dd00880e177) citeproc: update default citation style to 'harvard-cite-them-right'
+
+#### `oarepo-app` 6.3.0rc1
+[6.2.0 → 6.3.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.2.0...v6.3.0rc1)
+
+- [`75f6b51a`](https://github.com/oarepo/oarepo-app/commit/75f6b51ad68028a54d5dd125b67b5ec53035e8d2) Merge pull request #67 from oarepo/permissions
+- [`8b657fb2`](https://github.com/oarepo/oarepo-app/commit/8b657fb2a0b1e07e97aeb673206e2e6686cfb6fe) permissions on published records
+
+#### `oarepo-communities` 11.4.0
+[11.3.0 → 11.4.0](https://github.com/oarepo/oarepo-communities/compare/v11.3.0...v11.4.0)
+
+- [`95fe0682`](https://github.com/oarepo/oarepo-communities/commit/95fe06822585582b9620d282f4e17f283a98953f) fix: add community submission actions
+- [`544f0f2c`](https://github.com/oarepo/oarepo-communities/commit/544f0f2ceadebe97b19614c41284c3bd167d59c7) [skip ci] Bump version to v11.3.0
+
+#### `oarepo-model` 5.3.0
+[5.2.0 → 5.3.0](https://github.com/oarepo/oarepo-model/compare/v5.2.0...v5.3.0)
+
+- [`ca855a0f`](https://github.com/oarepo/oarepo-model/commit/ca855a0f81fd643454d6d4ff966277e2f6e6c712) added preset for model-level error handlers customization; changed Ad… (#134)
+- [`faabec2e`](https://github.com/oarepo/oarepo-model/commit/faabec2e935409f85544de4e5167e26c1d5635fa) fix: added is_published facet label (#129)
+- [`46592b33`](https://github.com/oarepo/oarepo-model/commit/46592b33f92d100a79405c0c0ac6351013de1629) [skip ci] Bump version to v5.2.0
+
+#### `oarepo-rdm` 8.4.0
+[8.3.1 → 8.4.0](https://github.com/oarepo/oarepo-rdm/compare/v8.3.1...v8.4.0)
+
+- [`4f1977c8`](https://github.com/oarepo/oarepo-rdm/commit/4f1977c88d5a25b7e2ad42fe309f4948b3753525) rdm facets implementation (#111)
+- [`0c27483f`](https://github.com/oarepo/oarepo-rdm/commit/0c27483fc930b9936c163f31e2029759538df1ee) [skip ci] Bump version to v8.3.2
+- [`22eced57`](https://github.com/oarepo/oarepo-rdm/commit/22eced57bacddb56d756da33a39b0c4ef3960cc1) fix: files quota (#110)
+- [`e8ca124b`](https://github.com/oarepo/oarepo-rdm/commit/e8ca124bc8e91b74bffd8dcf5a93d7a75f846469) added access status facet
+- [`a8abba6e`](https://github.com/oarepo/oarepo-rdm/commit/a8abba6e102ebfd5e05e1b542ce11caf4b4ac639) [skip ci] Bump version to v8.3.1
+
+#### `oarepo-runtime` 7.2.0
+[7.1.0 → 7.2.0](https://github.com/oarepo/oarepo-runtime/compare/v7.1.0...v7.2.0)
+
+- [`50b6b484`](https://github.com/oarepo/oarepo-runtime/commit/50b6b4841c6aacc69683bf2e46320df59e497362) Added before and after request authentication interface for pluggable providers. (#417)
+- [`865cbf6f`](https://github.com/oarepo/oarepo-runtime/commit/865cbf6f9e3fe9a77d526880670bcf194c045a65) [skip ci] Bump version to v7.1.0
+
+#### `oarepo-ui` 13.4.1
+[13.4.0 → 13.4.1](https://github.com/oarepo/oarepo-ui/compare/v13.4.0...v13.4.1)
+
+- [`03994fc6`](https://github.com/oarepo/oarepo-ui/commit/03994fc6be5b757b9d1c6e5b47dba71a2acc1ec1) unified permissions (#480)
+- [`4141f581`](https://github.com/oarepo/oarepo-ui/commit/4141f581af144011b96e51c611460edc958ede1e) feat: added share button to form (#488)
+- [`ea8602ca`](https://github.com/oarepo/oarepo-ui/commit/ea8602cabb0b7ba1be2a2da547a632988492cc71) fix: moved identifier images to correct folder (#487)
+- [`2fc40012`](https://github.com/oarepo/oarepo-ui/commit/2fc400121b87b84ea168514af84ef8287f417d16) [skip ci] Bump version to v13.4.0
 
 ---
 
