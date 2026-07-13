@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "6.3.0rc4"
+version = "6.3.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -34,9 +34,9 @@ development = [
     "oarepo-invenio-typing-stubs>=0.1.32,<1.0.0",
     "oarepo-model>=5.3.0,<6.0.0",
     "oarepo-oidc-einfra>=7.1.0,<8.0.0",
-    "oarepo-rdm>=8.4.0,<9.0.0",
+    "oarepo-rdm>=8.4.1,<9.0.0",
     "oarepo-requests>=9.2.1,<10.0.0",
-    "oarepo-runtime>=7.2.0,<8.0.0",
+    "oarepo-runtime>=7.3.0,<8.0.0",
     "oarepo-theme>=6.0.0,<7.0.0",
     "oarepo-ui>=13.5.1,<14.0.0",
     "oarepo-vocabularies>=9.0.1,<10.0.0",
@@ -61,9 +61,9 @@ production = [
     "oarepo-invenio-typing-stubs==0.1.32",
     "oarepo-model==5.3.0",
     "oarepo-oidc-einfra==7.1.0",
-    "oarepo-rdm==8.4.0",
+    "oarepo-rdm==8.4.1",
     "oarepo-requests==9.2.1",
-    "oarepo-runtime==7.2.0",
+    "oarepo-runtime==7.3.0",
     "oarepo-theme==6.0.0",
     "oarepo-ui==13.5.1",
     "oarepo-vocabularies==9.0.1",

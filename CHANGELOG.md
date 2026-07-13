@@ -2,11 +2,36 @@
 
 ## Contents
 
+- [6.3.0](#630)
 - [6.3.0rc4](#630rc4)
 - [6.3.0rc3](#630rc3)
 - [6.3.0rc2](#630rc2)
 - [6.3.0rc1](#630rc1)
-- [6.2.0](#620)
+
+---
+
+## 6.3.0
+
+Released: **July 13, 2026 at 13:47 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.3.0
+[6.3.0rc4 → 6.3.0](https://github.com/oarepo/oarepo-app/compare/v6.3.0rc4...v6.3.0)
+
+
+#### `oarepo-rdm` 8.4.1
+[8.4.0 → 8.4.1](https://github.com/oarepo/oarepo-rdm/compare/v8.4.0...v8.4.1)
+
+- [`83924715`](https://github.com/oarepo/oarepo-rdm/commit/839247157f45cc4210f693672bd003b7b502fe16) deepcopy search options to avoid mutation of individual model ones (#113)
+- [`3231e12e`](https://github.com/oarepo/oarepo-rdm/commit/3231e12ef5d36f64f4ae00862b6823bc0b630de7) fix: 18next import
+- [`753dfcfe`](https://github.com/oarepo/oarepo-rdm/commit/753dfcfe460e3abaeb1de3220ad89ed0cc83aff9) [skip ci] Bump version to v8.4.0
+
+#### `oarepo-runtime` 7.3.0
+[7.2.0 → 7.3.0](https://github.com/oarepo/oarepo-runtime/compare/v7.2.0...v7.3.0)
+
+- [`9a7efdb0`](https://github.com/oarepo/oarepo-runtime/commit/9a7efdb0c5f69145f1c0bc5bdbd0e985c22c1bbe) Added global error handler for authentication exceptions (#418)
+- [`19e48329`](https://github.com/oarepo/oarepo-runtime/commit/19e48329a74c0c34ad71fd1f9840d31b8ccd5872) [skip ci] Bump version to v7.2.0
 
 ---
 
