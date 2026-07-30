@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [6.4.0rc2](#640rc2)
 - [6.4.0rc1](#640rc1)
 - [6.3.0](#630)
 - [6.3.0rc4](#630rc4)
 - [6.3.0rc3](#630rc3)
-- [6.3.0rc2](#630rc2)
+
+---
+
+## 6.4.0rc2
+
+Released: **July 30, 2026 at 07:31 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.4.0rc2
+[6.4.0rc1 → 6.4.0rc2](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc1...v6.4.0rc2)
+
+
+#### `oarepo-communities` 11.4.2
+[11.4.1 → 11.4.2](https://github.com/oarepo/oarepo-communities/compare/v11.4.1...v11.4.2)
+
+- [`1e2eb4d7`](https://github.com/oarepo/oarepo-communities/commit/1e2eb4d78df14142b165930724c4484d4ba52934) ported removed _extract_user_email_data
+- [`7b1f3fe2`](https://github.com/oarepo/oarepo-communities/commit/7b1f3fe2395e6bd23dd561e666913384f029afc6) [skip ci] Bump version to v11.4.1
 
 ---
 
