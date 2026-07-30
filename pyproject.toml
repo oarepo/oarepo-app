@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "6.4.0rc2"
+version = "6.4.0rc3"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -42,7 +42,7 @@ development = [
     "oarepo-vocabularies>=9.0.1,<10.0.0",
     "oarepo-workflows>=7.1.0,<8.0.0",
     "oarepo-doi>=7.1.0,<8.0.0",
-    "oarepo-related-resources>=4.2.0,<5.0.0",
+    "oarepo-related-resources>=4.3.0,<5.0.0",
 ]
 oarepo14 = [
     "oarepo[rdm,tests]>=14.0.0,<15.0.0",
@@ -69,7 +69,7 @@ production = [
     "oarepo-vocabularies==9.0.1",
     "oarepo-workflows==7.1.0",
     "oarepo-doi==7.1.0",
-    "oarepo-related-resources==4.2.0",
+    "oarepo-related-resources==4.3.0",
 ]
 ccmm = [
     "ccmm-invenio==1.1.21",
