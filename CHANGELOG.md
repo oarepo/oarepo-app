@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [6.4.0rc4](#640rc4)
 - [6.4.0rc3](#640rc3)
 - [6.4.0rc2](#640rc2)
 - [6.4.0rc1](#640rc1)
 - [6.3.0](#630)
-- [6.3.0rc4](#630rc4)
+
+---
+
+## 6.4.0rc4
+
+Released: **July 30, 2026 at 19:36 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.4.0rc4
+[6.4.0rc3 → 6.4.0rc4](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc3...v6.4.0rc4)
+
+
+#### `oarepo-requests` 9.4.1
+[9.4.0 → 9.4.1](https://github.com/oarepo/oarepo-requests/compare/v9.4.0...v9.4.1)
+
+- [`6777b8ae`](https://github.com/oarepo/oarepo-requests/commit/6777b8aea5261759ff6605ee8e49c5d270715cfd) fix: added community notification resolver and email resolver from RDM (#204)
+- [`e226c28d`](https://github.com/oarepo/oarepo-requests/commit/e226c28d9bc9461c848ad1b9af4a693599cd9818) [skip ci] Bump version to v9.4.0
 
 ---
 
