@@ -2,11 +2,710 @@
 
 ## Contents
 
+- [6.4.0rc1](#640rc1)
 - [6.3.0](#630)
 - [6.3.0rc4](#630rc4)
 - [6.3.0rc3](#630rc3)
 - [6.3.0rc2](#630rc2)
-- [6.3.0rc1](#630rc1)
+
+---
+
+## 6.4.0rc1
+
+Released: **July 30, 2026 at 06:52 UTC**
+
+### Updated packages
+
+#### `invenio-access` 6.1.0
+[6.0.0 → 6.1.0](https://github.com/inveniosoftware/invenio-access/compare/v6.0.0...v6.1.0)
+
+- [`2a4bd15e`](https://github.com/inveniosoftware/invenio-access/commit/2a4bd15e635afbb81f2f3017961f1f1fd853abc5) fix(ci): run tests on maint-*
+- [`5b97dc3a`](https://github.com/inveniosoftware/invenio-access/commit/5b97dc3a12b05f6a9e2882ec07aa2bfddb7112f4) fix(build): include mo files
+- [`aebc9e1f`](https://github.com/inveniosoftware/invenio-access/commit/aebc9e1fdc3c1cfea05511bae57da70e85928b88) release: v6.1.0
+- [`acdada49`](https://github.com/inveniosoftware/invenio-access/commit/acdada494e9b337237da4a2effddd52898449f71) i18n: pulled translations
+- [`03b8380e`](https://github.com/inveniosoftware/invenio-access/commit/03b8380ebaf484b0f864fab9ec5a347cccb998c1) release: v6.0.1
+- [`a854d024`](https://github.com/inveniosoftware/invenio-access/commit/a854d024829f21b8e767958db0658fe46d568546) chore(setup): migrate from setuptools to hatchling
+- [`85cd176c`](https://github.com/inveniosoftware/invenio-access/commit/85cd176cf4058805ffc7405e98c4c93e5ee8a944) chore(cleanup): remove outdated and unnecessary file
+- [`412c0bbc`](https://github.com/inveniosoftware/invenio-access/commit/412c0bbc3f362e60f8ca043619f186831d60488a) chore(git-blame): ignore the SPDX license header commit
+- [`863b6d81`](https://github.com/inveniosoftware/invenio-access/commit/863b6d810de113ea34b47449c2ca72dd318c2f1a) chore(licenses): update license headers to use SPDX
+
+#### `invenio-accounts` 8.3.0
+[8.1.0 → 8.3.0](https://github.com/inveniosoftware/invenio-accounts/compare/v8.1.0...v8.3.0)
+
+- [`8bd9aa3e`](https://github.com/inveniosoftware/invenio-accounts/commit/8bd9aa3e1c40a04852ceb531676262fa208a9914) feat: support unmanaged roles with distinct id and name
+- [`d08d6dec`](https://github.com/inveniosoftware/invenio-accounts/commit/d08d6decff265b5a6899962df123c6fd7d4afda2) release: v8.3.0
+- [`42b06f10`](https://github.com/inveniosoftware/invenio-accounts/commit/42b06f1006e7b573e770679b8e0f815a86dcf491) i18n: pulled translations
+- [`7d40c256`](https://github.com/inveniosoftware/invenio-accounts/commit/7d40c25607d8960f4a7941e52029f83f0b6cadbc) release: v8.2.1
+- [`174a0f23`](https://github.com/inveniosoftware/invenio-accounts/commit/174a0f239569264c9238d61e361fe110e465b3ed) chore(cleanup): remove outdated and unnecessary file
+- [`aefc3a8e`](https://github.com/inveniosoftware/invenio-accounts/commit/aefc3a8e3b8cddfe96ca90623418cc9db3c615c6) chore(format): reformat with black
+- [`f228bbcd`](https://github.com/inveniosoftware/invenio-accounts/commit/f228bbcd5123ac8fd2180c030333d35834335273) chore(setup): migrate from setuptools to hatchling
+- [`8f0cf6af`](https://github.com/inveniosoftware/invenio-accounts/commit/8f0cf6af72e16eaee0a0a2674f8b2b22a40678fe) feat: enforce Role id and name are equal
+- [`59cd6c64`](https://github.com/inveniosoftware/invenio-accounts/commit/59cd6c649062bd67db5c1ac8aa9dd066ab549214) release: v8.2.0
+- [`17420e3a`](https://github.com/inveniosoftware/invenio-accounts/commit/17420e3a8d7d5e673dd5f88e9b7d34e3edceaea0) chore(git-blame): ignore the SPDX license header commit
+- [`6cef679e`](https://github.com/inveniosoftware/invenio-accounts/commit/6cef679e4eea9e32e5a6c19d7a05c696e44710c2) chore(licenses): update license headers to use SPDX
+
+#### `invenio-administration` 6.1.0+oarepo.1.wew74fq6lzczo5wm
+[6.0.1+oarepo.1.4zjvsn4usjkp2owp → 6.1.0+oarepo.1.wew74fq6lzczo5wm](https://github.com/inveniosoftware/invenio-administration/compare/v6.0.1...v6.1.0)
+
+- [`676a14da`](https://github.com/inveniosoftware/invenio-administration/commit/676a14daa5ac00af6d9b74541c21110f4ffe6e92) fix(ci): run tests on maint-*
+- [`ae303ee9`](https://github.com/inveniosoftware/invenio-administration/commit/ae303ee94dc91355f759914ca5549cb294eeb05b) fix(build): include mo files
+- [`4c3b5b76`](https://github.com/inveniosoftware/invenio-administration/commit/4c3b5b76aae98862bd486bfe15fd8a30ab713355) release: v6.1.0
+- [`384aceb4`](https://github.com/inveniosoftware/invenio-administration/commit/384aceb45848995e904bc3dab298c8f9f4712a54) i18n: pulled translations
+- [`ecd42929`](https://github.com/inveniosoftware/invenio-administration/commit/ecd429292fa102cf64a756c31a4aadca189b7fb0) release: v6.0.2
+- [`43bfd2e3`](https://github.com/inveniosoftware/invenio-administration/commit/43bfd2e31146b74f6d8136aaec4b683fb5cb1924) chore(setup): migrate from setuptools to hatchling
+- [`07c19ae1`](https://github.com/inveniosoftware/invenio-administration/commit/07c19ae10be95af7d544c7df3340eb38d324f1ac) chore(git-blame): ignore the SPDX license header commit
+- [`c3c51854`](https://github.com/inveniosoftware/invenio-administration/commit/c3c518549049ccddc201ab151258ceb87b0dbe69) chore(licenses): update license headers to use SPDX
+
+#### `invenio-app` 3.1.2
+[3.1.1 → 3.1.2](https://github.com/inveniosoftware/invenio-app/compare/v3.1.1...v3.1.2)
+
+- [`e1db4b30`](https://github.com/inveniosoftware/invenio-app/commit/e1db4b307f75132478630d2646b7c98741396c32) release: v3.1.2
+- [`598c9c1c`](https://github.com/inveniosoftware/invenio-app/commit/598c9c1ce9d314842e848905c58aebbd135aa9c6) chore(cleanup): remove outdated and unnecessary file
+- [`67a61257`](https://github.com/inveniosoftware/invenio-app/commit/67a61257352d6cefd38b705707792ffc6a4b3707) chore(setup): migrate from setuptools to hatchling
+- [`18a20ad9`](https://github.com/inveniosoftware/invenio-app/commit/18a20ad9aea7c7cfe60eb1b02da82ee7105f6ece) chore(licenses): update license headers to use SPDX
+- [`c70034e8`](https://github.com/inveniosoftware/invenio-app/commit/c70034e8907d699c745a99adcec3a2c9ccdce55a) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-app-rdm` 14.0.0rc4+oarepo.1.7onpd5lagarc3nny
+[14.0.0rc2+oarepo.1.mkromkhusu2i7mjx → 14.0.0rc4+oarepo.1.7onpd5lagarc3nny](https://github.com/inveniosoftware/invenio-app-rdm/compare/v14.0.0rc2...v14.0.0rc4)
+
+- [`3481b495`](https://github.com/inveniosoftware/invenio-app-rdm/commit/3481b49523edac3c082249ff163932fecef2fb40) fix(administration): role ui depends on groups
+- [`7f67cf95`](https://github.com/inveniosoftware/invenio-app-rdm/commit/7f67cf9558b8821d1ebf4e4dd3e99fe6e581879e) release: v14.0.0rc4
+- [`5f6c01c3`](https://github.com/inveniosoftware/invenio-app-rdm/commit/5f6c01c34fdb79ac8edb88d669a99c5e4931ff87) fix(build): include mo files
+- [`f8c5686f`](https://github.com/inveniosoftware/invenio-app-rdm/commit/f8c5686fed9635a0b8d7cc5bc016a9c88239f3b4) release: v14.0.0rc3
+- [`412b60cb`](https://github.com/inveniosoftware/invenio-app-rdm/commit/412b60cb09b1e92d720deb33431f298a8e7c7880) i18n: pulled translations
+- [`7caab9ff`](https://github.com/inveniosoftware/invenio-app-rdm/commit/7caab9ff5e0445b5e4445a78f2c723fa58c487ca) chore(v14/migration): restructure script
+- [`54be449c`](https://github.com/inveniosoftware/invenio-app-rdm/commit/54be449c297415d7bc0db1cf2901771a0933acb1) fix: migration step for removal of user_id column from the transaction table
+- [`241b7807`](https://github.com/inveniosoftware/invenio-app-rdm/commit/241b7807985346a65dfdb5d57800fd4c88e388be) fix: adding server default for system_created
+- [`12390d21`](https://github.com/inveniosoftware/invenio-app-rdm/commit/12390d2164d5892c433a03c5a9755aeec1003f03) fix: unify command with documentation
+- [`d02ac223`](https://github.com/inveniosoftware/invenio-app-rdm/commit/d02ac223ccbe46be4a268eac6d2eb67189ee23ac) config: fix citation styles for Vancouver and Chicago with csl 1.0.2
+- [`aaec0a58`](https://github.com/inveniosoftware/invenio-app-rdm/commit/aaec0a58945bf1371c1acc44a3d26a80938cb69e) chore(setup): migrate from setuptools to hatchling
+- [`d6874227`](https://github.com/inveniosoftware/invenio-app-rdm/commit/d68742276b72c8e724e6a5c6d4c8415210353b69) chore(licenses): update license headers to use SPDX
+- [`984462ce`](https://github.com/inveniosoftware/invenio-app-rdm/commit/984462ce64e9a5a0edde6f0bfd907eddc34e1695) Backport admin role ui fix (#3503)
+- [`bdf196ef`](https://github.com/inveniosoftware/invenio-app-rdm/commit/bdf196ef1f377f1e76b36690e386a53f7499902d) chore(migration): replace print with secho
+- [`bca0a2f2`](https://github.com/inveniosoftware/invenio-app-rdm/commit/bca0a2f2edc40e8f64528ce6bb84432dbf2b9b78) chore(migration): add request parent for commenting
+
+#### `invenio-assets` 4.2.5
+[4.2.3 → 4.2.5](https://github.com/inveniosoftware/invenio-assets/compare/v4.2.3...v4.2.5)
+
+- [`793f1c56`](https://github.com/inveniosoftware/invenio-assets/commit/793f1c56f2ad57ab4daa78523bba47bdd85ea00c) 📦 release: v4.2.5
+- [`d6e41e79`](https://github.com/inveniosoftware/invenio-assets/commit/d6e41e79c48966ab355a64b1ea83d1d625bc0a34) setup: upgrade rspack to v2
+- [`53dc3321`](https://github.com/inveniosoftware/invenio-assets/commit/53dc332175f3f5052161d33c3d98bb03c53fe9ad) release: v4.2.4
+- [`a3253baa`](https://github.com/inveniosoftware/invenio-assets/commit/a3253baa0fe065ad3d31bd768f69bfcce0bc1030) webpack: fix: set experiments.typescript to false
+
+#### `invenio-audit-logs` 3.0.1
+[3.0.0 → 3.0.1](https://github.com/inveniosoftware/invenio-audit-logs/compare/v3.0.0...v3.0.1)
+
+- [`c97803d7`](https://github.com/inveniosoftware/invenio-audit-logs/commit/c97803d7d0c9a25d1a6d8e39e68ad0dd8a14aa54) release: v3.0.1
+- [`b4a5db7a`](https://github.com/inveniosoftware/invenio-audit-logs/commit/b4a5db7a430115a20e7e9e20b53adfe37956d7a9) chore(setup): migrate from setuptools to hatchling
+- [`7f35d924`](https://github.com/inveniosoftware/invenio-audit-logs/commit/7f35d9240453be6bbfd6d7e88033e9c39bf47194) chore(git-blame): ignore SPDX license header commit
+- [`655648e9`](https://github.com/inveniosoftware/invenio-audit-logs/commit/655648e972009e7237d56bcf0bde5379c7817275) chore(licenses): update license headers to use SPDX
+
+#### `invenio-banners` 7.1.0
+[7.0.0 → 7.1.0](https://github.com/inveniosoftware/invenio-banners/compare/v7.0.0...v7.1.0)
+
+- [`690b4fac`](https://github.com/inveniosoftware/invenio-banners/commit/690b4facf07fa163cccb3ea454b3dee66b56843e) fix(ci): run tests on maint-*
+- [`fa893517`](https://github.com/inveniosoftware/invenio-banners/commit/fa89351770fb01ecb44fc4a323f45c257170c1ce) fix(build): include mo files
+- [`7ded067d`](https://github.com/inveniosoftware/invenio-banners/commit/7ded067dc580d240c0426cdfc29497625b72959f) release: v7.1.0
+- [`ebbf90eb`](https://github.com/inveniosoftware/invenio-banners/commit/ebbf90eb33370f3c03244bad4b3906e8f4e47995) i18n: pulled translations
+- [`656ac702`](https://github.com/inveniosoftware/invenio-banners/commit/656ac7027f7dac7c68a98e8b97c8f550373dcb35) release: v7.0.1
+- [`b1e1514b`](https://github.com/inveniosoftware/invenio-banners/commit/b1e1514baa5b6cb133461f548719cd9de96854ee) chore(setup): migrate from setuptools to hatchling
+- [`7f4bafe5`](https://github.com/inveniosoftware/invenio-banners/commit/7f4bafe57261d074572138393787ae30d82debb3) chore(git-blame): ignore the SPDX license header commit
+- [`0c7f7034`](https://github.com/inveniosoftware/invenio-banners/commit/0c7f70345d061020148c38d598b7048fef1544ec) chore(licenses): update license headers to use SPDX
+
+#### `invenio-base` 2.4.1
+[2.4.0 → 2.4.1](https://github.com/inveniosoftware/invenio-base/compare/v2.4.0...v2.4.1)
+
+- [`255874f8`](https://github.com/inveniosoftware/invenio-base/commit/255874f897d816e888423ebfaf1ac70d7c72344f) release: v2.4.1
+- [`238a2765`](https://github.com/inveniosoftware/invenio-base/commit/238a27656cdb6baa8e3b8732422cdb6a074d78f3) chore(setup): migrate from setuptools to hatchling
+- [`77a5b438`](https://github.com/inveniosoftware/invenio-base/commit/77a5b438340a1efb048963257129eeab5d56aeca) chore(git-blame): fix commit hash for SPDX header change
+- [`d4e50ff0`](https://github.com/inveniosoftware/invenio-base/commit/d4e50ff0e02ad65600123046dea1453063b29a10) chore(licenses): update license headers to use SPDX
+- [`6b83891b`](https://github.com/inveniosoftware/invenio-base/commit/6b83891b8c0126e49d1ad30ecadd914c34c5564e) chore(git-blame): ignore SPDX license header commit
+- [`f868e5e9`](https://github.com/inveniosoftware/invenio-base/commit/f868e5e91cef7a6d4c7edfdb76669443484da331) chore: reformat black
+
+#### `invenio-cache` 3.0.1
+[3.0.0 → 3.0.1](https://github.com/inveniosoftware/invenio-cache/compare/v3.0.0...v3.0.1)
+
+- [`73911ce5`](https://github.com/inveniosoftware/invenio-cache/commit/73911ce57b18f64b7a9a22cf26e5edb93745418c) release: v3.0.1
+- [`4ca71fc5`](https://github.com/inveniosoftware/invenio-cache/commit/4ca71fc5a2bff3f3079e441874a32e05fb1100af) chore(cleanup): remove outdated and unnecessary file
+- [`b641478a`](https://github.com/inveniosoftware/invenio-cache/commit/b641478a65624a49cd56f9fbfa2cffb34f6e370c) chore(setup): migrate from setuptools to hatchling
+- [`44a390e9`](https://github.com/inveniosoftware/invenio-cache/commit/44a390e90c8624c272e659f05803efe66c323c98) chore(git-blame): ignore the SPDX license header commit
+- [`e010ff8b`](https://github.com/inveniosoftware/invenio-cache/commit/e010ff8b8b116f8b9a94011606cdae91a02249e0) chore(licenses): update license headers to use SPDX
+
+#### `invenio-celery` 2.2.1
+[2.2.0 → 2.2.1](https://github.com/inveniosoftware/invenio-celery/compare/v2.2.0...v2.2.1)
+
+- [`4c7aadd9`](https://github.com/inveniosoftware/invenio-celery/commit/4c7aadd9fe4601eae28a153d4693cab0022cd248) release: v2.2.1
+- [`e86e18bb`](https://github.com/inveniosoftware/invenio-celery/commit/e86e18bb4b61009c1521924fd313660f42ec32a4) chore(setup): migrate from setuptools to hatchling
+- [`15052256`](https://github.com/inveniosoftware/invenio-celery/commit/1505225667841311f539bbc896b68362b2079896) chore(licenses): update license headers to use SPDX
+- [`237fb743`](https://github.com/inveniosoftware/invenio-celery/commit/237fb743d4ad52e49ccf888814a1b1d3d74b94d1) chore(git-blame): ignore SPDX license header commit
+- [`4b502bfe`](https://github.com/inveniosoftware/invenio-celery/commit/4b502bfe4f29a84dc274fb46249649373d613f35) tests: extend support to Python 3.14
+
+#### `invenio-checks` 10.2.0
+[10.1.0 → 10.2.0](https://github.com/inveniosoftware/invenio-checks/compare/v10.1.0...v10.2.0)
+
+- [`0dfa9f11`](https://github.com/inveniosoftware/invenio-checks/commit/0dfa9f118cde1a52402a7eff6e53be94deab85e1) fix(build): include mo files
+- [`11badfcb`](https://github.com/inveniosoftware/invenio-checks/commit/11badfcbb0663f3e07c342fba74371d87f93611c) release: v10.2.0
+- [`7e3d7501`](https://github.com/inveniosoftware/invenio-checks/commit/7e3d7501c53a1f937eb6b7cd766e9e2e5f05f635) i18n: pulled translations
+- [`561bdd63`](https://github.com/inveniosoftware/invenio-checks/commit/561bdd63d94ef277664eb33fe93091edc058108a) release: v10.1.1
+- [`ef25a73c`](https://github.com/inveniosoftware/invenio-checks/commit/ef25a73c61be1403a045355f7349e44c720de5e7) chore(licenses): fix some SPDX license headers
+- [`da358364`](https://github.com/inveniosoftware/invenio-checks/commit/da3583642fa59da431ee711738dd1f1557a401b9) chore(setup): migrate from setuptools to hatchling
+
+#### `invenio-collections` 9.1.0
+[9.0.3 → 9.1.0](https://github.com/inveniosoftware/invenio-collections/compare/v9.0.3...v9.1.0)
+
+- [`b0aa7254`](https://github.com/inveniosoftware/invenio-collections/commit/b0aa7254cc51f4822d90e1f8dd7404d1faf09256) fix(build): include mo files
+- [`bb3fa551`](https://github.com/inveniosoftware/invenio-collections/commit/bb3fa551dec3a97820193c1d2a8caff5e4e5dbd6) release: v9.1.0
+- [`a81ad486`](https://github.com/inveniosoftware/invenio-collections/commit/a81ad4860977172584fac6c01d547c8684e9b651) i18n: pulled translations
+- [`7b27d37d`](https://github.com/inveniosoftware/invenio-collections/commit/7b27d37dc2611bd3ab4714bbcb6ec4001c51717f) chore(licenses): fix some SPDX license headers
+
+#### `invenio-communities` 28.2.0+oarepo.2.7e7krj64pazvzmdl
+[28.1.0+oarepo.1.l3urhst5vd4hljnl → 28.2.0+oarepo.2.7e7krj64pazvzmdl](https://github.com/inveniosoftware/invenio-communities/compare/v28.1.0...v28.2.0)
+
+- [`b3292f3f`](https://github.com/inveniosoftware/invenio-communities/commit/b3292f3ff6df08e796ffb3bb1a9a6f759131646f) fix(build): include mo files
+- [`07e99ea9`](https://github.com/inveniosoftware/invenio-communities/commit/07e99ea9a3a388175d0e4a9e51d07a6071327573) release: v28.2.0
+- [`7397b7af`](https://github.com/inveniosoftware/invenio-communities/commit/7397b7af91ce1d0f21c3387c5c6ba42aa7fda07c) i18n: pulled translations
+- [`b2e7bebc`](https://github.com/inveniosoftware/invenio-communities/commit/b2e7bebc795560a85a5d1c2f52a9268ba6b36c34) release: v28.1.2
+- [`8f0a42ec`](https://github.com/inveniosoftware/invenio-communities/commit/8f0a42ec94af61bbd914bdda21e02c3d4e26566b) chore(setup): migrate from setuptools to hatchling
+- [`a7067c97`](https://github.com/inveniosoftware/invenio-communities/commit/a7067c971eb041f403aa134ba00ac5480656c81d) fix(alembic): alter index safely
+- [`e5d4bb0a`](https://github.com/inveniosoftware/invenio-communities/commit/e5d4bb0a1e21f8fa8dac71ebf44ce40c52af2307) chore(tests): add test run for maint-*
+- [`cedaccac`](https://github.com/inveniosoftware/invenio-communities/commit/cedaccac8572a3bbc4d89781c5533d635f84dd82) release: v28.1.1
+- [`c18a2f73`](https://github.com/inveniosoftware/invenio-communities/commit/c18a2f73f4c5be77e5a88acca9b98401ba7484bf) chore(git-blame): ignore the SPDX license header commit
+- [`822d8393`](https://github.com/inveniosoftware/invenio-communities/commit/822d83937a7dec1c9e726374ace218420e7f7dd9) chore(licenses): update license headers to use SPDX
+
+#### `invenio-config` 1.1.1
+[1.1.0+oarepo.4.uquwys7agp2l27a3 → 1.1.1](https://github.com/inveniosoftware/invenio-config/compare/v1.1.0...v1.1.1)
+
+- [`2f4086ce`](https://github.com/inveniosoftware/invenio-config/commit/2f4086ce203827dd0564a254eb5a4a7cac713132) release: v1.1.1
+- [`4f91c6b3`](https://github.com/inveniosoftware/invenio-config/commit/4f91c6b3ebce1a5a0eb01c1b0ad9cf7bed3a4fbd) chore(cleanup): remove outdated and unnecessary file
+- [`53561312`](https://github.com/inveniosoftware/invenio-config/commit/5356131275fb09c3e447dbd572bf0966f0c7d4de) chore(setup): migrate from setuptools to hatchling
+- [`e3c489bf`](https://github.com/inveniosoftware/invenio-config/commit/e3c489bf86995e29048b9ff4bd6e22595ca7c3a4) chore(licenses): update license headers to use SPDX
+- [`f060d855`](https://github.com/inveniosoftware/invenio-config/commit/f060d85596c473dafb1017e25c4e9b56c18755b5) chore(git-blame): ignore SPDX license header commit
+- [`b7c969e0`](https://github.com/inveniosoftware/invenio-config/commit/b7c969e0596ace9373d634250b15aa0394110cfa) chore: reformat black
+- [`b239c441`](https://github.com/inveniosoftware/invenio-config/commit/b239c4417d25e74f03c69210208adecee8ca9a64) tests: extend support to Python 3.14
+
+#### `invenio-db` 2.5.2
+[2.5.1 → 2.5.2](https://github.com/inveniosoftware/invenio-db/compare/v2.5.1...v2.5.2)
+
+- [`37de9d3c`](https://github.com/inveniosoftware/invenio-db/commit/37de9d3cf850248215a0e0fee5fd9e4200e1e66d) release: v2.5.2
+- [`6506b387`](https://github.com/inveniosoftware/invenio-db/commit/6506b387ec2f634f786df5147ff090c1a8433986) chore(format): reformat with black
+- [`a0534be8`](https://github.com/inveniosoftware/invenio-db/commit/a0534be8daec6ba8fe224588f35de201c143a1d9) chore(cleanup): remove outdated and unnecessary files
+- [`08b90719`](https://github.com/inveniosoftware/invenio-db/commit/08b907191c4159927fadcaf98a43fc7c5cbe93b3) chore(setup): migrate from setuptools to hatchling
+- [`f180dacd`](https://github.com/inveniosoftware/invenio-db/commit/f180dacd5332bcf046bf4b43c1d2172c2ef2c11b) chore(git-blame): ignore the SPDX license header commit
+- [`eb418810`](https://github.com/inveniosoftware/invenio-db/commit/eb41881008e64fbb65a23d4836ef9c4fa96dc2fe) chore(licenses): update license headers to use SPDX
+
+#### `invenio-drafts-resources` 10.1.0+oarepo.1.kdcxzkknwebr4cfn
+[10.0.0+oarepo.1.aa7esyllsxmsu6a4 → 10.1.0+oarepo.1.kdcxzkknwebr4cfn](https://github.com/inveniosoftware/invenio-drafts-resources/compare/v10.0.0...v10.1.0)
+
+- [`6f884758`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/6f88475826799b07328a4424e82a67c96659918e) fix(ci): run tests on maint-*
+- [`8387f0cb`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/8387f0cb63c08b203163c3ae3c34e1eac8b51b0e) fix(build): include mo files
+- [`6eb8e560`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/6eb8e5600f43b6ab592e8a85738772a181793257) release: v10.1.0
+- [`fa1241c9`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/fa1241c90e2a2617aa0aa5a2045983eb78c745ca) i18n: pulled translations
+- [`32d4620b`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/32d4620ba7874594c72334fb683b830ea882ca96) release: v10.0.1
+- [`47c8b8d5`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/47c8b8d5c1901aba95435751ff1c7dfe6690e992) chore(license): update license headers to use SPDX
+- [`13fb6524`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/13fb6524b58e719d6134273ae8c16d15fa6552f4) chore(setup): migrate from setuptools to hatchling
+- [`9e335ae7`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/9e335ae7c99ae681f1c28f0a4a750d49e165e062) chore(git-blame): ignore the SPDX license header commit
+- [`649f73e1`](https://github.com/inveniosoftware/invenio-drafts-resources/commit/649f73e19ab0726e7da818772dc6cacdf4637422) chore(license): update license headers to use SPDX
+
+#### `invenio-files-rest` 5.1.0
+[5.0.0+oarepo.1.rm6vkq5heonxnonk → 5.1.0](https://github.com/inveniosoftware/invenio-files-rest/compare/v5.0.0...v5.1.0)
+
+- [`c3e7d5a8`](https://github.com/inveniosoftware/invenio-files-rest/commit/c3e7d5a84378f853fe7acac249169c964ba15406) fix(ci): run tests on maint-*
+- [`707a5110`](https://github.com/inveniosoftware/invenio-files-rest/commit/707a5110aa34c3dbca1e5e4166fed9e476f94375) fix(build): include mo files
+- [`009bdc8e`](https://github.com/inveniosoftware/invenio-files-rest/commit/009bdc8ea1cd0d9cfc22d3c542a72a173281317d) release: v5.1.0
+- [`e6a04e29`](https://github.com/inveniosoftware/invenio-files-rest/commit/e6a04e295b2ff8b9d853a7aee3f04b6af621700b) i18n: pulled translations
+- [`d7cfde1d`](https://github.com/inveniosoftware/invenio-files-rest/commit/d7cfde1de281d8f620b2d22e901f0b023ae207bb) release: v5.0.2
+- [`0823810a`](https://github.com/inveniosoftware/invenio-files-rest/commit/0823810aad71ea1d11eee50da41bcbed52030f69) helpers: add no_cache cache-control for restricted files
+- [`fa343840`](https://github.com/inveniosoftware/invenio-files-rest/commit/fa3438404a9b69595bd81a0e6f2238f1d7ba8821) fix(errors): fix construction of StorageError instances
+- [`87415f82`](https://github.com/inveniosoftware/invenio-files-rest/commit/87415f829b776657daa072dd7d555ebc0ba44645) fix(errors): handle FileNotFoundError to avoid leaking details
+- [`7354e9d6`](https://github.com/inveniosoftware/invenio-files-rest/commit/7354e9d661caeeb258408bbd5ef135ff61e379c1) release: v5.0.1
+- [`4930ce3c`](https://github.com/inveniosoftware/invenio-files-rest/commit/4930ce3c5666f73cac6ec6833d3457399d74cf03) chore(format): reformat with black
+- [`d1ef3eb1`](https://github.com/inveniosoftware/invenio-files-rest/commit/d1ef3eb1ead98ddaed69b1701ee2dfe6f6cacb27) chore(cleanup): remove outdated and unnecessary files
+- [`6c900c4d`](https://github.com/inveniosoftware/invenio-files-rest/commit/6c900c4da60b2c46359a237e88d98f6788a7e06b) chore(setup): migrate from setuptools to hatchling
+- [`18664035`](https://github.com/inveniosoftware/invenio-files-rest/commit/186640351240cc85e74cc1f58cb78581882899c9) chore(git-blame): ignore the SPDX license header commit
+- [`c0de9a95`](https://github.com/inveniosoftware/invenio-files-rest/commit/c0de9a9573e607aa463a5e6ee60c0e98379a7172) chore(licenses): update license headers to use SPDX
+
+#### `invenio-formatter` 4.1.0
+[4.0.0 → 4.1.0](https://github.com/inveniosoftware/invenio-formatter/compare/v4.0.0...v4.1.0)
+
+- [`a87ac815`](https://github.com/inveniosoftware/invenio-formatter/commit/a87ac8159d5b24a5a127b0c573c7dbb20e35f0f5) fix(ci): run tests on maint-*
+- [`63fc3ed3`](https://github.com/inveniosoftware/invenio-formatter/commit/63fc3ed33f5a66b102a77c33404fc22d5bc9698f) fix(build): include mo files
+- [`2ea18c9a`](https://github.com/inveniosoftware/invenio-formatter/commit/2ea18c9a0b084d978d7e0cad48c0fb0bb99ef9a9) release: v4.1.0
+- [`9ec2bf08`](https://github.com/inveniosoftware/invenio-formatter/commit/9ec2bf080112e223a27b0bb5c79d43233e944fc9) i18n: pulled translations
+- [`a63313d5`](https://github.com/inveniosoftware/invenio-formatter/commit/a63313d5c419e4cf47669d1444c02ce2390857cd) release: v4.0.1
+- [`967a4a38`](https://github.com/inveniosoftware/invenio-formatter/commit/967a4a38141934867a12fdd494fa468de41eed2f) chore(setup): migrate from setuptools to hatchling
+- [`3dceb0ec`](https://github.com/inveniosoftware/invenio-formatter/commit/3dceb0ec4a391e4ab8ef3533f00ed1b4c707a480) chore(licenses): update license headers to use SPDX
+- [`d582a7b1`](https://github.com/inveniosoftware/invenio-formatter/commit/d582a7b13bbf6994ebaff26ca8a686a3ff90b27d) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-i18n` 3.5.1
+[3.5.0 → 3.5.1](https://github.com/inveniosoftware/invenio-i18n/compare/v3.5.0...v3.5.1)
+
+- [`ea0e60cb`](https://github.com/inveniosoftware/invenio-i18n/commit/ea0e60cbec8d4dffbfce5db8ced88bd0bfb8dcef) release: v3.5.1
+- [`d35e173f`](https://github.com/inveniosoftware/invenio-i18n/commit/d35e173f5882963e3744492e2cf28e018ec269ea) chore(setup): migrate from setuptools to hatchling
+- [`1d973666`](https://github.com/inveniosoftware/invenio-i18n/commit/1d97366610cb681f82b2d309729b11c3d7c77488) chore(licenses): update license headers to use SPDX
+- [`d8c4ee8f`](https://github.com/inveniosoftware/invenio-i18n/commit/d8c4ee8f89a45da5f17b016e3762bdbc03d9b2f8) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-indexer` 5.0.1
+[5.0.0 → 5.0.1](https://github.com/inveniosoftware/invenio-indexer/compare/v5.0.0...v5.0.1)
+
+- [`ea55fac8`](https://github.com/inveniosoftware/invenio-indexer/commit/ea55fac86cc0fcff0003f9b91a13442cdaafb345) release: v5.0.1
+- [`d4e34447`](https://github.com/inveniosoftware/invenio-indexer/commit/d4e3444765e04c4ca3f0c05e5301b2f9a7342a4d) chore(setup): migrate from setuptools to hatchling
+- [`8276b4d6`](https://github.com/inveniosoftware/invenio-indexer/commit/8276b4d6c918131ea325fab9d14e42fbb36fca1e) chore(git-blame): ignore the SPDX license header commit
+- [`8ff04d85`](https://github.com/inveniosoftware/invenio-indexer/commit/8ff04d85760dabd5b5ca9ebaf346a18e8a4c9e07) chore(licenses): update license headers to use SPDX
+
+#### `invenio-jobs` 10.1.0
+[10.0.0 → 10.1.0](https://github.com/inveniosoftware/invenio-jobs/compare/v10.0.0...v10.1.0)
+
+- [`f006bb8d`](https://github.com/inveniosoftware/invenio-jobs/commit/f006bb8d7be0e5d9db78b2634809b0abeadcba1b) fix(ci): run tests on maint-*
+- [`241407b2`](https://github.com/inveniosoftware/invenio-jobs/commit/241407b23c68dd3866678ce9fa4f2a4cfbb4ac64) fix(build): include mo files
+- [`e413d2a9`](https://github.com/inveniosoftware/invenio-jobs/commit/e413d2a9033fd607ae04fc5f9c21922e6ad4e3c9) release: v10.1.0
+- [`4a600544`](https://github.com/inveniosoftware/invenio-jobs/commit/4a600544d830a32a6c149a0b4ccd54b22e8b3914) i18n: pulled translations
+- [`4a53b023`](https://github.com/inveniosoftware/invenio-jobs/commit/4a53b023320636fa83e0657d46edaf6c9ad8dd33) release: v10.0.1
+- [`f0ebdc34`](https://github.com/inveniosoftware/invenio-jobs/commit/f0ebdc349a471d0996c38733552c794856407e5f) chore(setup): migrate from setuptools to hatchling
+- [`7c4ba51e`](https://github.com/inveniosoftware/invenio-jobs/commit/7c4ba51ea6019ee5a877e55a20b8a5d51bafe1e6) chore(git-blame): ignore SPDX license header commit
+- [`cf00a200`](https://github.com/inveniosoftware/invenio-jobs/commit/cf00a2003c9938c3eead77c1b05a640dc64fe71a) chore(packaging): exclude .git-blame-ignore-revs from distribution
+- [`1a175e02`](https://github.com/inveniosoftware/invenio-jobs/commit/1a175e0235cbcf6a947a2b08be9ccebe26962cf3) chore(licenses): update license headers to use SPDX
+
+#### `invenio-jsonschemas` 2.1.1+oarepo.1.dcdcs7yhenkuvvwt
+[2.1.0+oarepo.4.ah2r67trm7bozrty → 2.1.1+oarepo.1.dcdcs7yhenkuvvwt](https://github.com/inveniosoftware/invenio-jsonschemas/compare/v2.1.0...v2.1.1)
+
+- [`9a8253b6`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/9a8253b630a5769b5e5f38ccdaa93433bed9f111) release: v2.1.1
+- [`d3380728`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/d33807285e549cffc438a7a5564f9d4775a3af58) chore(format): reformat with black
+- [`b75c209b`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/b75c209bf199864dcc58fe77fbf8ec91eb3ea8ab) chore(cleanup): remove outdated and unnecessary file
+- [`6a14b663`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/6a14b663f61f708defd62daffa336b62e40b07bb) chore(setup): migrate from setuptools to hatchling
+- [`8b1575b6`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/8b1575b634c7629bb7a155c1a9af0ef82c0ae271) chore(licenses): update license headers to use SPDX
+- [`9048d2d2`](https://github.com/inveniosoftware/invenio-jsonschemas/commit/9048d2d2cfa0632d5176e38cbb4ac3a8afcdfeeb) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-logging` 4.3.1
+[4.2.0 → 4.3.1](https://github.com/inveniosoftware/invenio-logging/compare/v4.2.0...v4.3.1)
+
+- [`101734e2`](https://github.com/inveniosoftware/invenio-logging/commit/101734e22b346f1584e6101fb0d6c8ff80efd6a8) 📦 release: v4.3.1
+- [`3c39cbd3`](https://github.com/inveniosoftware/invenio-logging/commit/3c39cbd36af31ca46b041293da5e020bcc52b442) feat(sentry): LegacyStoreTransport for pre-envelope Sentry servers
+- [`12223ff3`](https://github.com/inveniosoftware/invenio-logging/commit/12223ff3a786d49a9442a7dff2e6ecaebba5d5ca) fix(sentry): set request_id tag as dict, not list
+- [`b3f387f6`](https://github.com/inveniosoftware/invenio-logging/commit/b3f387f6684343a649d4de35668f97d92effd1bd) release: v4.3.0
+- [`711bf223`](https://github.com/inveniosoftware/invenio-logging/commit/711bf22389132c8051f9ade2a0994e0aeee060c3) chore(setup): migrate from setuptools to hatchling
+- [`f192f7a2`](https://github.com/inveniosoftware/invenio-logging/commit/f192f7a2095cacb8f8fc716195d405ef8cfa7f62) logging: re-use flask default StreamHandler instead of adding new ones
+- [`b897497f`](https://github.com/inveniosoftware/invenio-logging/commit/b897497fbdc8934a2e677a74a606daba1166b314) fix(console): remove default_handler if console logging is disabled
+
+#### `invenio-mail` 2.3.1
+[2.3.0+oarepo.4.qsg7jcloi7wbim37 → 2.3.1](https://github.com/inveniosoftware/invenio-mail/compare/v2.3.0...v2.3.1)
+
+- [`e966d210`](https://github.com/inveniosoftware/invenio-mail/commit/e966d210f821ed4627f16cc52f69a23bfaf77791) release: v2.3.1
+- [`f264438d`](https://github.com/inveniosoftware/invenio-mail/commit/f264438d42f9330a0589f11f4ee3370073ed35d9) chore(setup): migrate from setuptools to hatchling
+- [`3ee02443`](https://github.com/inveniosoftware/invenio-mail/commit/3ee024430598ea99b8c7e6c96ce3df59a11410cf) chore(licenses): update license headers to use SPDX
+- [`759cba76`](https://github.com/inveniosoftware/invenio-mail/commit/759cba764b6f956af5cfce734856ba281f188468) chore(git-blame): ignore SPDX license header commit
+- [`44c157a4`](https://github.com/inveniosoftware/invenio-mail/commit/44c157a4cadcb064c695f3e6bc11788e38fa50fb) tests: extend support to Python 3.14
+
+#### `invenio-notifications` 1.4.0+oarepo.3.nchd5zfc7333twv4
+[1.3.0+oarepo.2.6aeoh5zp2umw2kjc → 1.4.0+oarepo.3.nchd5zfc7333twv4](https://github.com/inveniosoftware/invenio-notifications/compare/v1.3.0...v1.4.0)
+
+- [`0b28cb8c`](https://github.com/inveniosoftware/invenio-notifications/commit/0b28cb8ca0146a66e1f12021c50e71557f959925) fix(ci): run tests on maint-*
+- [`b4559846`](https://github.com/inveniosoftware/invenio-notifications/commit/b45598461b6826433444a601ae43a63e773f9c82) fix(build): include mo files
+- [`f3354c92`](https://github.com/inveniosoftware/invenio-notifications/commit/f3354c92278e3da81fa81c58e5dc13d62e7d31e8) release: v1.4.0
+- [`1dd63093`](https://github.com/inveniosoftware/invenio-notifications/commit/1dd63093e7c3e1112684418393a22e016a89578e) i18n: pulled translations
+- [`15b645a0`](https://github.com/inveniosoftware/invenio-notifications/commit/15b645a0a93698f2b87d06ca730c03b0c783e118) release: v1.3.1
+- [`c0706df0`](https://github.com/inveniosoftware/invenio-notifications/commit/c0706df05559ab7bf6cc731ccd058a9d01752ef3) chore(setup): migrate from setuptools to hatchling
+- [`097a3033`](https://github.com/inveniosoftware/invenio-notifications/commit/097a3033a6f35ea4b3cf8514f1f706d74864368e) chore(packaging): exclude .git-blame-ignore-revs from distribution
+- [`174f486a`](https://github.com/inveniosoftware/invenio-notifications/commit/174f486a482ad3e778acd936a88242018b14ec24) chore(licenses): update license headers to use SPDX
+- [`5338a881`](https://github.com/inveniosoftware/invenio-notifications/commit/5338a8812b30bc32124c80ce66d98f7508e5b730) chore(git-blame): ignore SPDX license header commit
+- [`e0c8ed08`](https://github.com/inveniosoftware/invenio-notifications/commit/e0c8ed08b80429d8eba30c12259c632ea807d04c) chore: re-export some utilities
+- [`3a03b4b0`](https://github.com/inveniosoftware/invenio-notifications/commit/3a03b4b0af038b74aaa876263fbf9181250ce272) chore: add more documentation to the various moving parts
+- [`c0f3949d`](https://github.com/inveniosoftware/invenio-notifications/commit/c0f3949d803ed2b50dde3ea4cae4d78c2c14491b) chore: split notification generators into their own files
+- [`f2c19235`](https://github.com/inveniosoftware/invenio-notifications/commit/f2c19235b009c275275584a45e54350ec1b44af7) chore: use relative imports for the same package
+- [`7fe07385`](https://github.com/inveniosoftware/invenio-notifications/commit/7fe0738585f1804ea5308a627c2d75346cd04887) chore: add more information in the README
+- [`39a1018b`](https://github.com/inveniosoftware/invenio-notifications/commit/39a1018b8da90caa35998e5f6e3e4e6d9489a26f) chore: apply clearer naming to generators
+
+#### `invenio-oaiserver` 5.1.0+oarepo.1.myoh6ltv4x24wyl7
+[5.0.0+oarepo.1.fe244nvk3gg6riuz → 5.1.0+oarepo.1.myoh6ltv4x24wyl7](https://github.com/inveniosoftware/invenio-oaiserver/compare/v5.0.0...v5.1.0)
+
+- [`fe44a11f`](https://github.com/inveniosoftware/invenio-oaiserver/commit/fe44a11f7a06145d422738c7a5eea10566b328a7) fix(ci): run tests on maint-*
+- [`c9377072`](https://github.com/inveniosoftware/invenio-oaiserver/commit/c937707204f83ae7a4661b37ce0a6327bd07b23c) fix(build): include mo files
+- [`9981b229`](https://github.com/inveniosoftware/invenio-oaiserver/commit/9981b229f34d16c949827cc7053c710f77643580) release: v5.1.0
+- [`3e8e7f84`](https://github.com/inveniosoftware/invenio-oaiserver/commit/3e8e7f845059a035a7fd980b08468dc0175cc2d6) i18n: pulled translations
+- [`3c82e5e2`](https://github.com/inveniosoftware/invenio-oaiserver/commit/3c82e5e29a269ca201bb73cc3c3e1e1c49adcb17) release: v5.0.1
+- [`93416431`](https://github.com/inveniosoftware/invenio-oaiserver/commit/93416431dd7a9f85bb4888ce8469c27512cc86bc) chore(licenses): fix some SPDX license headers
+- [`d022242c`](https://github.com/inveniosoftware/invenio-oaiserver/commit/d022242c70ae796b010e9bfa904bb983b3d67f90) chore(setup): migrate from setuptools to hatchling
+- [`7e8a4e1d`](https://github.com/inveniosoftware/invenio-oaiserver/commit/7e8a4e1d6d41a7430b8ebf4717b183d3ee259a83) chore(git-blame): ignore the SPDX license header commit
+- [`8d090875`](https://github.com/inveniosoftware/invenio-oaiserver/commit/8d090875150b50137216c771c0d9a61f7ba72345) chore(licenses): update license headers to use SPDX
+
+#### `invenio-oauth2server` 5.1.0
+[5.0.0 → 5.1.0](https://github.com/inveniosoftware/invenio-oauth2server/compare/v5.0.0...v5.1.0)
+
+- [`985b7bde`](https://github.com/inveniosoftware/invenio-oauth2server/commit/985b7bde15ecc8c9f0fa9e6ed25647e92bc77e88) fix(ci): run tests on maint-*
+- [`417a58bf`](https://github.com/inveniosoftware/invenio-oauth2server/commit/417a58bfe50af002f0ec98764b1cbdea36044e92) fix(build): include mo files
+- [`be791915`](https://github.com/inveniosoftware/invenio-oauth2server/commit/be7919153e64ac17f5dfee9a090917cd3912bba3) release: v5.1.0
+- [`3d936821`](https://github.com/inveniosoftware/invenio-oauth2server/commit/3d93682121ee563bd4da6e8308bd4478e285ffcc) i18n: pulled translations
+- [`fdeb2fd9`](https://github.com/inveniosoftware/invenio-oauth2server/commit/fdeb2fd9c152443fa4ac13980ffb4ee817a861e2) release: v5.0.1
+- [`3fc62992`](https://github.com/inveniosoftware/invenio-oauth2server/commit/3fc629927e264289a14b28b3af5e27fb634bc21d) chore(cleanup): remove outdated and unnecessary file
+- [`32b7ca1c`](https://github.com/inveniosoftware/invenio-oauth2server/commit/32b7ca1c4269cdd3e2a21ec392df5e8b31c0af83) chore(setup): migrate from setuptools to hatchling
+- [`725bdc76`](https://github.com/inveniosoftware/invenio-oauth2server/commit/725bdc761b0171f6b4dca60630f837f749f46dcb) chore(git-blame): ignore the SPDX license header commit
+- [`c9d7b276`](https://github.com/inveniosoftware/invenio-oauth2server/commit/c9d7b2762ee0fa4205608b4b2eb323418c568f0e) chore(licenses): update license headers to use SPDX
+
+#### `invenio-oauthclient` 8.1.0
+[8.0.0 → 8.1.0](https://github.com/inveniosoftware/invenio-oauthclient/compare/v8.0.0...v8.1.0)
+
+- [`685db259`](https://github.com/inveniosoftware/invenio-oauthclient/commit/685db259d186522635c6a249ec74aa49bd245c75) fix(build): include mo files
+- [`3dd31cbb`](https://github.com/inveniosoftware/invenio-oauthclient/commit/3dd31cbbf362e3bab7c17682652b2ca0eec0e94b) release: v8.1.0
+- [`cde53c27`](https://github.com/inveniosoftware/invenio-oauthclient/commit/cde53c27ed4532039eb41fdbfe4b416b35c4b6e7) i18n: pulled translations
+- [`7081e6af`](https://github.com/inveniosoftware/invenio-oauthclient/commit/7081e6af29843db4f5661f3445a609f17fe6be18) release: v8.0.1
+- [`d031f8f2`](https://github.com/inveniosoftware/invenio-oauthclient/commit/d031f8f2ede5e4c21a5d457bba3f36c36d7b4185) chore(licenses): fix some SPDX license headers
+- [`9755d1ef`](https://github.com/inveniosoftware/invenio-oauthclient/commit/9755d1ef4829442369cf6c1840f8909d1f6c95be) chore(format): reformat with black
+- [`2d2a6870`](https://github.com/inveniosoftware/invenio-oauthclient/commit/2d2a6870b16af4ca913a2e5b2fe220e5e04480ea) chore(format): settle disagreement between isort and black
+- [`b61dd4aa`](https://github.com/inveniosoftware/invenio-oauthclient/commit/b61dd4aa4cf82f9f5b9269532bee9cddd28855fb) chore(cleanup): remove outdated and unnecessary file
+- [`db91e206`](https://github.com/inveniosoftware/invenio-oauthclient/commit/db91e206ad209a3b1aef4b00865f848a8d29c2ad) chore(setup): migrate from setuptools to hatchling
+- [`34272c82`](https://github.com/inveniosoftware/invenio-oauthclient/commit/34272c8258a2da78dbf2786e5e411f8b0a17ea86) chore(git-blame): ignore SPDX license header commit
+- [`068107ab`](https://github.com/inveniosoftware/invenio-oauthclient/commit/068107ab8fd26c0661fe970fd40a6152fb06894c) chore(licenses): update license headers to use SPDX
+
+#### `invenio-pages` 9.1.0
+[9.0.0 → 9.1.0](https://github.com/inveniosoftware/invenio-pages/compare/v9.0.0...v9.1.0)
+
+- [`49bc8c90`](https://github.com/inveniosoftware/invenio-pages/commit/49bc8c908a77134a8ea2e2504c5957a57048952e) fix(ci): run tests on maint-*
+- [`3032fab0`](https://github.com/inveniosoftware/invenio-pages/commit/3032fab006ab6eeab5897782658b1630451f2c26) fix(build): include mo files
+- [`f9435c39`](https://github.com/inveniosoftware/invenio-pages/commit/f9435c39a27887a08955da0a5b41d98075dfc6cf) release: v9.1.0
+- [`dbb3b03a`](https://github.com/inveniosoftware/invenio-pages/commit/dbb3b03a01f099da78de1e6eabcd49076e2a1abd) i18n: pulled translations
+- [`f9969d33`](https://github.com/inveniosoftware/invenio-pages/commit/f9969d33af858aa27532063b60ea2e6438946c4a) release: v9.0.2
+- [`a0547d82`](https://github.com/inveniosoftware/invenio-pages/commit/a0547d821354fe83191ea368b06e6f6dd303cf3a) chore(format): reformat with black
+- [`58c8ece4`](https://github.com/inveniosoftware/invenio-pages/commit/58c8ece4e3d04cf1b60908f22ed9fb03c95026e0) chore(setup): migrate from setuptools to hatchling
+- [`92614609`](https://github.com/inveniosoftware/invenio-pages/commit/92614609b9ac34c105e5eaeb3484a586542542f9) fix(tests): create `Page` fixtures one by one to space out creation
+- [`c7079f3d`](https://github.com/inveniosoftware/invenio-pages/commit/c7079f3dd386e3d2e1e53a714afdf88df0daca4e) release: v9.0.1
+- [`8bd5c8a7`](https://github.com/inveniosoftware/invenio-pages/commit/8bd5c8a73cb8c4259014aba7189e9a72b685ac7a) fix: initialize jinja_env and app so dynamic pages render
+- [`c51313b4`](https://github.com/inveniosoftware/invenio-pages/commit/c51313b4e26a518056a3b1d3904f12c31be0c931) chore(git-blame): ignore the SPDX license header commit
+- [`9fc1bc5b`](https://github.com/inveniosoftware/invenio-pages/commit/9fc1bc5bec9d764afdf5da500958b629c126f070) chore(licenses): update license headers to use SPDX
+
+#### `invenio-pidstore` 3.1.0
+[3.0.0 → 3.1.0](https://github.com/inveniosoftware/invenio-pidstore/compare/v3.0.0...v3.1.0)
+
+- [`b5a25306`](https://github.com/inveniosoftware/invenio-pidstore/commit/b5a25306d12a10a786847bfbf92b8e6ac79b7de2) fix(ci): run tests on maint-*
+- [`fa4dae3a`](https://github.com/inveniosoftware/invenio-pidstore/commit/fa4dae3a35b4b59d19527468d2b870278368e244) fix(build): include mo files
+- [`11474c57`](https://github.com/inveniosoftware/invenio-pidstore/commit/11474c57d9ab4af4a04faec9960fcba8f331d4c8) release: v3.1.0
+- [`4c67dce6`](https://github.com/inveniosoftware/invenio-pidstore/commit/4c67dce676d805e17213c6a6b72fba172b502b78) i18n: pulled translations
+- [`a6f17771`](https://github.com/inveniosoftware/invenio-pidstore/commit/a6f177712a91d374a7c59bbd109deacacc44f2fa) release: v3.0.1
+- [`8522c065`](https://github.com/inveniosoftware/invenio-pidstore/commit/8522c06559b3303dc5c9103278775b4b7750db4c) chore(format): reformat with black
+- [`7a403578`](https://github.com/inveniosoftware/invenio-pidstore/commit/7a40357892a5281229e5116c370411a483d975aa) chore(docs): fix documented exception
+- [`a85e0337`](https://github.com/inveniosoftware/invenio-pidstore/commit/a85e033731502064e41351db7083979719cc5b4e) chore(cleanup): remove outdated and unnecessary file
+- [`9a1aa4b1`](https://github.com/inveniosoftware/invenio-pidstore/commit/9a1aa4b1681ef60085e01b601d6d0cbe03d28005) chore(setup): migrate from setuptools to hatchling
+- [`274e74f8`](https://github.com/inveniosoftware/invenio-pidstore/commit/274e74f875378b2d25f8a921cb253004e9c30f48) chore(licenses): update license headers to use SPDX
+- [`d992a4a7`](https://github.com/inveniosoftware/invenio-pidstore/commit/d992a4a7ff4aec437a921f316ced574dd6b4f785) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-previewer` 5.1.0
+[5.0.1 → 5.1.0](https://github.com/inveniosoftware/invenio-previewer/compare/v5.0.1...v5.1.0)
+
+- [`7c75a218`](https://github.com/inveniosoftware/invenio-previewer/commit/7c75a2183f07e3f9cf413da3a061d6e6e10b9802) fix(ci): run tests on maint-*
+- [`314ed69a`](https://github.com/inveniosoftware/invenio-previewer/commit/314ed69a64c3780968fce4b41ae30a1851a0e89c) fix(build): include mo files
+- [`fa09ade0`](https://github.com/inveniosoftware/invenio-previewer/commit/fa09ade022b2788982d43e8bbbce3ca8db21e0eb) release: v5.1.0
+- [`87263b5d`](https://github.com/inveniosoftware/invenio-previewer/commit/87263b5dc5521b6fe6f7ee6e8705ab05cceb9b66) i18n: pulled translations
+- [`40a21a54`](https://github.com/inveniosoftware/invenio-previewer/commit/40a21a545b72bfb975e58a23fd304c72777dd65f) release: v5.0.2
+- [`aec745b9`](https://github.com/inveniosoftware/invenio-previewer/commit/aec745b920fb997c2b0ffff9e5768944dc1b3bc0) chore(setup): migrate from setuptools to hatchling
+- [`a41d1e51`](https://github.com/inveniosoftware/invenio-previewer/commit/a41d1e51da0c5c66bfa11c0f739a758a739c1dd3) chore(git-blame): ignore the SPDX license header commit
+- [`6e68cc03`](https://github.com/inveniosoftware/invenio-previewer/commit/6e68cc031f4826fc9431dae59978347abe6f9e94) chore(licenses): update license headers to use SPDX
+
+#### `invenio-queues` 1.0.4
+[1.0.3+oarepo.1.mbv3n5punhjld6n3 → 1.0.4](https://github.com/inveniosoftware/invenio-queues/compare/v1.0.3...v1.0.4)
+
+- [`405389a5`](https://github.com/inveniosoftware/invenio-queues/commit/405389a5c35e6226ada38fac1fd9b357bbfdfcb1) release: v1.0.4
+- [`022d41d8`](https://github.com/inveniosoftware/invenio-queues/commit/022d41d842120f4a70bfab83ddbeec14cf464cea) chore(cleanup): remove outdated and unnecessary file
+- [`cb387a28`](https://github.com/inveniosoftware/invenio-queues/commit/cb387a28d44c0811110ffd3eac6dd995eaf88c79) chore(setup): migrate from setuptools to hatchling
+- [`1fd87ffe`](https://github.com/inveniosoftware/invenio-queues/commit/1fd87ffee053e3875477d72994565b05aa423730) chore(licenses): update license headers to use SPDX
+- [`4d8a97c1`](https://github.com/inveniosoftware/invenio-queues/commit/4d8a97c10fd3d3fb17d66ac518ca91cbe6e8ddd4) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-rdm-records` 32.1.0+oarepo.1.n3bjqtcvag7jeoi4
+[32.0.2+oarepo.1.ahremuzamvsazmfy → 32.1.0+oarepo.1.n3bjqtcvag7jeoi4](https://github.com/inveniosoftware/invenio-rdm-records/compare/v32.0.2...v32.1.0)
+
+- [`de4c12e6`](https://github.com/inveniosoftware/invenio-rdm-records/commit/de4c12e64b593bf593d35e2dd96883552837ac83) fix(build): include mo files
+- [`d2e64a34`](https://github.com/inveniosoftware/invenio-rdm-records/commit/d2e64a34fd5af392f99ab9e1f5390b08e48b2d61) release: v32.1.0
+- [`8a39db22`](https://github.com/inveniosoftware/invenio-rdm-records/commit/8a39db229b03e96946c25fc80315059750fab446) i18n: pulled translations
+- [`c208c426`](https://github.com/inveniosoftware/invenio-rdm-records/commit/c208c4264e306f1fcf56ed3d1a16cc13d3050bf3) feat(review): review each rec. version class
+- [`bbd3ea10`](https://github.com/inveniosoftware/invenio-rdm-records/commit/bbd3ea10773bf4137fcb5b8f7ac44b0bf9ea4d5a) fix: add IsVersionOf relations to concept doi in crossref serializer
+- [`1462a8fe`](https://github.com/inveniosoftware/invenio-rdm-records/commit/1462a8fefaaff1aaede4b227d79563c7150fbccb) add test
+- [`9fa0a38d`](https://github.com/inveniosoftware/invenio-rdm-records/commit/9fa0a38d6b9fb08a55316c048e5c0b6af6304a7f) bump commonmeta version
+- [`df5b2fbe`](https://github.com/inveniosoftware/invenio-rdm-records/commit/df5b2fbeca8eb35e17b77519d9813c71f385d3b9) release: v32.0.7
+- [`a1aeb027`](https://github.com/inveniosoftware/invenio-rdm-records/commit/a1aeb0274f4c72bc0b57b9251bc10261a94a251f) release: 32.0.6
+- [`e43c972b`](https://github.com/inveniosoftware/invenio-rdm-records/commit/e43c972bdfc78adaf87500fe06bafb42dae9e1ea) mappings: disable draft geometry doc values
+- [`e6a4e25a`](https://github.com/inveniosoftware/invenio-rdm-records/commit/e6a4e25aface6874fa3ce4444e00c266f8189f62) release: v32.0.5
+- [`b23ca605`](https://github.com/inveniosoftware/invenio-rdm-records/commit/b23ca605009478cc82f5c3436023adf814c9ca31) chore(format): reformat with black
+- [`502a587a`](https://github.com/inveniosoftware/invenio-rdm-records/commit/502a587abfcd5c200811d32b8978d3529b31017a) chore(cleanup): remove outdated and unnecessary files
+- [`7554d89c`](https://github.com/inveniosoftware/invenio-rdm-records/commit/7554d89c565f575a85480aed55a2602ff6cfbe85) chore(setup): migrate from setuptools to hatchling
+- [`8169affb`](https://github.com/inveniosoftware/invenio-rdm-records/commit/8169affb67a768bfe2fd49ab3b20e749a6e72a58) feat: add support for crossref schema 5.5 via commonmeta-py
+- [`758eeef9`](https://github.com/inveniosoftware/invenio-rdm-records/commit/758eeef92caa510b4e206c635836cb3ee2de5b22) fix: fixed isParentAlreadyPublished not working on /new
+- [`ced4f864`](https://github.com/inveniosoftware/invenio-rdm-records/commit/ced4f864690a3ba1e40e4f27f930b6f11f05fd37) release: v32.0.4
+- [`95e3e58c`](https://github.com/inveniosoftware/invenio-rdm-records/commit/95e3e58c2fda0c5bb25f927359e0cda3b8aaa280) fix(alembic): alter index safely
+- [`b87d5bdc`](https://github.com/inveniosoftware/invenio-rdm-records/commit/b87d5bdc70f91662276d92e1e34818249578d059) release: v32.0.3
+- [`32cc08ab`](https://github.com/inveniosoftware/invenio-rdm-records/commit/32cc08ab0638f3d1af442d7ffea1c2fd414a20fd) chore(git): ignore uv.lock
+
+#### `invenio-records` 5.1.0
+[5.0.0 → 5.1.0](https://github.com/inveniosoftware/invenio-records/compare/v5.0.0...v5.1.0)
+
+- [`f8fc4c03`](https://github.com/inveniosoftware/invenio-records/commit/f8fc4c034ca79ad448376acbbb491db140f29235) fix(ci): run tests on maint-*
+- [`15d03d9d`](https://github.com/inveniosoftware/invenio-records/commit/15d03d9dc785730eac8582c136176e71aa4c2ee6) fix(build): include mo files
+- [`ba962363`](https://github.com/inveniosoftware/invenio-records/commit/ba96236358e37d2ed2136c8153c0c63b8b38b488) release: v5.1.0
+- [`ddab01f6`](https://github.com/inveniosoftware/invenio-records/commit/ddab01f6c2992b2850d11a51dee61e6623f37fed) i18n: pulled translations
+- [`22625fec`](https://github.com/inveniosoftware/invenio-records/commit/22625fec6231d68be6841add853e2336c475deb5) release: v5.0.1
+- [`7626955a`](https://github.com/inveniosoftware/invenio-records/commit/7626955ab6add6137e392b684171b58921349306) chore(cleanup): remove outdated and unnecessary files
+- [`ead67984`](https://github.com/inveniosoftware/invenio-records/commit/ead6798418d30329d163f2910ee5cedaf9a9cfbe) chore(setup): migrate from setuptools to hatchling
+- [`0314f00e`](https://github.com/inveniosoftware/invenio-records/commit/0314f00ed32567a59c23973c9a20475db1c9c749) chore(git-blame): ignore the SPDX license header commit
+- [`0aaaf43f`](https://github.com/inveniosoftware/invenio-records/commit/0aaaf43fed6c9e2e6c8a4d747d8e007ed673e582) chore(licenses): update license headers to use SPDX
+
+#### `invenio-records-files` 3.0.1
+[3.0.0 → 3.0.1](https://github.com/inveniosoftware/invenio-records-files/compare/v3.0.0...v3.0.1)
+
+- [`c9838e68`](https://github.com/inveniosoftware/invenio-records-files/commit/c9838e686fbc7e2f7adabb4cc2bba40a169e70df) release: v3.0.1
+- [`6999e0c1`](https://github.com/inveniosoftware/invenio-records-files/commit/6999e0c1f8dcf34e9b7c29690dc139cb01356c73) chore(cleanup): remove outdated and unnecessary file
+- [`52d53e32`](https://github.com/inveniosoftware/invenio-records-files/commit/52d53e32be8d49778b9826357e42e9c32d6fe148) chore(setup): migrate from setuptools to hatchling
+- [`8fd71768`](https://github.com/inveniosoftware/invenio-records-files/commit/8fd71768928f97398a46992fba5ee3fa1856b911) chore(git-blame): ignore the SPDX license header commit
+- [`96e19d1b`](https://github.com/inveniosoftware/invenio-records-files/commit/96e19d1b7fdea3e9b2183182ba947bc419ebe0a6) chore(licenses): update license headers to use SPDX
+
+#### `invenio-records-permissions` 3.0.1
+[3.0.0 → 3.0.1](https://github.com/inveniosoftware/invenio-records-permissions/compare/v3.0.0...v3.0.1)
+
+- [`bce1e647`](https://github.com/inveniosoftware/invenio-records-permissions/commit/bce1e647b63b6829c0c96075cf0fd332d7bc33aa) release: v3.0.1
+- [`080b55cf`](https://github.com/inveniosoftware/invenio-records-permissions/commit/080b55cf2cae03a2676895a7c849073f40e6074c) chore(setup): migrate from setuptools to hatchling
+- [`7c39a62e`](https://github.com/inveniosoftware/invenio-records-permissions/commit/7c39a62e6da305e9f62c5ce56c4d8c6ba021d5a9) chore(git-blame): ignore the SPDX license header commit
+- [`02fdca58`](https://github.com/inveniosoftware/invenio-records-permissions/commit/02fdca585c1786072376f1f7862e45acd1f59f82) chore(licenses): update license headers to use SPDX
+
+#### `invenio-records-resources` 10.2.0+oarepo.1.ida7lzmvbk4apxv7
+[10.1.0+oarepo.1.trnrudg2qsn3n65k → 10.2.0+oarepo.1.ida7lzmvbk4apxv7](https://github.com/inveniosoftware/invenio-records-resources/compare/v10.1.0...v10.2.0)
+
+- [`e1303bda`](https://github.com/inveniosoftware/invenio-records-resources/commit/e1303bda0ff50f2470965446abbe3f4186f83c76) fix(ci): run tests on maint-*
+- [`4c089fad`](https://github.com/inveniosoftware/invenio-records-resources/commit/4c089fadaf52abb4285b71bc030abc0a970325d8) fix(build): include mo files
+- [`54d9ca6e`](https://github.com/inveniosoftware/invenio-records-resources/commit/54d9ca6ecff940a72417098970727b25222f35bf) release: v10.2.0
+- [`280c8a3f`](https://github.com/inveniosoftware/invenio-records-resources/commit/280c8a3fa6c85c78e8c6fba103dde4b553a24812) i18n: pulled translations
+- [`9885bd5f`](https://github.com/inveniosoftware/invenio-records-resources/commit/9885bd5f435b8d948cecaf1c72766b267eca3731) release: v10.1.1
+- [`604f6230`](https://github.com/inveniosoftware/invenio-records-resources/commit/604f623002b280423eed41fdee3e5f0358a33522) chore(cleanup): remove outdated and unnecessary files
+- [`3fd28b25`](https://github.com/inveniosoftware/invenio-records-resources/commit/3fd28b25f496fde26ac5235732bb626205a25799) chore(setup): migrate from setuptools to hatchling
+- [`18b2755d`](https://github.com/inveniosoftware/invenio-records-resources/commit/18b2755d55720d2164da772e6a9714f1186c891f) fix(performance): replace deepcopy with shallow copy for link expansion
+- [`b7508fcb`](https://github.com/inveniosoftware/invenio-records-resources/commit/b7508fcbf6d6f6987f45cbe0f5690a90419427e4) chore(git-blame): ignore the SPDX license header commit
+- [`a9b99f81`](https://github.com/inveniosoftware/invenio-records-resources/commit/a9b99f8191a5ea0372ac07acc2152d17640f301c) chore(licenses): update license headers to use SPDX
+- [`86031500`](https://github.com/inveniosoftware/invenio-records-resources/commit/8603150001e13dbdf6f80ef227675e5bbdb0a614) chore(git-blame): fix commit hash for SPDX header change
+- [`51232fd4`](https://github.com/inveniosoftware/invenio-records-resources/commit/51232fd4594a16e8247cbc3cdbcf6d36e96fadef) chore(licenses): update license headers to use SPDX
+- [`8d03a7ce`](https://github.com/inveniosoftware/invenio-records-resources/commit/8d03a7ce1aa6fff549cc64b755fcf24a4542439f) chore(git-blame): ignore the SPDX license header commit
+
+#### `invenio-records-rest` 5.1.0
+[5.0.1 → 5.1.0](https://github.com/inveniosoftware/invenio-records-rest/compare/v5.0.1...v5.1.0)
+
+- [`7258ef70`](https://github.com/inveniosoftware/invenio-records-rest/commit/7258ef70abd8aed479ddc3c0906375acef4fb61b) fix(ci): run tests on maint-*
+- [`ffefebf8`](https://github.com/inveniosoftware/invenio-records-rest/commit/ffefebf862078a63c475d1656991de523245d797) fix(build): include mo files
+- [`724ac3c8`](https://github.com/inveniosoftware/invenio-records-rest/commit/724ac3c8230d4a2c306c9dd602523514269c6c7f) release: v5.1.0
+- [`97e17a7d`](https://github.com/inveniosoftware/invenio-records-rest/commit/97e17a7dc2b14f93d6c664f9e22d2796d19c90d2) i18n: pulled translations
+- [`13313f41`](https://github.com/inveniosoftware/invenio-records-rest/commit/13313f41a681bf2d5939d488169214b184bacf71) release: v5.0.2
+- [`83359b69`](https://github.com/inveniosoftware/invenio-records-rest/commit/83359b69aca554bdcd2b94faa5c14957af4c51ff) chore(setup): migrate from setuptools to hatchling
+- [`16af9bf7`](https://github.com/inveniosoftware/invenio-records-rest/commit/16af9bf709eb611586e4380f7b745ee579461d12) chore(format): reformat with black
+- [`96bf647a`](https://github.com/inveniosoftware/invenio-records-rest/commit/96bf647abcb2c88565614c27b3a41f65c32aac05) chore(cleanup): remove outdated and unnecessary file
+- [`c8a2b3d7`](https://github.com/inveniosoftware/invenio-records-rest/commit/c8a2b3d735a214ad7828f1944b492b07ef623efc) chore(git-blame): ignore SPDX license header commit
+- [`f81028bb`](https://github.com/inveniosoftware/invenio-records-rest/commit/f81028bbc8918be8cba439fa5dc6c598c438e9c6) chore(licenses): update license headers to use SPDX
+
+#### `invenio-records-ui` 4.1.0
+[4.0.0 → 4.1.0](https://github.com/inveniosoftware/invenio-records-ui/compare/v4.0.0...v4.1.0)
+
+- [`f747c55f`](https://github.com/inveniosoftware/invenio-records-ui/commit/f747c55f4811bec0e1c675bae753aed08ef42d8a) fix(ci): run tests on maint-*
+- [`97c3832d`](https://github.com/inveniosoftware/invenio-records-ui/commit/97c3832d3e2580a84448ade2a0ecc20d81f1da36) fix(build): include mo files
+- [`9835a4d6`](https://github.com/inveniosoftware/invenio-records-ui/commit/9835a4d633cc740524b3b2a7d99ba89a13b7dfcb) release: v4.1.0
+- [`387bb97d`](https://github.com/inveniosoftware/invenio-records-ui/commit/387bb97dd28afb2a0e495a94a23f8cd2fbadc4ac) i18n: pulled translations
+- [`9c63e17e`](https://github.com/inveniosoftware/invenio-records-ui/commit/9c63e17e43a9f7748dcc998237cae56a93eb46bb) release: v4.0.1
+- [`50da3b9f`](https://github.com/inveniosoftware/invenio-records-ui/commit/50da3b9f16643b052694bfdc6c52dc87249140c6) chore(format): reformat with black
+- [`d0d5ceca`](https://github.com/inveniosoftware/invenio-records-ui/commit/d0d5ceca75241c83cdaf72faff9b21d189b469cf) chore(cleanup): remove outdated and unnecessary file
+- [`7932d741`](https://github.com/inveniosoftware/invenio-records-ui/commit/7932d741c472e1426db2541516a5fa04bc4ef683) chore(setup): migrate from setuptools to hatchling
+- [`daa6f231`](https://github.com/inveniosoftware/invenio-records-ui/commit/daa6f231f3afac45e4bb207eaea7ffc1f2f947ed) chore(git-blame): ignore the SPDX license header commit
+- [`83572e78`](https://github.com/inveniosoftware/invenio-records-ui/commit/83572e78ed8e80f7e19c550bd6efe865b35be282) chore(licenses): update license headers to use SPDX
+
+#### `invenio-requests` 14.1.0+oarepo.1.7xki3n3wgchijtol
+[14.0.0+oarepo.1.2lmx3k7srcawdrgk → 14.1.0+oarepo.1.7xki3n3wgchijtol](https://github.com/inveniosoftware/invenio-requests/compare/v14.0.0...v14.1.0)
+
+- [`285f9a78`](https://github.com/inveniosoftware/invenio-requests/commit/285f9a78b73922591b2f07c43f94921bda7c1ce7) fix(build): include mo files
+- [`c4b92fd5`](https://github.com/inveniosoftware/invenio-requests/commit/c4b92fd5beb474c4273872e9066d588cdb851fa8) release: v14.1.0
+- [`f1276d39`](https://github.com/inveniosoftware/invenio-requests/commit/f1276d398c4be2d19bc1d433aef438e5bb5697fe) i18n: pulled translations
+- [`4b2779d3`](https://github.com/inveniosoftware/invenio-requests/commit/4b2779d3b398de3b42ac4c0c95db4b38e2515fad) release: v14.0.1
+- [`7d2d6642`](https://github.com/inveniosoftware/invenio-requests/commit/7d2d66425824bd1fbdd4965a37e00ea399d0cc21) chore(licenses): fix some SPDX license headers
+- [`41604790`](https://github.com/inveniosoftware/invenio-requests/commit/41604790d3beb5d7111bea35371e3d1666056f0b) chore(setup): migrate from setuptools to hatchling
+- [`fe341b4a`](https://github.com/inveniosoftware/invenio-requests/commit/fe341b4a0dbc41a3ddabebd1444c9fdbe0ae8933) fix(comments): resolve collisions in allowed tags configuration
+- [`8df40e85`](https://github.com/inveniosoftware/invenio-requests/commit/8df40e85ef889fd8a49aa7fb30429674bbd8c845) i18n: push translations
+- [`9e40d5a1`](https://github.com/inveniosoftware/invenio-requests/commit/9e40d5a16049ea0d9117e3e24c8d48f9718b5011) fix(i18n): update variable naming in  translations
+- [`08dd01df`](https://github.com/inveniosoftware/invenio-requests/commit/08dd01df6604ad1dab5414241bd5b94b4aed4022) i18n: push translations (#620)
+- [`62e810a5`](https://github.com/inveniosoftware/invenio-requests/commit/62e810a557cc02c6ba3f02468792aa860e085d13) i18n: Static request actions (#598)
+- [`de87f12f`](https://github.com/inveniosoftware/invenio-requests/commit/de87f12faa359d0a7439ced9c77a1f9bf693a809) fix(CI): include maint branch for tests workflow
+- [`d6e2bca8`](https://github.com/inveniosoftware/invenio-requests/commit/d6e2bca82dbe5e44c58429819ea725e2ed6cca9c) chore(git-blame): ignore the SPDX license header commit
+- [`29079ee6`](https://github.com/inveniosoftware/invenio-requests/commit/29079ee65de4d8408924fbc34196568332937a15) chore(licenses): update license headers to use SPDX
+
+#### `invenio-rest` 3.0.3
+[3.0.2 → 3.0.3](https://github.com/inveniosoftware/invenio-rest/compare/v3.0.2...v3.0.3)
+
+- [`6f048822`](https://github.com/inveniosoftware/invenio-rest/commit/6f048822226e5eebbffb3064ffcaaa923470be55) release: v3.0.3
+- [`83ddb211`](https://github.com/inveniosoftware/invenio-rest/commit/83ddb211f088139fd2af49a3b9b944a0e16dfb49) chore(format): reformat with black
+- [`c3ed6a59`](https://github.com/inveniosoftware/invenio-rest/commit/c3ed6a594216cce4a4914f9a5a1be5f14cc4ea76) chore(cleanup): remove outdated and unnecessary file
+- [`280e09f7`](https://github.com/inveniosoftware/invenio-rest/commit/280e09f76a25709904d31ea701505dcc479a3268) chore(setup): migrate from setuptools to hatchling
+- [`ea850f07`](https://github.com/inveniosoftware/invenio-rest/commit/ea850f07648348e91f6d04f7726cd1847021ff2a) chore(git-blame): ignore the SPDX license header commit
+- [`39246ba4`](https://github.com/inveniosoftware/invenio-rest/commit/39246ba42a464a5d3b8627692f84188c2e1b09c8) chore(licenses): update license headers to use SPDX
+
+#### `invenio-s3` 5.0.1
+[5.0.0 → 5.0.1](https://github.com/inveniosoftware/invenio-s3/compare/v5.0.0...v5.0.1)
+
+- [`53547e82`](https://github.com/inveniosoftware/invenio-s3/commit/53547e827bfbbe45c7e5075588b4be0ff237fdda) release: v5.0.1
+- [`b7387e70`](https://github.com/inveniosoftware/invenio-s3/commit/b7387e701844dd46b704aa806dd516120d53a2aa) fix: add cache-control for s3 presigned urls
+- [`ac0a798d`](https://github.com/inveniosoftware/invenio-s3/commit/ac0a798d32928fb5483f5eb076c1c7ad46a3a9ea) fix(cache): mark restricted files as no-cache for cache-control
+- [`139d71af`](https://github.com/inveniosoftware/invenio-s3/commit/139d71afa93bd25105fd80eaac9e1cfaa32d5ee8) fix: handle NoSuchUpload gracefully when aborting multipart upload
+- [`cd26609a`](https://github.com/inveniosoftware/invenio-s3/commit/cd26609a736d62206601bc4d9ce87841e030e140) revert: removed multipart_upload_exists
+- [`addcafbe`](https://github.com/inveniosoftware/invenio-s3/commit/addcafbe36246d4c19181f7849d388363fdf898a) tests: added duplicated multipart abort test
+- [`db229e1a`](https://github.com/inveniosoftware/invenio-s3/commit/db229e1ae2237821242d2101eafd1b704d5f0514) chore(git-blame): ignore the SPDX license header commit
+- [`e4ab2eae`](https://github.com/inveniosoftware/invenio-s3/commit/e4ab2eae89395be1a556d1830fb07f833b1226ff) chore(licenses): update license headers to use SPDX
+
+#### `invenio-search` 3.1.3+oarepo.1.cu6ttu5jcj4zusyd
+[3.1.2+oarepo.4.uwz7uudxhtm36x5h → 3.1.3+oarepo.1.cu6ttu5jcj4zusyd](https://github.com/inveniosoftware/invenio-search/compare/v3.1.2...v3.1.3)
+
+- [`cfc2510f`](https://github.com/inveniosoftware/invenio-search/commit/cfc2510f12a50f2fad05c792bef92178b08b79f9) release: v3.1.3
+- [`62f4bdc9`](https://github.com/inveniosoftware/invenio-search/commit/62f4bdc953384864bc8b79846ccd423d2c7ccde1) chore(cleanup): remove outdated and unnecessary file
+- [`78185cf9`](https://github.com/inveniosoftware/invenio-search/commit/78185cf9b7141c76b3a02e5a8515141e144520db) chore(setup): migrate from setuptools to hatchling
+- [`e6e3e666`](https://github.com/inveniosoftware/invenio-search/commit/e6e3e666a6ca92c24a791389913a7c94a2404171) chore(licenses): update license headers to use SPDX
+- [`29f84381`](https://github.com/inveniosoftware/invenio-search/commit/29f84381dd1c61ce2bf74381007290edefbc826f) chore(git-blame): ignore SPDX license header commit
+- [`bbea36a4`](https://github.com/inveniosoftware/invenio-search/commit/bbea36a468e9e8cf743ce1303b4b5ca347589d36) chore(setup): remove dependency
+- [`fe8a7b54`](https://github.com/inveniosoftware/invenio-search/commit/fe8a7b54186f5652d52a6768da07389dc43c4d59) chore: reformat black
+
+#### `invenio-search-ui` 4.3.0
+[4.2.1 → 4.3.0](https://github.com/inveniosoftware/invenio-search-ui/compare/v4.2.1...v4.3.0)
+
+- [`efa7373e`](https://github.com/inveniosoftware/invenio-search-ui/commit/efa7373ef6fcc4e94e9d0276a79495c0557b2c07) fix(build): include mo files
+- [`468f8cd8`](https://github.com/inveniosoftware/invenio-search-ui/commit/468f8cd822950f787ff1e10b906c2603d6f43699) release: v4.3.0
+- [`bb8a1663`](https://github.com/inveniosoftware/invenio-search-ui/commit/bb8a16639371952041a4d9d3f179ca24b9a622e0) i18n: pulled translations
+- [`84d32ed3`](https://github.com/inveniosoftware/invenio-search-ui/commit/84d32ed3c7a791e00d9aeb766a2e535afa4100f7) release: v4.2.2
+- [`3d330529`](https://github.com/inveniosoftware/invenio-search-ui/commit/3d33052905587768cd9d5b2c54d4ff4fd82dec17) chore(format): reformat with black
+- [`901d17b2`](https://github.com/inveniosoftware/invenio-search-ui/commit/901d17b25bd343dc804785335b4922efb64ef1bc) chore(cleanup): remove outdated and unnecessary file
+- [`8823a416`](https://github.com/inveniosoftware/invenio-search-ui/commit/8823a416d0754fa052faa0bd546a9fc95e33c049) chore(setup): migrate from setuptools to hatchling
+- [`83af9f62`](https://github.com/inveniosoftware/invenio-search-ui/commit/83af9f62cbe129f63ff652cc2291c8fd8af1169a) chore(licenses): update license headers to use SPDX
+- [`d2b0fee3`](https://github.com/inveniosoftware/invenio-search-ui/commit/d2b0fee3f808e158a0cf866c0a7442c7237d6436) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-sitemap` 1.0.1
+[1.0.0 → 1.0.1](https://github.com/inveniosoftware/invenio-sitemap/compare/v1.0.0...v1.0.1)
+
+- [`339a6b25`](https://github.com/inveniosoftware/invenio-sitemap/commit/339a6b254c901aa7f6b66cc00ee6439d2a963f69) release: v1.0.1
+- [`b00ea104`](https://github.com/inveniosoftware/invenio-sitemap/commit/b00ea1045f18c1daf6c99f846388a80ca90956b3) chore(setup): migrate from setuptools to hatchling
+- [`c741c161`](https://github.com/inveniosoftware/invenio-sitemap/commit/c741c161ea8b11aebff0b040eecc67b02c583064) chore(git-blame): fix commit hash for SPDX header change
+- [`05b1c765`](https://github.com/inveniosoftware/invenio-sitemap/commit/05b1c765230bceabcb6dfcaac4e2fb4abc9c8f9f) chore(licenses): update license headers to use SPDX
+- [`66c24bd9`](https://github.com/inveniosoftware/invenio-sitemap/commit/66c24bd9dff7a2f4322087100586b29a040b08dc) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-stats` 6.2.0
+[6.1.3 → 6.2.0](https://github.com/inveniosoftware/invenio-stats/compare/v6.1.3...v6.2.0)
+
+- [`9f2c7d12`](https://github.com/inveniosoftware/invenio-stats/commit/9f2c7d125920955884b081c73fb94dd098f5cc5b) fix(build): include mo files
+- [`2e22d53c`](https://github.com/inveniosoftware/invenio-stats/commit/2e22d53c793a576002a4e3f645e1c184dd960686) release: v6.2.0
+- [`e5576776`](https://github.com/inveniosoftware/invenio-stats/commit/e5576776dc2d0857d9892e5b764d3554ee6040a8) i18n: pulled translations
+- [`f25ed00e`](https://github.com/inveniosoftware/invenio-stats/commit/f25ed00e2cf8e713310b2f8e3152f29f98b0fd0e) release: v6.1.4
+- [`5dc79a07`](https://github.com/inveniosoftware/invenio-stats/commit/5dc79a07c46d221ba88934ce442192c993361001) chore(format): reformat with black
+- [`6431fdb6`](https://github.com/inveniosoftware/invenio-stats/commit/6431fdb62486d2e1b17087291ba1d633d5a03cb8) chore(cleanup): remove outdated and unnecessary file
+- [`bb4275ce`](https://github.com/inveniosoftware/invenio-stats/commit/bb4275ce0c1ed84a507ba06308dc37f7faa9e34a) chore(setup): migrate from setuptools to hatchling
+- [`4595d61c`](https://github.com/inveniosoftware/invenio-stats/commit/4595d61c244fcdda855941cfdc03595680ea14f6) chore(licenses): update license headers to use SPDX
+- [`01eb87c1`](https://github.com/inveniosoftware/invenio-stats/commit/01eb87c123b44be4281a8df43f61e6ae0ff7aaa0) chore(git-blame): ignore SPDX license header commit
+
+#### `invenio-theme` 4.9.0
+[4.8.0 → 4.9.0](https://github.com/inveniosoftware/invenio-theme/compare/v4.8.0...v4.9.0)
+
+- [`8b54f9c2`](https://github.com/inveniosoftware/invenio-theme/commit/8b54f9c2c1e7d60d910b766027704e11c819b725) fix(ci): run tests on maint-*
+- [`40f56a16`](https://github.com/inveniosoftware/invenio-theme/commit/40f56a168d63a262718b7e0b6f11098eda529345) fix(build): include mo files
+- [`4da1591a`](https://github.com/inveniosoftware/invenio-theme/commit/4da1591a2da81b7a5b9af3c060e032d80abb1f88) release: v4.9.0
+- [`4f315146`](https://github.com/inveniosoftware/invenio-theme/commit/4f315146c36c49531ed2c83456df5a6ff3c1b2ed) i18n: pulled translations
+- [`98d8237d`](https://github.com/inveniosoftware/invenio-theme/commit/98d8237d430b6da5ef4b9dc7326450f469d1ff61) release: v4.8.1
+- [`637486bf`](https://github.com/inveniosoftware/invenio-theme/commit/637486bfc946cda17cdc6a10d3ca380fd3816a5e) chore(setup): migrate from setuptools to hatchling
+- [`15df9d1d`](https://github.com/inveniosoftware/invenio-theme/commit/15df9d1dd2e6e35d1b91840fa1c2540e696b3073) fix(publish): use the right translation step in the publication workflow
+- [`c9726203`](https://github.com/inveniosoftware/invenio-theme/commit/c97262038a251c76d870fa577fc62ea1f4da9f00) chore(git-blame): ignore the SPDX license header commit
+- [`4472af23`](https://github.com/inveniosoftware/invenio-theme/commit/4472af2331900ef5031eb26c889b7a1a9a8f0144) chore(licenses): update license headers to use SPDX
+
+#### `invenio-userprofiles` 6.1.0
+[6.0.0 → 6.1.0](https://github.com/inveniosoftware/invenio-userprofiles/compare/v6.0.0...v6.1.0)
+
+- [`fb12994a`](https://github.com/inveniosoftware/invenio-userprofiles/commit/fb12994a67775c8573ba42f432c1ce85e4f2b1e4) fix(ci): run tests on maint-*
+- [`3c612bc6`](https://github.com/inveniosoftware/invenio-userprofiles/commit/3c612bc62f27f5536bd6d1ea5586d4e9dd161904) fix(build): include mo files
+- [`35f1fbf0`](https://github.com/inveniosoftware/invenio-userprofiles/commit/35f1fbf0a5923f76e96cb8767389075997514e45) release: v6.1.0
+- [`61c7fcaa`](https://github.com/inveniosoftware/invenio-userprofiles/commit/61c7fcaaf0b365d6d7396e994c948f5f57a64c18) i18n: pulled translations
+- [`428bd8e6`](https://github.com/inveniosoftware/invenio-userprofiles/commit/428bd8e6958edcbddb9d7f1136fbf105c745992b) release: v6.0.1
+- [`9333c832`](https://github.com/inveniosoftware/invenio-userprofiles/commit/9333c832fa50ef547e3f9f67e91146dbc2aea9f1) chore(cleanup): remove outdated and unnecessary files
+- [`2ad75449`](https://github.com/inveniosoftware/invenio-userprofiles/commit/2ad7544924f0529315d61258ca8053a004a01e69) chore(setup): migrate from setuptools to hatchling
+- [`b5dd10db`](https://github.com/inveniosoftware/invenio-userprofiles/commit/b5dd10db0f38eec48b2543b941b3fa66e2929df4) chore(git-blame): ignore the SPDX license header commit
+- [`58c41164`](https://github.com/inveniosoftware/invenio-userprofiles/commit/58c41164a38c8908ced11b07aa516bc40a3e0e4a) chore(licenses): update license headers to use SPDX
+
+#### `invenio-users-resources` 12.1.0
+[12.0.0 → 12.1.0](https://github.com/inveniosoftware/invenio-users-resources/compare/v12.0.0...v12.1.0)
+
+- [`f9591a5e`](https://github.com/inveniosoftware/invenio-users-resources/commit/f9591a5e94e736299144c9cd4daa65bcc6cee406) fix(build): include mo files
+- [`6faa998e`](https://github.com/inveniosoftware/invenio-users-resources/commit/6faa998eaac49d0610f64bd2c2e7bbef812b5833) release: v12.1.0
+- [`f07d17cc`](https://github.com/inveniosoftware/invenio-users-resources/commit/f07d17cc1f9fc341747c1e0300c907e225c60f4d) i18n: pulled translations
+- [`b577d95c`](https://github.com/inveniosoftware/invenio-users-resources/commit/b577d95c9ef9f613afccb54d12f0efcc854c6eb6) release: v12.0.1
+- [`6d8ffef3`](https://github.com/inveniosoftware/invenio-users-resources/commit/6d8ffef373a47721919f188e18f10d22697b4b8e) chore(setup): migrate from setuptools to hatchling
+- [`5abf11c4`](https://github.com/inveniosoftware/invenio-users-resources/commit/5abf11c481325191aede4a6631f2156ff318363d) chore(git-blame): ignore the SPDX license header commit
+- [`4361e782`](https://github.com/inveniosoftware/invenio-users-resources/commit/4361e7821d20782c48c074a6eec590cdcea9be94) chore(licenses): update license headers to use SPDX
+
+#### `invenio-vocabularies` 13.1.0+oarepo.1.t7pron6iugng4zhm
+[13.0.0+oarepo.1.jaaeqz7sxjzde5rc → 13.1.0+oarepo.1.t7pron6iugng4zhm](https://github.com/inveniosoftware/invenio-vocabularies/compare/v13.0.0...v13.1.0)
+
+- [`c882b682`](https://github.com/inveniosoftware/invenio-vocabularies/commit/c882b6826bdae8438fa33820e5c07c60359bb7af) fix(build): include mo files
+- [`dbb559ed`](https://github.com/inveniosoftware/invenio-vocabularies/commit/dbb559edf5800ce62e8a62ccc3545f41f29825cf) release: v13.1.0
+- [`d92446dc`](https://github.com/inveniosoftware/invenio-vocabularies/commit/d92446dc85c5832b261e12b57d4618ae1934ce5b) i18n: pulled translations
+- [`c9fa814a`](https://github.com/inveniosoftware/invenio-vocabularies/commit/c9fa814a633ff054a627e838b07be863fc086af9) release: v13.0.1
+- [`0dd318ea`](https://github.com/inveniosoftware/invenio-vocabularies/commit/0dd318ea6799ebfa52780fd9ff0bb3b9ec7c3fc9) chore(format): reformat with black
+- [`081308d4`](https://github.com/inveniosoftware/invenio-vocabularies/commit/081308d46918b1c9e9cdae62a45a6627773be546) chore(setup): migrate from setuptools to hatchling
+- [`a5f36cc7`](https://github.com/inveniosoftware/invenio-vocabularies/commit/a5f36cc75d515f9914b7c0a9fe7cd9a56ceb7204) fix(datastreams): OpenAIREHTTPReader allowing to match several tar filenames
+- [`b7cbcd4c`](https://github.com/inveniosoftware/invenio-vocabularies/commit/b7cbcd4c16772a3fc469642ebbba6dd1577ba68f) fix(contrib): adding custom funders
+- [`7b9f4f64`](https://github.com/inveniosoftware/invenio-vocabularies/commit/7b9f4f64bcfcd68aa7d73d77ea02cc6fd914b4ec) chore(git-blame): ignore the SPDX license header commit
+- [`d3ccbd6b`](https://github.com/inveniosoftware/invenio-vocabularies/commit/d3ccbd6b58cc84de691222dc19d0abae76e8617a) chore(licenses): update license headers to use SPDX
+- [`484266cb`](https://github.com/inveniosoftware/invenio-vocabularies/commit/484266cb2a38f77fbd193976964290c8dd6569a5) funding: make funding item button order match
+- [`783e47df`](https://github.com/inveniosoftware/invenio-vocabularies/commit/783e47dfba017de35bb5c32eccdf84c985c53a99) fix(datastreams): fix OAIPMHReader default parameters
+
+#### `oarepo-app` 6.4.0rc1
+[6.3.0 → 6.4.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.3.0...v6.4.0rc1)
+
+
+#### `oarepo-communities` 11.4.1
+[11.4.0 → 11.4.1](https://github.com/oarepo/oarepo-communities/compare/v11.4.0...v11.4.1)
+
+- [`632dba40`](https://github.com/oarepo/oarepo-communities/commit/632dba4068f2df05bbbe4f26fe4fcddbd7317f7f) fix: not sending set to open-search
+- [`52d11851`](https://github.com/oarepo/oarepo-communities/commit/52d11851f5dd0d6a7e83b0c9251e62f18196af80) [skip ci] Bump version to v11.4.0
+
+#### `oarepo-config` 1.1.1
+[1.0.2 → 1.1.1](https://github.com/oarepo/oarepo-config/compare/v1.0.2...v1.1.1)
+
+- [`a316e1ba`](https://github.com/oarepo/oarepo-config/commit/a316e1baf9f52bc4a3d9302bd7e9287fb5473fd2) feat: add configure_files() helper for file quotas and metadata-only toggle
+- [`84bd9667`](https://github.com/oarepo/oarepo-config/commit/84bd966710f7b0979ff2f3ebcc8169b465c7d2d1) docs(configure_files): use default values in example
+- [`9ed36d1d`](https://github.com/oarepo/oarepo-config/commit/9ed36d1d35709b3803f84ba71a379de87d79652a) refactor(configure_files): lower default file quotas
+- [`4fb73c35`](https://github.com/oarepo/oarepo-config/commit/4fb73c35dec07b742f3c077828817ea2604c429b) chore(format): add missing header, reformat
+- [`f5a764af`](https://github.com/oarepo/oarepo-config/commit/f5a764afc3e315bc0cbdbd0cdbabe0a67e1ea523) feat: add configure_files() helper for file quotas and metadata-only toggle
+- [`edcdc856`](https://github.com/oarepo/oarepo-config/commit/edcdc856ce7053d744e6cadcf4773dca3aba9266) [skip ci] Bump version to v1.1.0
+- [`2c255e00`](https://github.com/oarepo/oarepo-config/commit/2c255e00ad40fc607cee4ad02cc8eee9134b2e11) Merge pull request #6 from oarepo/model-error-handlers
+- [`d1f0ddc0`](https://github.com/oarepo/oarepo-config/commit/d1f0ddc0e083f09567aab5419eaf84a399863d8c) adding model error handlers to global ones
+- [`87fa8e3a`](https://github.com/oarepo/oarepo-config/commit/87fa8e3a7fcfb6f80d4e20ab1e0b97079f0eca6f) Merge pull request #5 from oarepo/llm-config
+- [`b7d8ffd4`](https://github.com/oarepo/oarepo-config/commit/b7d8ffd4b6705b50daa58c320a64267e3a198c38) llm changes
+- [`9c310bd0`](https://github.com/oarepo/oarepo-config/commit/9c310bd04a7f694f24beced0bcb39aa0f1c85b8f) fix: llm config
+- [`d767136f`](https://github.com/oarepo/oarepo-config/commit/d767136f00981ec389ed555669c9d6a57ab3a69b) [skip ci] Bump version to v1.0.2
+
+#### `oarepo-oidc-einfra` 7.1.1
+[7.1.0 → 7.1.1](https://github.com/oarepo/oarepo-oidc-einfra/compare/v7.1.0...v7.1.1)
+
+- [`ce824f59`](https://github.com/oarepo/oarepo-oidc-einfra/commit/ce824f599b67b5f3843e198adf94a69a7eb0ddb5) fix: use validation error instead of value error (#50)
+- [`28386307`](https://github.com/oarepo/oarepo-oidc-einfra/commit/283863072299b08e1c75abd39905edf9c93da943) [skip ci] Bump version to v7.1.0
+
+#### `oarepo-rdm` 8.5.0
+[8.4.1 → 8.5.0](https://github.com/oarepo/oarepo-rdm/compare/v8.4.1...v8.5.0)
+
+- [`bf9e3976`](https://github.com/oarepo/oarepo-rdm/commit/bf9e39769e708d1543e9c9f8c5a3aaa7a0184ad8) RDM record error handlers config refactored (#115)
+- [`880ea7b9`](https://github.com/oarepo/oarepo-rdm/commit/880ea7b96fdaf0487dcfc6b804ebf0be49a41c8b) [skip ci] Bump version to v8.4.1
+
+#### `oarepo-related-resources` 4.2.0
+[4.1.0 → 4.2.0](https://github.com/oarepo/oarepo-related-resources/compare/v4.1.0...v4.2.0)
+
+- [`28534d89`](https://github.com/oarepo/oarepo-related-resources/commit/28534d893ce11549fdb410713d059e931ec03096) fix: resolve alternative publisher format (#9)
+- [`d844b9b0`](https://github.com/oarepo/oarepo-related-resources/commit/d844b9b0983761909233be2d408059571188bed1) [skip ci] Bump version to v4.1.0
+
+#### `oarepo-requests` 9.4.0
+[9.2.1 → 9.4.0](https://github.com/oarepo/oarepo-requests/compare/v9.2.1...v9.4.0)
+
+- [`dbf172c9`](https://github.com/oarepo/oarepo-requests/commit/dbf172c975cb1e6a4520f98164c8aadde0d0a2e2) Custom notification manager (#203)
+- [`9f39e3dd`](https://github.com/oarepo/oarepo-requests/commit/9f39e3dd86294ec2ecb85b1a1ee86fdfbe8ba997) [skip ci] Bump version to v9.3.0
+- [`26836185`](https://github.com/oarepo/oarepo-requests/commit/26836185265b026ee430822ef42fd579aea1d74d) handle ValueError in is_applicable_to methods across publish draft request types (#201)
+- [`52c5518e`](https://github.com/oarepo/oarepo-requests/commit/52c5518eb8d9b17e3da5730662ca02ef6bbcca62) fixed config loading precedence (#202)
+- [`df6e8b2f`](https://github.com/oarepo/oarepo-requests/commit/df6e8b2ff529ffa38a1a1a89607bb35b6331c0ff) fix: request create to match invenio's (#200)
+- [`44be6d10`](https://github.com/oarepo/oarepo-requests/commit/44be6d1051d06acee8e8833d2d6721d7a0d3795b) feat: enable request reviewers (#199)
+- [`f4b65d71`](https://github.com/oarepo/oarepo-requests/commit/f4b65d7111f2c26448708383df64650f24d6eb34) Use converted topic everywhere (#197)
+- [`d5b9ebd6`](https://github.com/oarepo/oarepo-requests/commit/d5b9ebd61f8edbbb202a9ac6fcd79f07b494a1c2) [skip ci] Bump version to v9.2.1
+
+#### `oarepo-ui` 13.5.2
+[13.5.1 → 13.5.2](https://github.com/oarepo/oarepo-ui/compare/v13.5.1...v13.5.2)
+
+- [`5eaa844a`](https://github.com/oarepo/oarepo-ui/commit/5eaa844a4acbab3c82c9c25c246daa4a54a169d1) fix: fixed publish button (#492)
+- [`ecbdeec1`](https://github.com/oarepo/oarepo-ui/commit/ecbdeec187f1836b638a64df159292f186ee0abc) [skip ci] Bump version to v13.5.1
 
 ---
 
