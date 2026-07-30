@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [6.4.0rc3](#640rc3)
 - [6.4.0rc2](#640rc2)
 - [6.4.0rc1](#640rc1)
 - [6.3.0](#630)
 - [6.3.0rc4](#630rc4)
-- [6.3.0rc3](#630rc3)
+
+---
+
+## 6.4.0rc3
+
+Released: **July 30, 2026 at 08:00 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.4.0rc3
+[6.4.0rc2 → 6.4.0rc3](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc2...v6.4.0rc3)
+
+
+#### `oarepo-related-resources` 4.3.0
+[4.2.0 → 4.3.0](https://github.com/oarepo/oarepo-related-resources/compare/v4.2.0...v4.3.0)
+
+- [`1d2aa313`](https://github.com/oarepo/oarepo-related-resources/commit/1d2aa3130d56707fb4166018481904c1a6cb58cd) Fix publication date retrieval in resolver (#10)
+- [`eba4e0ca`](https://github.com/oarepo/oarepo-related-resources/commit/eba4e0ca7404a9518db8f2404c5bdc598fe40846) [skip ci] Bump version to v4.2.0
 
 ---
 
