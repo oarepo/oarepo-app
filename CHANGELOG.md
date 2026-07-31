@@ -2,11 +2,56 @@
 
 ## Contents
 
+- [6.4.0rc5](#640rc5)
 - [6.4.0rc4](#640rc4)
 - [6.4.0rc3](#640rc3)
 - [6.4.0rc2](#640rc2)
 - [6.4.0rc1](#640rc1)
-- [6.3.0](#630)
+
+---
+
+## 6.4.0rc5
+
+Released: **July 31, 2026 at 16:00 UTC**
+
+### Updated packages
+
+#### `invenio-previewer` 5.2.0
+[5.1.0 → 5.2.0](https://github.com/inveniosoftware/invenio-previewer/compare/v5.1.0...v5.2.0)
+
+- [`7a438f5c`](https://github.com/inveniosoftware/invenio-previewer/commit/7a438f5cecf2a5660d6ba7766f43c1cb5eb6c1b3) 📦 release: v5.2.0
+- [`db4b5f8b`](https://github.com/inveniosoftware/invenio-previewer/commit/db4b5f8b97d34ad400e07f29aa8b91a8fd941ffd) markdown: enable plugins strikethrough, footnotes, table
+
+#### `invenio-rdm-records` 32.2.0+oarepo.1.v6qnnhfxm4rtnrin
+[32.1.0+oarepo.1.n3bjqtcvag7jeoi4 → 32.2.0+oarepo.1.v6qnnhfxm4rtnrin](https://github.com/inveniosoftware/invenio-rdm-records/compare/v32.1.0...v32.2.0)
+
+- [`e18f932c`](https://github.com/inveniosoftware/invenio-rdm-records/commit/e18f932cba4455ed72f5642334b573766db832d6) release: v32.2.0
+- [`ae595a32`](https://github.com/inveniosoftware/invenio-rdm-records/commit/ae595a322fe8cbd573e443f70d5ed8af9e93f120) feat(quota): implement policy evaluation for allowing users
+- [`f5ada06d`](https://github.com/inveniosoftware/invenio-rdm-records/commit/f5ada06dd87d5ba9dfb0085777feffc7f36ecc6a) fix(quota): don't cast record id to int
+
+#### `oarepo-app` 6.4.0rc5
+[6.4.0rc4 → 6.4.0rc5](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc4...v6.4.0rc5)
+
+
+#### `oarepo-communities` 11.5.0
+[11.4.2 → 11.5.0](https://github.com/oarepo/oarepo-communities/compare/v11.4.2...v11.5.0)
+
+- [`b2b451ff`](https://github.com/oarepo/oarepo-communities/commit/b2b451ff34ff867ab60300c54f82aff40db4848e) fix: community notifications
+- [`962af979`](https://github.com/oarepo/oarepo-communities/commit/962af979a682e74cf0ce0061e5f8564e60acc428) [skip ci] Bump version to v11.4.2
+
+#### `oarepo-rdm` 8.5.1
+[8.5.0 → 8.5.1](https://github.com/oarepo/oarepo-rdm/compare/v8.5.0...v8.5.1)
+
+- [`5e37dd20`](https://github.com/oarepo/oarepo-rdm/commit/5e37dd203cf99b689a1942f4bd2a7022ff0f9f28) Fix record communities 404 (#117)
+- [`c9794135`](https://github.com/oarepo/oarepo-rdm/commit/c979413541a7558b2098c69a6e424ee87b6d9e7f) fix: collections record service
+- [`5fd07422`](https://github.com/oarepo/oarepo-rdm/commit/5fd074222de2fb65edbf3d694d0731ee7f761dbb) fix: restricted preselected community sets record as restricted
+- [`5cba0604`](https://github.com/oarepo/oarepo-rdm/commit/5cba0604452c47c9eeeca76ea166a6f6f6c4266a) [skip ci] Bump version to v8.5.0
+
+#### `oarepo-runtime` 7.4.0
+[7.3.0 → 7.4.0](https://github.com/oarepo/oarepo-runtime/compare/v7.3.0...v7.4.0)
+
+- [`827fb272`](https://github.com/oarepo/oarepo-runtime/commit/827fb272fa8ab8cbd0d133b7411f04d64a952ab0) feat: move login feature to auth providers (#419)
+- [`97fcf479`](https://github.com/oarepo/oarepo-runtime/commit/97fcf479aaee7c2a78911f213cf2abf8cea4936a) [skip ci] Bump version to v7.3.0
 
 ---
 
