@@ -2,11 +2,43 @@
 
 ## Contents
 
+- [6.4.0rc5](#640rc5)
 - [6.4.0rc4](#640rc4)
 - [6.4.0rc3](#640rc3)
 - [6.4.0rc2](#640rc2)
 - [6.4.0rc1](#640rc1)
-- [6.3.0](#630)
+
+---
+
+## 6.4.0rc5
+
+Released: **July 31, 2026 at 09:01 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 6.4.0rc5
+[6.4.0rc4 → 6.4.0rc5](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc4...v6.4.0rc5)
+
+
+#### `oarepo-communities` 11.5.0
+[11.4.2 → 11.5.0](https://github.com/oarepo/oarepo-communities/compare/v11.4.2...v11.5.0)
+
+- [`b2b451ff`](https://github.com/oarepo/oarepo-communities/commit/b2b451ff34ff867ab60300c54f82aff40db4848e) fix: community notifications
+- [`962af979`](https://github.com/oarepo/oarepo-communities/commit/962af979a682e74cf0ce0061e5f8564e60acc428) [skip ci] Bump version to v11.4.2
+
+#### `oarepo-rdm` 8.5.1
+[8.5.0 → 8.5.1](https://github.com/oarepo/oarepo-rdm/compare/v8.5.0...v8.5.1)
+
+- [`5e37dd20`](https://github.com/oarepo/oarepo-rdm/commit/5e37dd203cf99b689a1942f4bd2a7022ff0f9f28) Fix record communities 404 (#117)
+- [`c9794135`](https://github.com/oarepo/oarepo-rdm/commit/c979413541a7558b2098c69a6e424ee87b6d9e7f) fix: collections record service
+- [`5fd07422`](https://github.com/oarepo/oarepo-rdm/commit/5fd074222de2fb65edbf3d694d0731ee7f761dbb) fix: restricted preselected community sets record as restricted
+- [`5cba0604`](https://github.com/oarepo/oarepo-rdm/commit/5cba0604452c47c9eeeca76ea166a6f6f6c4266a) [skip ci] Bump version to v8.5.0
+
+#### `oarepo-runtime` 7.4.0
+[7.3.0 → 7.4.0](https://github.com/oarepo/oarepo-runtime/compare/v7.3.0...v7.4.0)
+
+- [`827fb272`](https://github.com/oarepo/oarepo-runtime/commit/827fb272fa8ab8cbd0d133b7411f04d64a952ab0) feat: move login feature to auth providers (#419)
+- [`97fcf479`](https://github.com/oarepo/oarepo-runtime/commit/97fcf479aaee7c2a78911f213cf2abf8cea4936a) [skip ci] Bump version to v7.3.0
 
 ---
 
