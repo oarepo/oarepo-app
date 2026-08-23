@@ -2,11 +2,268 @@
 
 ## Contents
 
+- [7.0.0rc1](#700rc1)
 - [6.4.0rc5](#640rc5)
 - [6.4.0rc4](#640rc4)
 - [6.4.0rc3](#640rc3)
 - [6.4.0rc2](#640rc2)
-- [6.4.0rc1](#640rc1)
+
+---
+
+## 7.0.0rc1
+
+Released: **August 23, 2026 at 11:21 UTC**
+
+> ⚠️ This release contains **breaking changes** — packages marked with 💥 have had a major version bump.
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.25
+[1.1.21 → 1.1.25](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.21...v1.1.25)
+
+- [`b3c1a5d0`](https://github.com/nrp-cz/ccmm-invenio/commit/b3c1a5d0fe57bd3f0c67056f1ec44b4cb432e20f) Major version bump due to major bump in packages: oarepo-related-resources (#61)
+- [`68c0dff7`](https://github.com/nrp-cz/ccmm-invenio/commit/68c0dff7a2082ed595603401c73f8cb4dab51755) fix: remove empty description from OP_DATPRO file type (#58)
+- [`fa6e3ad2`](https://github.com/nrp-cz/ccmm-invenio/commit/fa6e3ad296403d78785f5b54df35cf976c87f2eb) [skip ci] Bump version to v1.1.24
+- [`43eb7ffc`](https://github.com/nrp-cz/ccmm-invenio/commit/43eb7ffc7610e1dd1fc989f47531de8bb9660e03) Add RDMCompleteRecordUISchemaPreset to ccmm production preset (#60)
+- [`0714f1f3`](https://github.com/nrp-cz/ccmm-invenio/commit/0714f1f368c8dd30b9e2c961aaddfbc0879be7df) [skip ci] Bump version to v1.1.23
+- [`59771189`](https://github.com/nrp-cz/ccmm-invenio/commit/59771189da4781a720507fb57aeb5318c1003434) feat: change rdm dates to ccmm dates (#59)
+- [`973a4620`](https://github.com/nrp-cz/ccmm-invenio/commit/973a4620bbedd1ff8a8df2bab86e550320f6ded0) [skip ci] Bump version to v1.1.22
+- [`62a9bd89`](https://github.com/nrp-cz/ccmm-invenio/commit/62a9bd89096c7ac845734eb6f4825a266566b97c) Pass fileModification prop to UppyUploader in files section
+- [`36918911`](https://github.com/nrp-cz/ccmm-invenio/commit/369189113d082e737f14833c6fc508a78179c81c) BE-1141: Fix metadata-only toggle permissions in deposit form
+- [`450ad031`](https://github.com/nrp-cz/ccmm-invenio/commit/450ad031469bbb6d93d74f08c4d45430bee91431) [skip ci] Bump version to v1.1.21
+
+#### `invenio-accounts` 8.3.1
+[8.3.0 → 8.3.1](https://github.com/inveniosoftware/invenio-accounts/compare/v8.3.0...v8.3.1)
+
+- [`d619fabb`](https://github.com/inveniosoftware/invenio-accounts/commit/d619fabbcba736969e434e08a7d5884340e437f4) fix(i18n): include *.mo files in distribution
+- [`e40bf6e0`](https://github.com/inveniosoftware/invenio-accounts/commit/e40bf6e0d197d71ad87817045f65ba8b6fef64fa) release: v8.3.1
+
+#### `invenio-app-rdm` 14.0.0+oarepo.2.q6hj2swhgfedayfu
+[14.0.0rc4+oarepo.1.7onpd5lagarc3nny → 14.0.0+oarepo.2.q6hj2swhgfedayfu](https://github.com/inveniosoftware/invenio-app-rdm/compare/v14.0.0rc4...v14.0.0)
+
+- [`4c116555`](https://github.com/inveniosoftware/invenio-app-rdm/commit/4c1165557c82931319df49c7c2746086734edf5c) release: v14.0.0
+- [`42189f00`](https://github.com/inveniosoftware/invenio-app-rdm/commit/42189f0016ba79e70c90b2c9da61946b21cf835d) upgrade: avoid dropping populated github and webhooks tables
+- [`e1d9319f`](https://github.com/inveniosoftware/invenio-app-rdm/commit/e1d9319fc6d8c88ba8175a0ec80a029e95b59924) release: v14.0.0rc6
+- [`86e026ea`](https://github.com/inveniosoftware/invenio-app-rdm/commit/86e026ea12573513ab7cf737975e49b00ad0de9c) release: v14.0.0rc5
+- [`d31e01eb`](https://github.com/inveniosoftware/invenio-app-rdm/commit/d31e01eb8eecfb50bf3c3ede9fb576707ad1d433) previewer: enable ZIP preview for draft records
+
+#### `invenio-assets` 4.2.6
+[4.2.5 → 4.2.6](https://github.com/inveniosoftware/invenio-assets/compare/v4.2.5...v4.2.6)
+
+- [`c513f162`](https://github.com/inveniosoftware/invenio-assets/commit/c513f16249d4930d9c5e9a8822e132adffd7f81a) fix: deprecation warning from less
+- [`3035f646`](https://github.com/inveniosoftware/invenio-assets/commit/3035f646bc70f9dd18b12fe2ed49a9cb5f4bb1df) release: v4.2.6
+
+#### `invenio-audit-logs` 3.0.2
+[3.0.1 → 3.0.2](https://github.com/inveniosoftware/invenio-audit-logs/compare/v3.0.1...v3.0.2)
+
+- [`395c6bde`](https://github.com/inveniosoftware/invenio-audit-logs/commit/395c6bde1234e6270a017119a707d4d13f2394c1) feat: Configuration of service components (#22)
+- [`a105dac5`](https://github.com/inveniosoftware/invenio-audit-logs/commit/a105dac5ffe49c4d5b2a53c07f1ffeef520722b3) 📦 release: v3.0.2
+
+#### `invenio-db` 2.6.0
+[2.5.2 → 2.6.0](https://github.com/inveniosoftware/invenio-db/compare/v2.5.2...v2.6.0)
+
+- [`c62aa6fd`](https://github.com/inveniosoftware/invenio-db/commit/c62aa6fdc21c4d31f47a1e7ddd31232e40c38e42) release: v2.6.0
+- [`a125b96b`](https://github.com/inveniosoftware/invenio-db/commit/a125b96bd871e280350c7cc19e988d2d5e33bd9a) fix(alembic): ignore the new "checkconstraint_byname" plugin for now
+- [`38d52f8f`](https://github.com/inveniosoftware/invenio-db/commit/38d52f8f2a4ec6a8b2e4e29716e3ec79d50e2778) feat(tests): Comparing server defaults in alembic tests
+
+#### `invenio-i18n` 3.6.0
+[3.5.1 → 3.6.0](https://github.com/inveniosoftware/invenio-i18n/compare/v3.5.1...v3.6.0)
+
+- [`db48a176`](https://github.com/inveniosoftware/invenio-i18n/commit/db48a176a30fca610fcbea99839890741191ae2c) fix(ci): run tests on maint-*
+- [`9c3ef4a4`](https://github.com/inveniosoftware/invenio-i18n/commit/9c3ef4a4e2e594c5c6fd2964c2f313260421dd2a) fix(translations): remove da_DK
+- [`5f208d90`](https://github.com/inveniosoftware/invenio-i18n/commit/5f208d90d9918de068ee98c2ccb62d9ae6d0d64a) release: v3.6.0
+- [`d4f883e5`](https://github.com/inveniosoftware/invenio-i18n/commit/d4f883e500e0976826bf068aa04177bceb2ad851) fix(ci): bump node, python, action versions (#173)
+- [`d3b0759e`](https://github.com/inveniosoftware/invenio-i18n/commit/d3b0759ed44cdf3452f6b632a00caed01de76cdd) release: v3.5.3
+- [`e1d3941a`](https://github.com/inveniosoftware/invenio-i18n/commit/e1d3941ab32b547ebf642592341c38a179819cf7) fix(i18n): support pyproject packages
+- [`1309d998`](https://github.com/inveniosoftware/invenio-i18n/commit/1309d9986a760f77ccd8d26b0fcc322b1d246839) release: v3.5.2
+- [`9028cb22`](https://github.com/inveniosoftware/invenio-i18n/commit/9028cb2209d32215d55a50c4db60efaeb0930dfe) fix(i18n): include *.mo files in distribution
+- [`460b3833`](https://github.com/inveniosoftware/invenio-i18n/commit/460b38339c6a2c6889fde86428d08016b57eca17) i18n: pulled translations
+
+#### `invenio-jobs` 10.1.1
+[10.1.0 → 10.1.1](https://github.com/inveniosoftware/invenio-jobs/compare/v10.1.0...v10.1.1)
+
+- [`bb7824c2`](https://github.com/inveniosoftware/invenio-jobs/commit/bb7824c22b79c7d058cb41ff0494a9aef61b81ff) release: v10.1.1
+- [`45a02075`](https://github.com/inveniosoftware/invenio-jobs/commit/45a02075c02330de99281a1d527d1a3aebfbdfe4) fix: subtasks_closed db-side default
+
+#### `invenio-previewer` 5.2.1
+[5.2.0 → 5.2.1](https://github.com/inveniosoftware/invenio-previewer/compare/v5.2.0...v5.2.1)
+
+- [`d3403d84`](https://github.com/inveniosoftware/invenio-previewer/commit/d3403d84ac4e8f9f28d86021a6d15c109e5ef145) release: v5.2.1
+- [`0ced106e`](https://github.com/inveniosoftware/invenio-previewer/commit/0ced106e212b0517b7188ba1bb41bebba2336091) markdown: enable plugins strikethrough, footnotes, table
+- [`06c8721e`](https://github.com/inveniosoftware/invenio-previewer/commit/06c8721ecf62f6fa1f5ea250dadf5025333fb690) release: v5.1.1
+- [`135cd073`](https://github.com/inveniosoftware/invenio-previewer/commit/135cd0733bdf11cbf886fde2d4a05dd27ccdaa7d) fix: GeoJSON check for JSON which is not an object
+
+#### `invenio-rdm-records` 32.2.1+oarepo.2.spb6mtch73y7kcun
+[32.2.0+oarepo.1.v6qnnhfxm4rtnrin → 32.2.1+oarepo.2.spb6mtch73y7kcun](https://github.com/inveniosoftware/invenio-rdm-records/compare/v32.2.0...v32.2.1)
+
+- [`a9d3aad2`](https://github.com/inveniosoftware/invenio-rdm-records/commit/a9d3aad2c3d0343b873750a301269b209a9054bc) release: v32.2.1
+- [`dab0f4a2`](https://github.com/inveniosoftware/invenio-rdm-records/commit/dab0f4a2a6299680820f7964ba55edee3e023ef3) tests: update citation for bug fixes in citeproc-py 0.10.7
+
+#### `invenio-records-resources` 10.2.1+oarepo.1.5hxlyd4ajeobexv4
+[10.2.0+oarepo.1.ida7lzmvbk4apxv7 → 10.2.1+oarepo.1.5hxlyd4ajeobexv4](https://github.com/inveniosoftware/invenio-records-resources/compare/v10.2.0...v10.2.1)
+
+- [`b92081f8`](https://github.com/inveniosoftware/invenio-records-resources/commit/b92081f83f3868c06f65a36e4545fd5a9617311b) release: v10.2.1
+- [`f9d452c0`](https://github.com/inveniosoftware/invenio-records-resources/commit/f9d452c0aec30a6029afb975a931114c1978dcf1) fix: retry multipart checksum computation
+
+#### `invenio-vocabularies` 13.1.2+oarepo.1.uaitwmxazuv62xk3
+[13.1.0+oarepo.1.t7pron6iugng4zhm → 13.1.2+oarepo.1.uaitwmxazuv62xk3](https://github.com/inveniosoftware/invenio-vocabularies/compare/v13.1.0...v13.1.2)
+
+- [`1136d3c6`](https://github.com/inveniosoftware/invenio-vocabularies/commit/1136d3c671f1bdc531b4e2c15c54709b9795cf5e) 📦 release: v13.1.2
+- [`5fa895ed`](https://github.com/inveniosoftware/invenio-vocabularies/commit/5fa895ed58cf8e8b181be7569977c648e3bd9aa7) i18n: pulled translations
+- [`3777ad8e`](https://github.com/inveniosoftware/invenio-vocabularies/commit/3777ad8eff26cbfd8c181a9117e3440b76cc3687) fix(contrib): display all funders api search results
+- [`ef5e833d`](https://github.com/inveniosoftware/invenio-vocabularies/commit/ef5e833d01ec83534cb7822caf4dfa818640c267) release: v13.1.1
+
+#### `oarepo-app` 7.0.0rc1
+[6.4.0rc5 → 7.0.0rc1](https://github.com/oarepo/oarepo-app/compare/v6.4.0rc5...v7.0.0rc1)
+
+
+#### `oarepo-communities` 12.0.0 💥
+[11.5.0 → 12.0.0](https://github.com/oarepo/oarepo-communities/compare/v11.5.0...v12.0.0)
+
+- [`0f3dcf51`](https://github.com/oarepo/oarepo-communities/commit/0f3dcf51ae30ac2961d74dda62a0100749197c31) feat: not using oidc invitations
+- [`3f20e1eb`](https://github.com/oarepo/oarepo-communities/commit/3f20e1eba749a8eadc288180938d0ebeff2f9544) alpha version
+- [`596b830f`](https://github.com/oarepo/oarepo-communities/commit/596b830f0211c805b261f61e3fcc1aa23832dc07) Bump version from 12.0.0a1 to 12.0.0
+- [`346a7c32`](https://github.com/oarepo/oarepo-communities/commit/346a7c326a8a8ce93b544f66d87a6147ac8333dc) [skip ci] Bump version to v11.8.0
+- [`74444200`](https://github.com/oarepo/oarepo-communities/commit/744442002f0e5bbdfc980ab28d240944d94e9fe9) feat: change accept/expire action for community submission
+- [`283c065a`](https://github.com/oarepo/oarepo-communities/commit/283c065a391891d5047dbd8c3f56e84f339acb51) [skip ci] Bump version to v11.7.0
+- [`123d6ae7`](https://github.com/oarepo/oarepo-communities/commit/123d6ae7038fa355027b86900cac731b2c0e1efe) notifications functionality
+- [`d04dd92a`](https://github.com/oarepo/oarepo-communities/commit/d04dd92aafcf7a336678d81466c6053a42cda324) new recipient generator approach adaptation
+- [`809ad5c8`](https://github.com/oarepo/oarepo-communities/commit/809ad5c8b227c05e8eeff0d9535166d0896c2dfd) reverted deleted emails; test fix
+- [`adaec240`](https://github.com/oarepo/oarepo-communities/commit/adaec240f5ee855501135f9023cb071196870abe) CommunityRoleEmailRecipient considers group can be a community member.
+- [`b5cf59f2`](https://github.com/oarepo/oarepo-communities/commit/b5cf59f2cdb92e660794f6568fb7f86094f82609) reusing CommunityMembersRecipient for CommunityRoleEmailRecipient; new tests; rebase
+- [`29a8b3de`](https://github.com/oarepo/oarepo-communities/commit/29a8b3dedebad820b1816e180df654bf05aa61bc) [skip ci] Bump version to v11.6.0
+- [`2ecd5514`](https://github.com/oarepo/oarepo-communities/commit/2ecd55148c4651836e57fd1205a76b5604e04500) added collection settings page on community profile page
+- [`385d212d`](https://github.com/oarepo/oarepo-communities/commit/385d212dfa454b2db5d4f6a1eb7e590538be55ef) added global collections search
+- [`7bffa9c7`](https://github.com/oarepo/oarepo-communities/commit/7bffa9c7393fdd8b4cf1822660c0934fc3ca5c57) added tests
+- [`da559df3`](https://github.com/oarepo/oarepo-communities/commit/da559df34cc21f3553f43fc7d76c3fdf799c3370) feat/sub-community-creation
+- [`957e7f2b`](https://github.com/oarepo/oarepo-communities/commit/957e7f2bf15f4dfa101eef7a1984869486429760) [skip ci] Bump version to v11.5.0
+
+#### `oarepo-config` 2.0.1 💥
+[1.1.1 → 2.0.1](https://github.com/oarepo/oarepo-config/compare/v1.1.1...v2.0.1)
+
+- [`596cf480`](https://github.com/oarepo/oarepo-config/commit/596cf4808108355f67cfe35abcf0587d3a3e7600) Major version bump due to major bump in packages: oarepo-communities, oarepo-oidc-einfra, oarepo-vocabularies, oarepo-related-resources
+- [`604b1679`](https://github.com/oarepo/oarepo-config/commit/604b1679e72cf5b29aec50074c52bf4a394b1faf) Support for entitlement parser
+- [`40a4838e`](https://github.com/oarepo/oarepo-config/commit/40a4838e7cc4336ef353205702dd840647cc94d5) feat: entitlements parser
+- [`8899a32f`](https://github.com/oarepo/oarepo-config/commit/8899a32f2f016ec0de94a62a5a512845ba823435) feat/community membership request
+- [`8e26d996`](https://github.com/oarepo/oarepo-config/commit/8e26d9966f6daf379b86ecde85b89ddcd9767f5b) added documentation
+- [`3fe2e401`](https://github.com/oarepo/oarepo-config/commit/3fe2e4014ec056c3be9c198c308e78ae8ff4d422) Add file-modification grace period for published records
+- [`cb2ea53e`](https://github.com/oarepo/oarepo-config/commit/cb2ea53e0a47aa7e6a4a22b740b59e79d9ea30a8) added explicit dependencies to invenio packages in pyproject.toml
+- [`641bbf50`](https://github.com/oarepo/oarepo-config/commit/641bbf50b6cad4b95bf43420265e488518418492) [skip ci] Bump version to v1.2.0
+- [`2497b65d`](https://github.com/oarepo/oarepo-config/commit/2497b65dcff0474f46684a3f7954eede5a8c7d6c) feat: enabling audit logs
+- [`fb12dc93`](https://github.com/oarepo/oarepo-config/commit/fb12dc938fc87455d3819d6261546c88501d228d) [skip ci] Bump version to v1.1.4
+- [`1da967cf`](https://github.com/oarepo/oarepo-config/commit/1da967cff37d6898d01ca975c703a1bc7639b06f) fix: redis cache urls
+- [`5b43a748`](https://github.com/oarepo/oarepo-config/commit/5b43a748f184fd894f744c2d67bcdf8117efa8fa) [skip ci] Bump version to v1.1.3
+- [`dbc8919e`](https://github.com/oarepo/oarepo-config/commit/dbc8919e486bc529ee6594e2c91b365ad0746a56) Opensearch config, deprecated APP_ALLOWED_HOSTS
+- [`8ca6bb55`](https://github.com/oarepo/oarepo-config/commit/8ca6bb55ef42a0eac079e66654f719d5dc3fc5b8) [skip ci] Bump version to v1.1.2
+- [`36a97f8b`](https://github.com/oarepo/oarepo-config/commit/36a97f8b02295320211a44386df72b1d7abb48d1) feat: add lif embargo cron task
+- [`7f5e53f7`](https://github.com/oarepo/oarepo-config/commit/7f5e53f739ddc0587101ea8f6812b71bcff55f4b) Change submitter role to not have manage permissions
+- [`9ca68bc1`](https://github.com/oarepo/oarepo-config/commit/9ca68bc1dc314108aea50aca620a80919fc3064e) fix(docs): update submitter role can_manage to False in guide.md example
+- [`cc386816`](https://github.com/oarepo/oarepo-config/commit/cc3868165db353535179da11342fd8c02a355319) [skip ci] Bump version to v1.1.1
+
+#### `oarepo-invenio-typing-stubs` 0.1.34
+0.1.32 → 0.1.34
+
+
+#### `oarepo-model` 5.3.3
+[5.3.0 → 5.3.3](https://github.com/oarepo/oarepo-model/compare/v5.3.0...v5.3.3)
+
+- [`162fd6b9`](https://github.com/oarepo/oarepo-model/commit/162fd6b9638fbc1c13c03b48ecdf0a20e728402b) feat: add new date or interval datatype
+- [`32b09817`](https://github.com/oarepo/oarepo-model/commit/32b0981714b0f6dc296ff9b618ba63d937d7ac17) feat: date or interval dumper
+- [`c58399d1`](https://github.com/oarepo/oarepo-model/commit/c58399d1dea56f8794d3cf66060d94f1081b4229) fix: remove comment
+- [`5b8e2269`](https://github.com/oarepo/oarepo-model/commit/5b8e2269883909b23a51858179db03f954b7e64e) fix: add python version to gitignore
+- [`ce1e35ea`](https://github.com/oarepo/oarepo-model/commit/ce1e35ead7cfa141a8281673bec674a62f08ceec) [skip ci] Bump version to v5.3.2
+- [`4e638236`](https://github.com/oarepo/oarepo-model/commit/4e6382360b1ac70bc99ecd3d3e0781005af14177) feat: emit {id, title_l10n} for vocabulary references in UI serialization (#136)
+- [`46946d5b`](https://github.com/oarepo/oarepo-model/commit/46946d5b915aafc93c922e8861b3f4db49763209) [skip ci] Bump version to v5.3.1
+- [`19035362`](https://github.com/oarepo/oarepo-model/commit/190353622af2e53483685fff34226490e0383961) draft_facet group (#133)
+- [`e45d5908`](https://github.com/oarepo/oarepo-model/commit/e45d5908f13d96345c1d85c9087be1b347d532fd) [skip ci] Bump version to v5.3.0
+
+#### `oarepo-oidc-einfra` 8.0.0 💥
+[7.1.1 → 8.0.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v7.1.1...v8.0.0)
+
+- [`3ac21805`](https://github.com/oarepo/oarepo-oidc-einfra/commit/3ac218051418f496d0c7e6d1f9798d35fcae58b8) Converted to ty and the new runner
+- [`d4239c4a`](https://github.com/oarepo/oarepo-oidc-einfra/commit/d4239c4a2ce66adf3f7f831eb3f693fc64c56ef9) reworking einfra integration
+- [`922f07fe`](https://github.com/oarepo/oarepo-oidc-einfra/commit/922f07fe52b0a8f4ade0cd8765fe7e58b59ab605) working on tests
+- [`3f8278ef`](https://github.com/oarepo/oarepo-oidc-einfra/commit/3f8278ef5b011ff7012cc6aaa18d7b59a2100bb4) fix: tests
+- [`3b7f9d67`](https://github.com/oarepo/oarepo-oidc-einfra/commit/3b7f9d67971526e732e0d6ab0a8d774496b6053c) fix: transactions
+- [`060e35b8`](https://github.com/oarepo/oarepo-oidc-einfra/commit/060e35b8d153c7e9963960065964fa12cd9f99a0) more tests
+- [`1f0ee70e`](https://github.com/oarepo/oarepo-oidc-einfra/commit/1f0ee70e8779f970ba35d633f3e776115ff53167) more tests
+- [`00ce2146`](https://github.com/oarepo/oarepo-oidc-einfra/commit/00ce21465cb86d5bc1322cc5db21f94aa8c20bde) token exchange test
+- [`290fcc26`](https://github.com/oarepo/oarepo-oidc-einfra/commit/290fcc2614c228edd6a80eda55aab72e9357f44c) lint
+- [`49341d28`](https://github.com/oarepo/oarepo-oidc-einfra/commit/49341d28040a8f83a588058467406b1d372a7a35) version bump
+- [`8d2dd33a`](https://github.com/oarepo/oarepo-oidc-einfra/commit/8d2dd33a7d4df29f8cff8a90c43dffd5c8caecc5) Support for entitlement parser
+- [`f4d08127`](https://github.com/oarepo/oarepo-oidc-einfra/commit/f4d08127b94f4a112e1dac0c50313cda4d9cbe5f) Added einfra_eligible_parser_factory
+- [`a3a76a50`](https://github.com/oarepo/oarepo-oidc-einfra/commit/a3a76a504c9fff849d15b322efd60111d2bac53b) Bump version from 8.0.0a1 to 8.0.0
+- [`4b8c8bbb`](https://github.com/oarepo/oarepo-oidc-einfra/commit/4b8c8bbb33f04412474f75d2b604753a0e261d69) [skip ci] Bump version to v7.2.1
+- [`c2b91e52`](https://github.com/oarepo/oarepo-oidc-einfra/commit/c2b91e52ded35027ad444fc329da7878a768721d) do not abort on different auth scheme (#52)
+- [`4961b9cf`](https://github.com/oarepo/oarepo-oidc-einfra/commit/4961b9cf379a25e6e3b4d66d93ca593f4245994d) [skip ci] Bump version to v7.2.0
+- [`d76bd7e1`](https://github.com/oarepo/oarepo-oidc-einfra/commit/d76bd7e13e72ec30a9b384ce15ac38228cbe6f87) feat: token exchange provider (#51)
+- [`da49960c`](https://github.com/oarepo/oarepo-oidc-einfra/commit/da49960c5e0488e32c96570d9eef0b30b528d622) [skip ci] Bump version to v7.1.1
+
+#### `oarepo-rdm` 8.6.0
+[8.5.1 → 8.6.0](https://github.com/oarepo/oarepo-rdm/compare/v8.5.1...v8.6.0)
+
+- [`ac68a13c`](https://github.com/oarepo/oarepo-rdm/commit/ac68a13c196f07f5ca198c27d51ceaa7ecc796b4) Expose file-modification eligibility to the deposit form
+- [`fa81013b`](https://github.com/oarepo/oarepo-rdm/commit/fa81013b32f68d8e55bda8c7f4861775c280972f) [skip ci] Bump version to v8.5.1
+
+#### `oarepo-related-resources` 5.0.0 💥
+[4.3.0 → 5.0.0](https://github.com/oarepo/oarepo-related-resources/compare/v4.3.0...v5.0.0)
+
+- [`5c5dd480`](https://github.com/oarepo/oarepo-related-resources/commit/5c5dd4809f0efdb7cf7fc8ee4f329ddb3418570d) Major version bump due to major bump in packages: oarepo-vocabularies (#12)
+- [`3bcc5926`](https://github.com/oarepo/oarepo-related-resources/commit/3bcc59266d8498161c04ef89e55d90aa7c3a6927) [skip ci] Bump version to v4.4.0
+- [`2c2f7c21`](https://github.com/oarepo/oarepo-related-resources/commit/2c2f7c217b7c03ebca68c79c2dff25caea0804d7) fix: ignore uknown identifier schema (#11)
+- [`d924b7b1`](https://github.com/oarepo/oarepo-related-resources/commit/d924b7b1c123cece8b05a73dbc18c87e3ebd1e20) [skip ci] Bump version to v4.3.0
+
+#### `oarepo-requests` 9.5.0
+[9.4.1 → 9.5.0](https://github.com/oarepo/oarepo-requests/compare/v9.4.1...v9.5.0)
+
+- [`eb4604af`](https://github.com/oarepo/oarepo-requests/commit/eb4604af8277d6fa3466533ea76a7e4c4fc30cd5) Working on group membership request
+- [`29d91806`](https://github.com/oarepo/oarepo-requests/commit/29d91806fd7a019f7eb08b077162c9ca96c260f2) UI for GetAccess button & dialogue
+- [`5d2fdb1b`](https://github.com/oarepo/oarepo-requests/commit/5d2fdb1be1306ffb87f764dfef84a2f7baf35109) eslint
+- [`fa917c17`](https://github.com/oarepo/oarepo-requests/commit/fa917c17adb937798fbaa9dc4c58b5ce2f5a3584) docstring
+- [`2568503e`](https://github.com/oarepo/oarepo-requests/commit/2568503e03ac048b05b936c48d6413568374bf0a) fix: tests for group membership notifications
+- [`4a556224`](https://github.com/oarepo/oarepo-requests/commit/4a55622490587fbd94654465829b29fca59c2e44) chores: format & lint
+- [`3baad3ca`](https://github.com/oarepo/oarepo-requests/commit/3baad3cab5d90a5d3df101c20cef12e0170d54cb) Tests for stateful_name and description, justification in the
+- [`75729a62`](https://github.com/oarepo/oarepo-requests/commit/75729a62aa42ceb74ff7251d6c89ade8772c2772) [skip ci] Bump version to v9.4.3
+- [`3669f605`](https://github.com/oarepo/oarepo-requests/commit/3669f605dc9a1e0a1d61f6686401184f732271e9) fix: removed record_snapshots table (#206)
+- [`49a0488d`](https://github.com/oarepo/oarepo-requests/commit/49a0488d4aa09ca5e10caacb37bed5299247b8ad) [skip ci] Bump version to v9.4.2
+- [`efbdfe1e`](https://github.com/oarepo/oarepo-requests/commit/efbdfe1e625c277bfa72521b131aaf46ccbea186) fix: notifications overlay to not show user blob (#205)
+- [`f78d2214`](https://github.com/oarepo/oarepo-requests/commit/f78d22143ef9cf68b7fba4428668f2c3b52271dd) [skip ci] Bump version to v9.4.1
+
+#### `oarepo-runtime` 7.5.0
+[7.4.0 → 7.5.0](https://github.com/oarepo/oarepo-runtime/compare/v7.4.0...v7.5.0)
+
+- [`9636f379`](https://github.com/oarepo/oarepo-runtime/commit/9636f3797533896c8124d22e2c99e497a429df14) fix: support non-array relations and add internal relations field
+- [`96fad2f6`](https://github.com/oarepo/oarepo-runtime/commit/96fad2f6a9cbd9a32afe14b877bd3f55d07a7310) improving code coverage
+- [`f3d12c61`](https://github.com/oarepo/oarepo-runtime/commit/f3d12c61c59b2d7e14111b58c0daf3fcd725b135) Lookup table simplification
+- [`433d3904`](https://github.com/oarepo/oarepo-runtime/commit/433d3904a83a605916fb340d6859fbbac51f4505) Adding lookup table as a cached property (lazy build)
+- [`1f9f58b8`](https://github.com/oarepo/oarepo-runtime/commit/1f9f58b8dde82073d16c4f37c2008dff42026cfc) fixed caching and test
+- [`b1ba61a6`](https://github.com/oarepo/oarepo-runtime/commit/b1ba61a673de00d8ef586593ad917cf54d4ce97c) simplification: allowing just a single path for internal relations
+- [`41f95ffd`](https://github.com/oarepo/oarepo-runtime/commit/41f95ffdf80c9d003d160c794b1fa3f46e4c9d16) [skip ci] Bump version to v7.4.0
+
+#### `oarepo-ui` 13.5.3
+[13.5.2 → 13.5.3](https://github.com/oarepo/oarepo-ui/compare/v13.5.2...v13.5.3)
+
+- [`f663701f`](https://github.com/oarepo/oarepo-ui/commit/f663701f5c515a124c67bbc4cec724e34ce2e0d9) fix: better identifier handling creatibutors (#497)
+- [`7b450945`](https://github.com/oarepo/oarepo-ui/commit/7b4509452a513e62d3f36f79c4e79f68d10b697a) Base filesLocked on the draft bucket lock (not is_published) (#494)
+- [`a0abefe0`](https://github.com/oarepo/oarepo-ui/commit/a0abefe0b92ee9fd7bff3a228bd427fccc1829b6) feat: add quotaIncrease to files_quota cmp (#495)
+- [`982d938c`](https://github.com/oarepo/oarepo-ui/commit/982d938c9a118d482716c96600240e0e87e55abc) Render record title as sanitized HTML (#493)
+- [`b41d034a`](https://github.com/oarepo/oarepo-ui/commit/b41d034a079230d5902dfaae3a070c02ed90fea4) feat: register APP_RDM_PAGES static page routes in UI blueprint (#491)
+- [`ea03484c`](https://github.com/oarepo/oarepo-ui/commit/ea03484c6e35c93503f70e8f9fcdcf20f3efcd36) [skip ci] Bump version to v13.5.2
+
+#### `oarepo-vocabularies` 10.0.0 💥
+[9.0.1 → 10.0.0](https://github.com/oarepo/oarepo-vocabularies/compare/v9.0.1...v10.0.0)
+
+- [`1ef23c17`](https://github.com/oarepo/oarepo-vocabularies/commit/1ef23c17ae895c278b3bcfef24d6ea43861f8e41) fixed vocabulary field
+- [`a8bd3fff`](https://github.com/oarepo/oarepo-vocabularies/commit/a8bd3fffaafab660b7118e7b06dca8f344955b27) Bump version from 9.1.0 to 10.0.0
+- [`682d9ddd`](https://github.com/oarepo/oarepo-vocabularies/commit/682d9ddd5d75f5328de88f6e519dd1b087a5d1a3) [skip ci] Bump version to v9.1.0
+- [`850b69a5`](https://github.com/oarepo/oarepo-vocabularies/commit/850b69a555cbc7e3e26445b9c26e8f48a6ae8b44) feat: do content negotiation for vocabulary entry (#263)
+- [`2db55484`](https://github.com/oarepo/oarepo-vocabularies/commit/2db5548439f4772a7caba4d76f70af920fabd584) [skip ci] Bump version to v9.0.1
+
+#### `oarepo-workflows` 7.2.0
+[7.1.0 → 7.2.0](https://github.com/oarepo/oarepo-workflows/compare/v7.1.0...v7.2.0)
+
+- [`a99e199b`](https://github.com/oarepo/oarepo-workflows/commit/a99e199bd0299318233ad043645a5f82a0f87623) permission changes to handle creating requests for request types with topic without defined workflow; format (#64)
+- [`0b953d31`](https://github.com/oarepo/oarepo-workflows/commit/0b953d3117829421a4cc038a0e540ccde909bcdf) [skip ci] Bump version to v7.1.0
 
 ---
 
