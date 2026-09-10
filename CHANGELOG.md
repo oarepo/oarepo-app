@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [7.0.2](#702)
 - [7.0.1](#701)
 - [7.0.0rc1](#700rc1)
 - [6.4.0rc5](#640rc5)
 - [6.4.0rc4](#640rc4)
-- [6.4.0rc3](#640rc3)
+
+---
+
+## 7.0.2
+
+Released: **September 10, 2026 at 07:19 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 7.0.2
+[7.0.1 → 7.0.2](https://github.com/oarepo/oarepo-app/compare/v7.0.1...v7.0.2)
+
+
+#### `oarepo-model` 5.4.1
+[5.4.0 → 5.4.1](https://github.com/oarepo/oarepo-model/compare/v5.4.0...v5.4.1)
+
+- [`7013a405`](https://github.com/oarepo/oarepo-model/commit/7013a4058c0286cb32b0e76200023b6ef3277543) fix: deep merging ReadOnlyDict
+- [`0b1cd12a`](https://github.com/oarepo/oarepo-model/commit/0b1cd12ad6ff52a08c9c76bbd770115e3f67a661) [skip ci] Bump version to v5.4.0
 
 ---
 
