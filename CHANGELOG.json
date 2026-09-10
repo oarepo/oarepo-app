@@ -1,5 +1,455 @@
 [
   {
+    "version": "7.0.3",
+    "breaking": false,
+    "packages": {
+      "ccmm-invenio": {
+        "version": "1.1.27",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.1.27"
+      },
+      "invenio-access": {
+        "version": "6.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.1.0"
+      },
+      "invenio-accounts": {
+        "version": "8.3.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.3.1"
+      },
+      "invenio-administration": {
+        "version": "6.1.0+oarepo.1.wew74fq6lzczo5wm",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.1.0+oarepo.1.wew74fq6lzczo5wm"
+      },
+      "invenio-app": {
+        "version": "3.1.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.1.2"
+      },
+      "invenio-app-rdm": {
+        "version": "14.0.0+oarepo.2.q6hj2swhgfedayfu",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "14.0.0+oarepo.2.q6hj2swhgfedayfu"
+      },
+      "invenio-assets": {
+        "version": "4.2.6",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.2.6"
+      },
+      "invenio-audit-logs": {
+        "version": "3.0.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.2"
+      },
+      "invenio-banners": {
+        "version": "7.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.1.0"
+      },
+      "invenio-base": {
+        "version": "2.4.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.4.1"
+      },
+      "invenio-cache": {
+        "version": "3.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.1"
+      },
+      "invenio-celery": {
+        "version": "2.2.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.2.1"
+      },
+      "invenio-checks": {
+        "version": "10.2.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.2.0"
+      },
+      "invenio-collections": {
+        "version": "9.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.1.0"
+      },
+      "invenio-communities": {
+        "version": "28.2.0+oarepo.2.7e7krj64pazvzmdl",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "28.2.0+oarepo.2.7e7krj64pazvzmdl"
+      },
+      "invenio-config": {
+        "version": "1.1.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.1.1"
+      },
+      "invenio-db": {
+        "version": "2.6.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.6.0"
+      },
+      "invenio-drafts-resources": {
+        "version": "10.1.0+oarepo.1.kdcxzkknwebr4cfn",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.1.0+oarepo.1.kdcxzkknwebr4cfn"
+      },
+      "invenio-files-rest": {
+        "version": "5.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.1.0"
+      },
+      "invenio-formatter": {
+        "version": "4.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.1.0"
+      },
+      "invenio-i18n": {
+        "version": "3.6.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.6.0"
+      },
+      "invenio-indexer": {
+        "version": "5.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.1"
+      },
+      "invenio-jobs": {
+        "version": "10.1.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.1.1"
+      },
+      "invenio-jsonschemas": {
+        "version": "2.1.1+oarepo.1.dcdcs7yhenkuvvwt",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.1.1+oarepo.1.dcdcs7yhenkuvvwt"
+      },
+      "invenio-logging": {
+        "version": "4.3.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.3.1"
+      },
+      "invenio-mail": {
+        "version": "2.3.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.3.1"
+      },
+      "invenio-notifications": {
+        "version": "1.4.0+oarepo.3.nchd5zfc7333twv4",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.4.0+oarepo.3.nchd5zfc7333twv4"
+      },
+      "invenio-oaipmh-scythe": {
+        "version": "0.13.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "0.13.0"
+      },
+      "invenio-oaiserver": {
+        "version": "5.1.0+oarepo.1.myoh6ltv4x24wyl7",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.1.0+oarepo.1.myoh6ltv4x24wyl7"
+      },
+      "invenio-oauth2server": {
+        "version": "5.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.1.0"
+      },
+      "invenio-oauthclient": {
+        "version": "8.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.1.0"
+      },
+      "invenio-pages": {
+        "version": "9.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.1.0"
+      },
+      "invenio-pidstore": {
+        "version": "3.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.1.0"
+      },
+      "invenio-previewer": {
+        "version": "5.2.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.2.1"
+      },
+      "invenio-queues": {
+        "version": "1.0.4",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.0.4"
+      },
+      "invenio-rdm-records": {
+        "version": "32.2.1+oarepo.2.spb6mtch73y7kcun",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "32.2.1+oarepo.2.spb6mtch73y7kcun"
+      },
+      "invenio-records": {
+        "version": "5.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.1.0"
+      },
+      "invenio-records-files": {
+        "version": "3.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.1"
+      },
+      "invenio-records-permissions": {
+        "version": "3.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.1"
+      },
+      "invenio-records-resources": {
+        "version": "10.2.1+oarepo.1.5hxlyd4ajeobexv4",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "10.2.1+oarepo.1.5hxlyd4ajeobexv4"
+      },
+      "invenio-records-rest": {
+        "version": "5.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.1.0"
+      },
+      "invenio-records-ui": {
+        "version": "4.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.1.0"
+      },
+      "invenio-requests": {
+        "version": "14.1.0+oarepo.1.7xki3n3wgchijtol",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "14.1.0+oarepo.1.7xki3n3wgchijtol"
+      },
+      "invenio-rest": {
+        "version": "3.0.3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.0.3"
+      },
+      "invenio-s3": {
+        "version": "5.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.1"
+      },
+      "invenio-search": {
+        "version": "3.1.3+oarepo.1.cu6ttu5jcj4zusyd",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "3.1.3+oarepo.1.cu6ttu5jcj4zusyd"
+      },
+      "invenio-search-ui": {
+        "version": "4.3.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.3.0"
+      },
+      "invenio-sitemap": {
+        "version": "1.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.0.1"
+      },
+      "invenio-stats": {
+        "version": "6.2.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.2.0"
+      },
+      "invenio-theme": {
+        "version": "4.9.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "4.9.0"
+      },
+      "invenio-userprofiles": {
+        "version": "6.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.1.0"
+      },
+      "invenio-users-resources": {
+        "version": "12.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "12.1.0"
+      },
+      "invenio-vocabularies": {
+        "version": "13.1.2+oarepo.1.uaitwmxazuv62xk3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "13.1.2+oarepo.1.uaitwmxazuv62xk3"
+      },
+      "oarepo-app": {
+        "version": "7.0.3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.0.2",
+        "github_url": "https://github.com/oarepo/oarepo-app/compare/v7.0.2...v7.0.3"
+      },
+      "oarepo-checks": {
+        "version": "2.3.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.3.0"
+      },
+      "oarepo-communities": {
+        "version": "12.1.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "12.1.2"
+      },
+      "oarepo-config": {
+        "version": "2.1.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "2.1.2"
+      },
+      "oarepo-dashboard": {
+        "version": "8.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.0.0"
+      },
+      "oarepo-doi": {
+        "version": "7.1.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.1.0"
+      },
+      "oarepo-glitchtip": {
+        "version": "1.3.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "1.3.0"
+      },
+      "oarepo-invenio-typing-stubs": {
+        "version": "0.1.34",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "0.1.34"
+      },
+      "oarepo-model": {
+        "version": "5.4.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.4.1"
+      },
+      "oarepo-oai-pmh-harvester": {
+        "version": "9.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.0.0"
+      },
+      "oarepo-oidc-einfra": {
+        "version": "8.0.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.0.1"
+      },
+      "oarepo-rdm": {
+        "version": "8.6.1",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "8.6.1"
+      },
+      "oarepo-related-resources": {
+        "version": "5.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "5.0.0"
+      },
+      "oarepo-requests": {
+        "version": "9.5.2",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "9.5.2"
+      },
+      "oarepo-runtime": {
+        "version": "7.7.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.7.0"
+      },
+      "oarepo-theme": {
+        "version": "6.0.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "6.0.0"
+      },
+      "oarepo-ui": {
+        "version": "13.5.3",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "13.5.3"
+      },
+      "oarepo-vocabularies": {
+        "version": "10.2.1",
+        "breaking": false,
+        "changes": [
+          {
+            "commit": "3c7d35803d321b5ccc1c25dc2c7ee1e3459ec272",
+            "message": "lazy imports"
+          },
+          {
+            "commit": "1bf5c3a72ec6f32f55218dc028fce31f850c9bcf",
+            "message": "[skip ci] Bump version to v10.2.0"
+          }
+        ],
+        "previous_version": "10.2.0",
+        "github_url": "https://github.com/oarepo/oarepo-vocabularies/compare/v10.2.0...v10.2.1"
+      },
+      "oarepo-workflows": {
+        "version": "7.3.0",
+        "breaking": false,
+        "changes": [],
+        "previous_version": "7.3.0"
+      }
+    },
+    "created": "2026-09-10T10:22:17.425785+00:00"
+  },
+  {
     "version": "7.0.2",
     "breaking": false,
     "packages": {

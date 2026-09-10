@@ -2,11 +2,29 @@
 
 ## Contents
 
+- [7.0.3](#703)
 - [7.0.2](#702)
 - [7.0.1](#701)
 - [7.0.0rc1](#700rc1)
 - [6.4.0rc5](#640rc5)
-- [6.4.0rc4](#640rc4)
+
+---
+
+## 7.0.3
+
+Released: **September 10, 2026 at 10:22 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 7.0.3
+[7.0.2 → 7.0.3](https://github.com/oarepo/oarepo-app/compare/v7.0.2...v7.0.3)
+
+
+#### `oarepo-vocabularies` 10.2.1
+[10.2.0 → 10.2.1](https://github.com/oarepo/oarepo-vocabularies/compare/v10.2.0...v10.2.1)
+
+- [`3c7d3580`](https://github.com/oarepo/oarepo-vocabularies/commit/3c7d35803d321b5ccc1c25dc2c7ee1e3459ec272) lazy imports
+- [`1bf5c3a7`](https://github.com/oarepo/oarepo-vocabularies/commit/1bf5c3a72ec6f32f55218dc028fce31f850c9bcf) [skip ci] Bump version to v10.2.0
 
 ---
 
