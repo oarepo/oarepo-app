@@ -2,11 +2,135 @@
 
 ## Contents
 
+- [7.0.1](#701)
 - [7.0.0rc1](#700rc1)
 - [6.4.0rc5](#640rc5)
 - [6.4.0rc4](#640rc4)
 - [6.4.0rc3](#640rc3)
-- [6.4.0rc2](#640rc2)
+
+---
+
+## 7.0.1
+
+Released: **September 10, 2026 at 05:19 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 1.1.27
+[1.1.25 → 1.1.27](https://github.com/nrp-cz/ccmm-invenio/compare/v1.1.25...v1.1.27)
+
+- [`09d5f1dc`](https://github.com/nrp-cz/ccmm-invenio/commit/09d5f1dcc59cbf7c6535c435a44c98a8c95a857c) Dates required fix (#67)
+- [`f9ebc711`](https://github.com/nrp-cz/ccmm-invenio/commit/f9ebc71147fee55e254ee814899cf4e990a5ead6) [skip ci] Bump version to v1.1.26
+- [`734beda7`](https://github.com/nrp-cz/ccmm-invenio/commit/734beda701e3bdcc0f0be4dc06288ffb21f1fcb4) fix: set date interval fieds as required (#62)
+
+#### `oarepo-app` 7.0.1
+[7.0.0rc1 → 7.0.1](https://github.com/oarepo/oarepo-app/compare/v7.0.0rc1...v7.0.1)
+
+
+#### `oarepo-communities` 12.1.2
+[12.0.0 → 12.1.2](https://github.com/oarepo/oarepo-communities/compare/v12.0.0...v12.1.2)
+
+- [`c7e0d4bc`](https://github.com/oarepo/oarepo-communities/commit/c7e0d4bc03bb62607afd3466eabd4e85e1057f31) Restrict community request notifications
+- [`06b54050`](https://github.com/oarepo/oarepo-communities/commit/06b54050949eb39587ae9a99a84c82e3d7bf8041) [skip ci] Bump version to v12.1.1
+- [`85ef6fd3`](https://github.com/oarepo/oarepo-communities/commit/85ef6fd3234bef8a86046ed36f40411fa81d9a8d) fix: replace hardcoded manager/curator community roles with configured
+- [`daf7742e`](https://github.com/oarepo/oarepo-communities/commit/daf7742ef5ce2e6b2ff6c07df5a9acd4f4fab7c6) [skip ci] Bump version to v12.1.0
+- [`e9ae1d2b`](https://github.com/oarepo/oarepo-communities/commit/e9ae1d2be3be0c3cc384389a247c677c4ad67edb) feat: permission explainer for community generators
+
+#### `oarepo-config` 2.1.2
+[2.0.1 → 2.1.2](https://github.com/oarepo/oarepo-config/compare/v2.0.1...v2.1.2)
+
+- [`39c4899d`](https://github.com/oarepo/oarepo-config/commit/39c4899d5f51b5f122ed5a93e70de0f2f8026e22) fix: user access request
+- [`7c05b71c`](https://github.com/oarepo/oarepo-config/commit/7c05b71cc3dc601b1c5c4277fb0576243835eac6) [skip ci] Bump version to v2.1.1
+- [`ee99fd72`](https://github.com/oarepo/oarepo-config/commit/ee99fd72f8b2befd309b22a2720e2fa8f43b86b6) feat: invenio stats configuration
+- [`ed48b367`](https://github.com/oarepo/oarepo-config/commit/ed48b3675b927e15928013769f889ff516666e4b) [skip ci] Bump version to v2.1.0
+- [`f685f9a9`](https://github.com/oarepo/oarepo-config/commit/f685f9a94ece6cda48afa8e58ab05b3d998c9f4b) feat: use alias for default llm model
+- [`1d496641`](https://github.com/oarepo/oarepo-config/commit/1d49664143ee45a8ae0ac86b66cf7addf86ddb08) Change LLM model from 'mini' to 'nrp'
+- [`bfd742fc`](https://github.com/oarepo/oarepo-config/commit/bfd742fc9c109fe5f45f4b59c265371689e20c77) [skip ci] Bump version to v2.0.1
+
+#### `oarepo-model` 5.4.0
+[5.3.3 → 5.4.0](https://github.com/oarepo/oarepo-model/compare/v5.3.3...v5.4.0)
+
+- [`8c46cc92`](https://github.com/oarepo/oarepo-model/commit/8c46cc9245e34f36fd0e1c1e75aaea0351bfaabd) Add lazy JSON file content and symlinks to the model builder
+- [`3dc44ce6`](https://github.com/oarepo/oarepo-model/commit/3dc44ce6bc72159242ac550528f33944570bc0dd) feat: marshmallow_validate option
+- [`a8269a93`](https://github.com/oarepo/oarepo-model/commit/a8269a936a16a792b2f6a06dc22b48235d30db38) feat: marshmallow schema mixins
+- [`352a110e`](https://github.com/oarepo/oarepo-model/commit/352a110eb109f3bf89c699a1524d3ad671a84b4a) working on spherical datatypes
+- [`09b57846`](https://github.com/oarepo/oarepo-model/commit/09b57846c012c3dcb7849ea1a997ab9c6cac6669) Wired a customization for adding param interpreter classes
+- [`032ace9b`](https://github.com/oarepo/oarepo-model/commit/032ace9bc0260034de6929a01b8e99156b6d359a) chore: ruff
+- [`642bf3cf`](https://github.com/oarepo/oarepo-model/commit/642bf3cf37536ef1ef16725437066ed9f5dd2639) GeoPoint and ICSR data type
+- [`9760e24c`](https://github.com/oarepo/oarepo-model/commit/9760e24c350856a964a02739f7c8f041f27474d8) Unified model tree access, extracted code for path dumpers
+- [`8f9362c1`](https://github.com/oarepo/oarepo-model/commit/8f9362c1530ecc6f204205c86f9b249c7a5f5825) Added shapely library to work with geo polygons
+- [`1545941e`](https://github.com/oarepo/oarepo-model/commit/1545941e5c063415129ee710435f59b8e191b017) Added param interpreter classes for geo search
+- [`e3260780`](https://github.com/oarepo/oarepo-model/commit/e326078072267fc383192f631ba47a5ef8963091) using isinstance directly to make it more readable
+- [`6a61a09e`](https://github.com/oarepo/oarepo-model/commit/6a61a09ec6cba8ea6d23a77df2c231c9150fe236) Added icsr search parameters
+- [`ab6992c9`](https://github.com/oarepo/oarepo-model/commit/ab6992c947e8db7c09b0398b29544c597e4f19e2) Support for geocoding names in queries
+- [`46344430`](https://github.com/oarepo/oarepo-model/commit/463444302cc5666f0882a67910d69f4e0e785380) Asked Claude to add tests to cover testing gaps.
+- [`ab54461c`](https://github.com/oarepo/oarepo-model/commit/ab54461c28cf69dba484d20cf3019d5a7cb0bda9) Added empty __init__.py to preserve namespace.
+- [`92a7c41b`](https://github.com/oarepo/oarepo-model/commit/92a7c41be49f91e4ebe32d1607260ce2bf06173f) Copyright
+- [`c46552ab`](https://github.com/oarepo/oarepo-model/commit/c46552ab4b7a277ed7453fd9f4d9cd9de1f49f0a) fix(dynamic-object): create_marshmallow_field returns fields.Raw instead of Nested
+- [`059beba2`](https://github.com/oarepo/oarepo-model/commit/059beba28c4052ae59a11dd6bca1f8f264661e4b) test(dynamic-object): add round-trip tests for DynamicObjectDataType
+- [`075d7c22`](https://github.com/oarepo/oarepo-model/commit/075d7c228627e9548e0e40c71c21bb5b4065aac5) Copyright notice
+- [`03c344a3`](https://github.com/oarepo/oarepo-model/commit/03c344a3fbcb4f84de90006c313c29fff0436f17) [skip ci] Bump version to v5.3.3
+
+#### `oarepo-oidc-einfra` 8.0.1
+[8.0.0 → 8.0.1](https://github.com/oarepo/oarepo-oidc-einfra/compare/v8.0.0...v8.0.1)
+
+- [`fa632d0c`](https://github.com/oarepo/oarepo-oidc-einfra/commit/fa632d0c704789d2af4c9206d6a90d781ab74469) Data migration to remove AAI requests and inactive memberships
+
+#### `oarepo-rdm` 8.6.1
+[8.6.0 → 8.6.1](https://github.com/oarepo/oarepo-rdm/compare/v8.6.0...v8.6.1)
+
+- [`6577579d`](https://github.com/oarepo/oarepo-rdm/commit/6577579d54741ec9ac8669c4f56b1d3128d869ef) feat: use date or interval datatype for rdm dates
+- [`e7b2660d`](https://github.com/oarepo/oarepo-rdm/commit/e7b2660d7323f9ce6cbdd5cfdc3b9e002b034b79) [skip ci] Bump version to v8.6.0
+
+#### `oarepo-requests` 9.5.2
+[9.5.0 → 9.5.2](https://github.com/oarepo/oarepo-requests/compare/v9.5.0...v9.5.2)
+
+- [`8290d170`](https://github.com/oarepo/oarepo-requests/commit/8290d17041fc2fe3ee81b793273696b487f8e423) savepoint #1
+- [`90963a8d`](https://github.com/oarepo/oarepo-requests/commit/90963a8d3a3a372f9b5433191dcc04de973d405b) savepoint
+- [`13b79600`](https://github.com/oarepo/oarepo-requests/commit/13b7960025b06a5b776528eeaa4a6db1330ddc68) minor
+- [`0c10654f`](https://github.com/oarepo/oarepo-requests/commit/0c10654f60fee544ade4519101903c2f5b1753fb) comment notification can get draft record
+- [`413062c5`](https://github.com/oarepo/oarepo-requests/commit/413062c5ba623e2f6d7d86dec92c277c2ad95199) review reconception
+- [`d86acd28`](https://github.com/oarepo/oarepo-requests/commit/d86acd28e536a4c6eb7af18eaacf7e132666bd8b) review changes
+- [`dee00768`](https://github.com/oarepo/oarepo-requests/commit/dee007686a4a6fd7b7452687abfb823739449a15) new line in subject bug fix
+- [`275e4688`](https://github.com/oarepo/oarepo-requests/commit/275e46887f792e5aec3f34a031af51b014a99ce5) added incorrect record resolution publish changed metadata unresolved issue comment
+- [`3ef7e058`](https://github.com/oarepo/oarepo-requests/commit/3ef7e05876531ba1fa44950c5bf942f510f29ae9) minor template edit
+- [`a3973ee6`](https://github.com/oarepo/oarepo-requests/commit/a3973ee6d31624c32a4a7a61c2cabe9c9d5795f6) [skip ci] Bump version to v9.5.1
+- [`87d2b12b`](https://github.com/oarepo/oarepo-requests/commit/87d2b12b757dcad323e70e4c912af70c1254b3aa) using default invenio cancel action in GroupMembershipRequestType to prevent crash on missing workflow of the group topic
+- [`44f6e575`](https://github.com/oarepo/oarepo-requests/commit/44f6e5759a0a63b7520e79410717aec30eabc6e8) fix: wording
+- [`6a962fb1`](https://github.com/oarepo/oarepo-requests/commit/6a962fb1cdbeae19ed54117c6177a864eddc0f09) [skip ci] Bump version to v9.5.0
+
+#### `oarepo-runtime` 7.7.0
+[7.5.0 → 7.7.0](https://github.com/oarepo/oarepo-runtime/compare/v7.5.0...v7.7.0)
+
+- [`5f2d3ae4`](https://github.com/oarepo/oarepo-runtime/commit/5f2d3ae4dfe28f517b6f702137d185cfcdde4840) feat: community permission explainer
+- [`416dd68a`](https://github.com/oarepo/oarepo-runtime/commit/416dd68ace3767d4253fd575dcaf290ed7c415e4) [skip ci] Bump version to v7.6.0
+- [`f8a460b5`](https://github.com/oarepo/oarepo-runtime/commit/f8a460b59282f931af77d238e570fecbb31d6b31) feat: permission explainers
+- [`c819eb43`](https://github.com/oarepo/oarepo-runtime/commit/c819eb43561b5cfdb0aeb420e3f53c7bb18d584f) fix: record is optional
+- [`05406f34`](https://github.com/oarepo/oarepo-runtime/commit/05406f34a3d07bd60f996e65ebd6cabe350c386d) fix: capturing exceptions for conditional generator
+- [`d5164424`](https://github.com/oarepo/oarepo-runtime/commit/d5164424a71e1413259132a6c3f7c69e59c18fc7) extra test
+- [`044bee53`](https://github.com/oarepo/oarepo-runtime/commit/044bee53e14c25dfb4e22b48e9c9ebe1c1d60978) Fingerprint of installed packages
+- [`74b7eb31`](https://github.com/oarepo/oarepo-runtime/commit/74b7eb314b8c52fc0118c0e2f1561f0868068b0a) self review
+- [`3b86630a`](https://github.com/oarepo/oarepo-runtime/commit/3b86630a4f8de4bedb1d4d9a04f06bec9f4270be) review changes
+- [`b655ef64`](https://github.com/oarepo/oarepo-runtime/commit/b655ef64ce242db76d2e9e8480576c91e2075ebc) [skip ci] Bump version to v7.5.0
+
+#### `oarepo-vocabularies` 10.2.0
+[10.0.0 → 10.2.0](https://github.com/oarepo/oarepo-vocabularies/compare/v10.0.0...v10.2.0)
+
+- [`b24f3b38`](https://github.com/oarepo/oarepo-vocabularies/commit/b24f3b38d46c78fdeabe32fd1d07ca5bba87d5a8) feat: enable ror updates
+- [`f8d69a33`](https://github.com/oarepo/oarepo-vocabularies/commit/f8d69a33b5eebfb6d15fc2bb99f55e500697dc70) fix: remove config deepcopy
+- [`f27288c2`](https://github.com/oarepo/oarepo-vocabularies/commit/f27288c2777c91764644dd843a7704c738214f27) [skip ci] Bump version to v10.1.0
+- [`df109a72`](https://github.com/oarepo/oarepo-vocabularies/commit/df109a72e3a5154a27af4b068acd0d88a2c8815a) feat: filter for newer vocab entries (for synchronization)
+- [`f90f9a30`](https://github.com/oarepo/oarepo-vocabularies/commit/f90f9a30ffbb7f60f87bc7dc27f79b0fbf27c123) fix: memory leak in OAREPO_UI_LESS_COMPONENTS
+- [`8275a8da`](https://github.com/oarepo/oarepo-vocabularies/commit/8275a8daed778277f8cc7032fa757e74f9532989) feat: mapping SKOS to rdm props on vocabularies
+- [`05ad0bc7`](https://github.com/oarepo/oarepo-vocabularies/commit/05ad0bc70d8f90033cd1db5575aabe57c6f8b8e2) trying to work around test on which github is killed
+- [`c872f3fa`](https://github.com/oarepo/oarepo-vocabularies/commit/c872f3fab9e24373bf9b1c5234044c11cdd67c8b) SKOS mapping on the API level
+- [`777eb644`](https://github.com/oarepo/oarepo-vocabularies/commit/777eb644e45239e3818fde568904c3d2c0eb22ef) feat: administrator group can edit vocabularies
+
+#### `oarepo-workflows` 7.3.0
+[7.2.0 → 7.3.0](https://github.com/oarepo/oarepo-workflows/compare/v7.2.0...v7.3.0)
+
+- [`1aff9694`](https://github.com/oarepo/oarepo-workflows/commit/1aff9694104c51d3c140982f895ad1f6f97ed076) feat: explainer for workflow permissions
+- [`01fbc9ab`](https://github.com/oarepo/oarepo-workflows/commit/01fbc9ab9c21fd5948a5fd553044e63b260dbf5f) [skip ci] Bump version to v7.2.0
 
 ---
 
