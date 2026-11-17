@@ -16,7 +16,7 @@ Homepage = "https://github.com/oarepo/oarepo-app"
 
 [project.optional-dependencies]
 ccmm-development = [
-    "ccmm-invenio>=1.1.0,<1.2.0",
+    "ccmm-invenio>=2.0.0,<3.0.0",
 ]
 oaipmh-harvester-development = [
     "oarepo-oai-pmh-harvester>=9.6.1,<10.0.0",
