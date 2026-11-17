@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "8.0.0"
+version = "8.0.1"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -50,7 +50,7 @@ development = [
     "oarepo-doi>=8.0.0,<9.0.0",
     "oarepo-related-resources>=7.0.0,<8.0.0",
     "oarepo-previewer>=1.0.2,<2.0.0",
-    "oarepo-formats>=1.0.2,<2.0.0",
+    "oarepo-formats>=1.1.0,<2.0.0",
     "pygelf>=0.4.0,<1.0.0",
     "oarepo-kerberos>=0.2.0,<1.0.0",
 ]
@@ -87,7 +87,7 @@ production = [
     "oarepo-doi==8.0.0",
     "oarepo-related-resources==7.0.0",
     "oarepo-previewer==1.0.2",
-    "oarepo-formats==1.0.2",
+    "oarepo-formats==1.1.0",
     "pygelf==0.4.3",
     "oarepo-kerberos==0.2.0",
 ]
