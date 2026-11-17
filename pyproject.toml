@@ -28,7 +28,7 @@ ark-development = [
     "oarepo-ark>=1.0.0,<2.0.0",
 ]
 antivirus-development = [
-    "oarepo-antivirus>=1.0.0,<2.0.0",
+    "oarepo-antivirus>=1.0.1,<2.0.0",
 ]
 
 development = [
@@ -95,7 +95,7 @@ ark = [
     "oarepo-ark==1.0.0",
 ]
 antivirus = [
-    "oarepo-antivirus==1.0.0",
+    "oarepo-antivirus==1.0.1",
 ]
 
 
