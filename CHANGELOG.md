@@ -2,11 +2,30 @@
 
 ## Contents
 
+- [8.0.1](#801)
 - [8.0.0](#800)
 - [7.0.3](#703)
 - [7.0.2](#702)
 - [7.0.1](#701)
-- [7.0.0rc1](#700rc1)
+
+---
+
+## 8.0.1
+
+Released: **November 17, 2026 at 15:01 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 8.0.1
+[8.0.0 → 8.0.1](https://github.com/oarepo/oarepo-app/compare/v8.0.0...v8.0.1)
+
+- [`0f492ddc`](https://github.com/oarepo/oarepo-app/commit/0f492ddc89fa7600e9e49acce2cdc27aed9a2e8f) Update ccmm-invenio dependency version range
+
+#### `oarepo-formats` 1.1.0
+[1.0.2 → 1.1.0](https://github.com/oarepo/oarepo-formats/compare/v1.0.2...v1.1.0)
+
+- [`28e2fd14`](https://github.com/oarepo/oarepo-formats/commit/28e2fd14fa3ca62073a94f3e94434515bb4ae0d9) Feat/better file error handling (#4)
+- [`20af3fee`](https://github.com/oarepo/oarepo-formats/commit/20af3fee1163c1057e30810faed94f83918fab97) [skip ci] Bump version to v1.0.2
 
 ---
 
