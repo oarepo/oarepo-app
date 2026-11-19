@@ -2,11 +2,28 @@
 
 ## Contents
 
+- [8.1.0](#810)
 - [8.0.1](#801)
 - [8.0.0](#800)
 - [7.0.3](#703)
 - [7.0.2](#702)
-- [7.0.1](#701)
+
+---
+
+## 8.1.0
+
+Released: **November 19, 2026 at 09:14 UTC**
+
+### Updated packages
+
+#### `oarepo-app` 8.1.0
+[8.0.1 → 8.1.0](https://github.com/oarepo/oarepo-app/compare/v8.0.1...v8.1.0)
+
+
+#### `oarepo-ui` 14.1.0
+[14.0.0 → 14.1.0](https://github.com/oarepo/oarepo-ui/compare/v14.0.0...v14.1.0)
+
+- [`467192ba`](https://github.com/oarepo/oarepo-ui/commit/467192ba69972324aee16d5dfe0bb5e106af46f5) fix: add optional css.html template partial - reaction to changes in nrp-model-copier
 
 ---
 
