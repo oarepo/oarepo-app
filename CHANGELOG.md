@@ -2,11 +2,46 @@
 
 ## Contents
 
+- [8.2.0](#820)
 - [8.1.0](#810)
 - [8.0.1](#801)
 - [8.0.0](#800)
 - [7.0.3](#703)
-- [7.0.2](#702)
+
+---
+
+## 8.2.0
+
+Released: **November 26, 2026 at 18:26 UTC**
+
+### Updated packages
+
+#### `ccmm-invenio` 2.6.2
+[2.6.1 → 2.6.2](https://github.com/nrp-cz/ccmm-invenio/compare/v2.6.1...v2.6.2)
+
+- [`9219c9fa`](https://github.com/nrp-cz/ccmm-invenio/commit/9219c9faa8b4c8bb10be63f9186546fa7d3efb2f) Revert 104 feat/101 move autoscrolllist component into oarepo UI from ccmm invenio (#109)
+- [`d2951116`](https://github.com/nrp-cz/ccmm-invenio/commit/d295111629d6e8ad899cbf4c94a0881f710a2659) Harvester changes (#108)
+- [`b0445037`](https://github.com/nrp-cz/ccmm-invenio/commit/b0445037560452448cbf2055d25136568d2b4ed0) feat: will use oarepo_ui auto scroll list component (#104)
+
+#### `oarepo-app` 8.2.0
+[8.1.0 → 8.2.0](https://github.com/oarepo/oarepo-app/compare/v8.1.0...v8.2.0)
+
+
+#### `oarepo-config` 3.1.0
+[3.0.0 → 3.1.0](https://github.com/oarepo/oarepo-config/compare/v3.0.0...v3.1.0)
+
+- [`9ef024a4`](https://github.com/oarepo/oarepo-config/commit/9ef024a43275ecbb1aeb0eaeca144f15438fd963) feat: CESiD login configuration
+
+#### `oarepo-invenio-typing-stubs` 0.1.47
+0.1.46 → 0.1.47
+
+
+#### `oarepo-oidc-einfra` 9.1.0
+[9.0.0 → 9.1.0](https://github.com/oarepo/oarepo-oidc-einfra/compare/v9.0.0...v9.1.0)
+
+- [`c81f8db3`](https://github.com/oarepo/oarepo-oidc-einfra/commit/c81f8db3c0636cef0aa41c13833c78773b4d355f) feat: Parsing and validating entitlement suffixes
+- [`c22fa43c`](https://github.com/oarepo/oarepo-oidc-einfra/commit/c22fa43c7b6ec1a13243e5bc2f52ce4045deefb2) suffix -> issuer
+- [`1b1053aa`](https://github.com/oarepo/oarepo-oidc-einfra/commit/1b1053aa9bcfd4e896b3735869ab696efaf3c6b0) fix: suffix -> issuer
 
 ---
 

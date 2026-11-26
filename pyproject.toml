@@ -1,6 +1,6 @@
 [project]
 name = "oarepo-app"
-version = "8.1.0"
+version = "8.2.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -33,13 +33,13 @@ antivirus-development = [
 development = [
     "oarepo[s3]>=14.2.7,<15.0.0",
     "marshmallow-i18n-messages>=0.1.0,<1.0.0",
-    "oarepo-config>=3.0.0,<4.0.0",
+    "oarepo-config>=3.1.0,<4.0.0",
     "oarepo-communities>=14.0.0,<15.0.0",
     "oarepo-dashboard>=9.0.0,<10.0.0",
     "oarepo-glitchtip>=1.3.1,<2.0.0",
-    "oarepo-invenio-typing-stubs>=0.1.46,<1.0.0",
+    "oarepo-invenio-typing-stubs>=0.1.47,<1.0.0",
     "oarepo-model>=7.0.0,<8.0.0",
-    "oarepo-oidc-einfra>=9.0.0,<10.0.0",
+    "oarepo-oidc-einfra>=9.1.0,<10.0.0",
     "oarepo-rdm>=10.0.0,<11.0.0",
     "oarepo-requests>=11.0.0,<12.0.0",
     "oarepo-runtime>=8.0.0,<9.0.0",
@@ -70,13 +70,13 @@ antivirus = [
 production = [
     "oarepo[s3]==14.2.7+4.rdm.14.0.6",
     "marshmallow-i18n-messages==0.4.1",
-    "oarepo-config==3.0.0",
+    "oarepo-config==3.1.0",
     "oarepo-communities==14.0.0",
     "oarepo-dashboard==9.0.0",
     "oarepo-glitchtip==1.3.1",
-    "oarepo-invenio-typing-stubs==0.1.46",
+    "oarepo-invenio-typing-stubs==0.1.47",
     "oarepo-model==7.0.0",
-    "oarepo-oidc-einfra==9.0.0",
+    "oarepo-oidc-einfra==9.1.0",
     "oarepo-rdm==10.0.0",
     "oarepo-requests==11.0.0",
     "oarepo-runtime==8.0.0",
@@ -92,7 +92,7 @@ production = [
     "oarepo-kerberos==0.2.0",
 ]
 ccmm = [
-    "ccmm-invenio==2.6.1",
+    "ccmm-invenio==2.6.2",
 ]
 oaipmh-harvester = [
     "oarepo-oai-pmh-harvester==9.6.1",
